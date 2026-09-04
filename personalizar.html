@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personalizar Camisola | Lisbon FC</title>
+<meta name="description" content="Personaliza a tua camisola do Lisbon FC com nome e número.">
+<link rel="icon" href="Logos/Logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main id="top">
+
+  <section class="personalize-widget-section">
+    <div class="personalize-step-dropdown" id="pwStepDropdown">
+      <div class="pw-step-row pw-step-icon-row">
+        <span>Camisola</span>
+        <img id="pwStepThumb" src="Logos/Loja/camisola-principal-1.png" alt="">
+      </div>
+      <div class="pw-step-row" id="pwSummaryTipo"><span>Género</span><strong>Por selecionar</strong></div>
+      <div class="pw-step-row" id="pwSummaryTamanho"><span>Tamanho</span><strong>Por selecionar</strong></div>
+      <div class="pw-step-row" id="pwSummaryNome"><span>Nome</span><strong>Por selecionar</strong></div>
+      <div class="pw-step-row" id="pwSummaryNumero"><span>Número</span><strong>Por selecionar</strong></div>
+    </div>
+    <div class="personalize-card">
+      <div class="personalize-card-header">
+        <div class="personalize-card-header-info">
+          <span class="personalize-card-title" id="pwTitle">Camisola Principal do Lisbon FC 2026-2027</span>
+          <button class="personalize-price-trigger" id="pwPriceTrigger">
+            <span class="personalize-card-price" id="pwPrice">30,00 €</span>
+            <span class="personalize-card-surcharge" id="pwSurcharge">+0,00 €</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <div class="personalize-price-dropdown" id="pwPriceDropdown">
+            <div class="pw-price-row pw-price-row--member"><span>Sócio</span><strong>25,00 €</strong></div>
+            <div class="pw-price-row"><span>Adepto</span><strong id="pwAdeptoPrice">30,00 €</strong></div>
+            <div class="pw-price-row pw-price-note"><span>Acumula em carteira</span><strong>+1,00 €</strong></div>
+            <div class="pw-price-row pw-price-row--pvp"><span>PVP</span><strong>30,00 €</strong></div>
+            <div class="pw-price-row pw-price-row--section"><span>Personalização</span><strong id="pwDropSurchargeTotal">+0,00 €</strong></div>
+            <div class="pw-price-row pw-price-row--sub"><span>Nome</span><strong id="pwDropSurchargeName">+0,00 €</strong></div>
+          </div>
+        </div>
+        <a href="camisola-principal.html" class="personalize-card-close" aria-label="Fechar">&times;</a>
+      </div>
+
+      <div class="personalize-card-image">
+        <img id="pwImg" src="Logos/Loja/camisola-principal-1.png" alt="Camisola Principal do Lisbon FC 2026-2027">
+        <div class="pw-preview-overlay" id="pwPreviewOverlay">
+          <span id="pwPreviewName" class="pw-preview-name"></span>
+          <span id="pwPreviewNumber" class="pw-preview-number"></span>
+        </div>
+      </div>
+
+      <div class="personalize-card-footer">
+        <div class="personalize-card-step-center">
+          <button class="personalize-card-prev" id="pwPrevBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Anterior</button>
+          <div class="personalize-step-wrap">
+            <button class="personalize-card-step" id="pwStepTrigger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              <span id="pwStepLabel">1/2 Tipo</span>
+            </button>
+          </div>
+          <button class="personalize-card-next" id="pwNextBtn">Seguinte <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+        <div class="personalize-card-options" id="pwOptionsRow">
+          <button class="personalize-opt-icon" id="pwSkipBtn" aria-label="Sem personalização">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+          </button>
+          <button class="personalize-opt-pill" id="pwNameOptBtn">Nome</button>
+          <button class="btn personalize-add-btn" id="pwAddBtn" disabled>Adicionar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/main.js"></script>
+<script src="js/personalizar.js"></script>
+</body>
+</html>
