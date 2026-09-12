@@ -66,6 +66,10 @@ if (document.querySelector("#heroFeature")) {
   initCarousel("#heroPromo", ".hero-promo-prev", ".hero-promo-next", 7000);
 }
 
+if (document.querySelector("#sociosNewsCarousel")) {
+  initCarousel("#sociosNewsCarousel", ".socios-news-prev", ".socios-news-next", 6500);
+}
+
 const fixturesRow = document.getElementById("fixturesRow");
 if (fixturesRow) {
   const fixtureCards = fixturesRow.querySelectorAll(".fixture-card");

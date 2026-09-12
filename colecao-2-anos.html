@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coleção 2 Anos | Coleções | Loja | Lisbon FC</title>
+<meta name="description" content="Coleção especial do 2.º aniversário do Lisbon FC.">
+<link rel="icon" href="Logos/Logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Main header -->
+<header class="site-header">
+
+  <div class="header-top">
+    <div class="container header-top-inner">
+      <div class="header-top-side header-top-left">
+        <button class="icon-btn menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="megaMenu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <button class="icon-btn search-toggle" aria-label="Pesquisar" aria-expanded="false" aria-controls="searchBar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+
+      <a href="index.html" class="brand">
+        <img src="Logos/Logo.png" alt="Lisbon FC" class="brand-crest">
+      </a>
+
+      <div class="header-top-side header-top-right">
+        <a href="loja.html" class="icon-btn" aria-label="Loja Oficial">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        </a>
+        <a href="#" class="icon-btn" aria-label="Área de Sócio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        </a>
+        <a href="#" class="icon-btn" aria-label="Idioma">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3c2.5 2.6 4 5.9 4 9s-1.5 6.4-4 9c-2.5-2.6-4-5.9-4-9s1.5-6.4 4-9Z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="search-bar" id="searchBar">
+      <div class="container search-bar-inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="search" placeholder="Pesquisar no site…" aria-label="Pesquisar no site">
+      </div>
+    </div>
+  </div>
+
+  <nav class="header-secondary" aria-label="Acesso rápido">
+    <div class="container secondary-inner">
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 0 0 0 4v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 0 0 0-4V9Z"/></svg><span>Bilhetes</span></a>
+      <a href="equipa.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 20c0-3.6 2.9-6.2 6.5-6.2s6.5 2.6 6.5 6.2"/><path d="M4 9.5 2 11l2.2 1"/><path d="M20 9.5 22 11l-2.2 1"/></svg><span>Equipa</span></a>
+      <a href="loja.html" class="secondary-link-active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>Loja</span></a>
+      <a href="socios.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span>Sócios</span></a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg><span>Calendário</span></a>
+      <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3V4Z"/><line x1="8" y1="9" x2="15" y2="9"/><line x1="8" y1="13" x2="15" y2="13"/></svg><span>Notícias</span></a>
+    </div>
+  </nav>
+</header>
+
+<!-- Promo strip -->
+<div class="promo-strip">
+  <div class="container promo-inner">
+    <span>Novidades | Equipamentos da época 2026/27 já disponíveis</span>
+    <a href="loja.html">Ver Loja</a>
+  </div>
+</div>
+
+<!-- Mega menu -->
+<div class="mega-menu" id="megaMenu">
+  <div class="mega-menu-panel">
+    <button class="mega-close" aria-label="Fechar menu">&times;</button>
+
+    <nav class="mega-primary" aria-label="Categorias">
+      <a href="#" class="mega-primary-link active" data-target="clube">Clube</a>
+      <a href="#" class="mega-primary-link" data-target="bilhetes">Bilhetes</a>
+      <a href="#" class="mega-primary-link" data-target="loja">Loja</a>
+      <a href="#" class="mega-primary-link" data-target="socios">Sócios</a>
+      <a href="#" class="mega-primary-link" data-target="adeptos">Adeptos</a>
+      <a href="#" class="mega-primary-link" data-target="fundacao">Fundação</a>
+      <a href="#" class="mega-primary-link" data-target="contactos">Contactos</a>
+    </nav>
+
+    <div class="mega-secondary">
+      <div class="mega-secondary-group active" data-group="clube">
+        <a href="index.html#noticias">Notícias</a>
+        <a href="equipa.html">Equipa</a>
+        <a href="index.html#jogos">Jogos</a>
+        <a href="index.html#supertaca">Supertaça</a>
+        <a href="index.html#foundation">Fundação Lisbon FC</a>
+        <a href="index.html#contactos">Contactos</a>
+      </div>
+      <div class="mega-secondary-group" data-group="bilhetes">
+        <a href="#">Bilhetes de Época</a>
+        <a href="#">Bilhetes Jogo a Jogo</a>
+        <a href="#">Descontos para Sócios</a>
+        <a href="#">Bilheteira Online</a>
+      </div>
+      <div class="mega-secondary-group" data-group="loja">
+        <a href="loja.html#produtos">Equipamentos</a>
+        <a href="loja.html#produtos">Merchandising</a>
+        <a href="loja.html#colecoes">Coleção 2 Anos</a>
+        <a href="loja.html">Loja Online</a>
+      </div>
+      <div class="mega-secondary-group" data-group="socios">
+        <a href="socios.html">Ser Sócio</a>
+        <a href="socios.html#vantagens">Vantagens</a>
+        <a href="#">Área de Sócio</a>
+      </div>
+      <div class="mega-secondary-group" data-group="adeptos">
+        <a href="#">Claque</a>
+        <a href="#">Redes Sociais</a>
+        <a href="#">Fotogaleria</a>
+      </div>
+      <div class="mega-secondary-group" data-group="fundacao">
+        <a href="index.html#foundation">Sobre a Fundação</a>
+        <a href="index.html#foundation">Programas Sociais</a>
+        <a href="index.html#foundation">Voluntariado</a>
+      </div>
+      <div class="mega-secondary-group" data-group="contactos">
+        <a href="index.html#contactos">Contactar o Clube</a>
+        <a href="index.html#contactos">Imprensa</a>
+        <a href="index.html#contactos">Localização</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- Collection intro -->
+  <section class="collection-intro">
+    <div class="container">
+      <h1>Coleção 2 Anos</h1>
+      <details class="sort-dropdown">
+        <summary>Ordenar
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="sort-menu">
+          <button type="button" class="sort-menu-item">Em Destaque</button>
+          <button type="button" class="sort-menu-item">Mais Recentes</button>
+          <button type="button" class="sort-menu-item">Nome A-Z</button>
+          <button type="button" class="sort-menu-item">Nome Z-A</button>
+          <button type="button" class="sort-menu-item">Mais Artigos</button>
+          <button type="button" class="sort-menu-item">Preço ascendente</button>
+          <button type="button" class="sort-menu-item">Preço descendente</button>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Collection products -->
+  <section class="collection-products-section">
+    <div class="container">
+      <div class="collection-layout">
+
+      <aside class="collection-filters">
+        <details class="filter-group" open>
+          <summary>
+            <h3>Tamanho</h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox"> XS</label>
+            <label class="filter-option"><input type="checkbox"> S</label>
+            <label class="filter-option"><input type="checkbox"> M</label>
+            <label class="filter-option"><input type="checkbox"> L</label>
+            <label class="filter-option"><input type="checkbox"> XL</label>
+            <label class="filter-option"><input type="checkbox"> XXL</label>
+          </div>
+        </details>
+        <details class="filter-group" open>
+          <summary>
+            <h3>Cor</h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox"> Azul</label>
+            <label class="filter-option"><input type="checkbox"> Amarelo</label>
+            <label class="filter-option"><input type="checkbox"> Branco</label>
+          </div>
+        </details>
+        <details class="filter-group" open>
+          <summary>
+            <h3>Preço</h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox"> Até 15€</label>
+            <label class="filter-option"><input type="checkbox"> 15€ – 30€</label>
+            <label class="filter-option"><input type="checkbox"> Mais de 30€</label>
+          </div>
+        </details>
+        <details class="filter-group" open>
+          <summary>
+            <h3>Para</h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="filter-options">
+            <label class="filter-option"><input type="checkbox"> Homem</label>
+            <label class="filter-option"><input type="checkbox"> Mulher</label>
+            <label class="filter-option"><input type="checkbox"> Criança</label>
+          </div>
+        </details>
+      </aside>
+
+        <div class="collection-main">
+          <div class="shop-catalog-grid shop-catalog-grid--trio">
+
+        <article class="product-card">
+          <a href="produto-generico.html?nome=Camisola%20Edi%C3%A7%C3%A3o%202%20Anos%20do%20Lisbon%20FC&icone=jacket&socio=28%2C00%E2%82%AC&adepto=34%2C00%E2%82%AC&carteira=%2B1%2C00%E2%82%AC&pvp=34%2C00%E2%82%AC">
+  <div class="product-image">
+              <div class="product-image-front tile-light">
+                <svg class="product-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 3 4.6 5.4 4 18.6 7.4 17.6 7.4 9 9 8.3V21h6V8.3l1.6.7V17.6l3.4 1L20 5.4 15 3a2.2 2.2 0 0 1-6 0Z"/><line x1="12" y1="7" x2="12" y2="21"/>
+                </svg>
+              </div>
+              <div class="product-image-back tile-dark">
+                <svg class="product-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 3 4.6 5.4 4 18.6 7.4 17.6 7.4 9 9 8.3V21h6V8.3l1.6.7V17.6l3.4 1L20 5.4 15 3a2.2 2.2 0 0 1-6 0Z"/><line x1="12" y1="7" x2="12" y2="21"/>
+                </svg>
+              </div>
+            </div>
+            <h3>Camisola Edição 2 Anos do Lisbon FC</h3>
+          </a>
+          <div class="product-price">
+            <div class="price-row price-row--member"><span>Sócio</span><strong>28,00€</strong></div>
+            <div class="price-row"><span>Adepto</span><strong>34,00€</strong></div>
+            <div class="price-row price-note"><span>Acumula em carteira</span><strong>+1,00€</strong></div>
+            <div class="price-row price-row--pvp"><span>PVP</span><strong>34,00€</strong></div>
+          </div>
+          <a href="produto-generico.html?nome=Camisola%20Edi%C3%A7%C3%A3o%202%20Anos%20do%20Lisbon%20FC&icone=jacket&socio=28%2C00%E2%82%AC&adepto=34%2C00%E2%82%AC&carteira=%2B1%2C00%E2%82%AC&pvp=34%2C00%E2%82%AC" class="product-buy">Comprar &rsaquo;</a>
+        </article>
+
+        <article class="product-card">
+          <a href="produto-generico.html?nome=Bon%C3%A9%20Edi%C3%A7%C3%A3o%202%20Anos%20do%20Lisbon%20FC&icone=cap&socio=14%2C00%E2%82%AC&adepto=17%2C00%E2%82%AC&carteira=%2B0%2C50%E2%82%AC&pvp=17%2C00%E2%82%AC">
+  <div class="product-image">
+              <div class="product-image-front tile-light">
+                <svg class="product-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 15a8 8 0 0 1 16 0Z"/><rect x="2" y="14.2" width="15" height="2.6" rx="1.3"/><circle cx="12" cy="7.3" r="1"/>
+                </svg>
+              </div>
+              <div class="product-image-back tile-dark">
+                <svg class="product-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 15a8 8 0 0 1 16 0Z"/><rect x="2" y="14.2" width="15" height="2.6" rx="1.3"/><circle cx="12" cy="7.3" r="1"/>
+                </svg>
+              </div>
+            </div>
+            <h3>Boné Edição 2 Anos do Lisbon FC</h3>
+          </a>
+          <div class="product-price">
+            <div class="price-row price-row--member"><span>Sócio</span><strong>14,00€</strong></div>
+            <div class="price-row"><span>Adepto</span><strong>17,00€</strong></div>
+            <div class="price-row price-note"><span>Acumula em carteira</span><strong>+0,50€</strong></div>
+            <div class="price-row price-row--pvp"><span>PVP</span><strong>17,00€</strong></div>
+          </div>
+          <a href="produto-generico.html?nome=Bon%C3%A9%20Edi%C3%A7%C3%A3o%202%20Anos%20do%20Lisbon%20FC&icone=cap&socio=14%2C00%E2%82%AC&adepto=17%2C00%E2%82%AC&carteira=%2B0%2C50%E2%82%AC&pvp=17%2C00%E2%82%AC" class="product-buy">Comprar &rsaquo;</a>
+        </article>
+
+        <article class="product-card">
+          <a href="produto-generico.html?nome=Cachecol%20Edi%C3%A7%C3%A3o%202%20Anos%20do%20Lisbon%20FC&icone=scarf&socio=11%2C00%E2%82%AC&adepto=13%2C00%E2%82%AC&carteira=%2B0%2C50%E2%82%AC&pvp=13%2C00%E2%82%AC">
+  <div class="product-image">
+              <div class="product-image-front tile-light">
+                <svg class="product-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 10c2.5-2.5 5-2.5 7.5 0s5 2.5 7.5 0 3.5-1 5-.3"/><path d="M2 13.5c2.5-2.5 5-2.5 7.5 0s5 2.5 7.5 0 3.5-1 5-.3"/><line x1="2" y1="10" x2="2" y2="13.5"/><line x1="22" y1="9.7" x2="22" y2="13.2"/>
+                </svg>
+              </div>
+              <div class="product-image-back tile-dark">
+                <svg class="product-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 10c2.5-2.5 5-2.5 7.5 0s5 2.5 7.5 0 3.5-1 5-.3"/><path d="M2 13.5c2.5-2.5 5-2.5 7.5 0s5 2.5 7.5 0 3.5-1 5-.3"/><line x1="2" y1="10" x2="2" y2="13.5"/><line x1="22" y1="9.7" x2="22" y2="13.2"/>
+                </svg>
+              </div>
+            </div>
+            <h3>Cachecol Edição 2 Anos do Lisbon FC</h3>
+          </a>
+          <div class="product-price">
+            <div class="price-row price-row--member"><span>Sócio</span><strong>11,00€</strong></div>
+            <div class="price-row"><span>Adepto</span><strong>13,00€</strong></div>
+            <div class="price-row price-note"><span>Acumula em carteira</span><strong>+0,50€</strong></div>
+            <div class="price-row price-row--pvp"><span>PVP</span><strong>13,00€</strong></div>
+          </div>
+          <a href="produto-generico.html?nome=Cachecol%20Edi%C3%A7%C3%A3o%202%20Anos%20do%20Lisbon%20FC&icone=scarf&socio=11%2C00%E2%82%AC&adepto=13%2C00%E2%82%AC&carteira=%2B0%2C50%E2%82%AC&pvp=13%2C00%E2%82%AC" class="product-buy">Comprar &rsaquo;</a>
+        </article>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Support banner -->
+<section class="support-banner">
+  <div class="container support-banner-inner">
+    <div>
+      <h2>Dúvidas? Nós ajudamos!</h2>
+      <p>Consulta o <strong>Suporte</strong>, utiliza a <strong>Linha Lisbon FC 912 345 678</strong> (custo de chamada para rede móvel nacional), todos os dias, das 9h00 às 20h00.</p>
+    </div>
+    <a href="#" class="btn support-banner-btn">Pedir informações</a>
+  </div>
+</section>
+
+<!-- Trust row -->
+<section class="trust-row">
+  <div class="container trust-row-inner">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>
+      <div>
+        <strong>Trocas e devoluções gratuitas durante 30 dias</strong>
+        <span>Apenas para países da UE</span>
+      </div>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+      <div><strong>Pagamento seguro</strong></div>
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 13v-2a8 8 0 0 1 16 0v2"/><path d="M4 13a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1v-5H4Zm16 0a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-1v-5h1Z"/><path d="M18 18v1a3 3 0 0 1-3 3h-2"/></svg>
+      <div>
+        <strong>912 345 678</strong>
+        <span>Chamada para rede móvel nacional</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="site-footer" id="contactos">
+  <div class="container footer-links-grid">
+    <div class="footer-col">
+      <h4>Lisbon FC</h4>
+      <a href="index.html#noticias">Notícias</a>
+      <a href="equipa.html">Equipa</a>
+      <a href="#">Formação</a>
+      <a href="#">Modalidades</a>
+      <a href="#">Atividades</a>
+      <a href="#">Serviços</a>
+      <a href="#">Eventos</a>
+      <a href="#">Fãs</a>
+    </div>
+    <div class="footer-col">
+      <h4>Bilhetes</h4>
+      <a href="index.html#jogos">Jogos</a>
+      <a href="#">Bilheteira Online</a>
+      <a href="#">Estádio</a>
+    </div>
+    <div class="footer-col">
+      <h4>Loja</h4>
+      <a href="loja.html#produtos">Equipamentos</a>
+      <a href="loja.html#produtos">Moda</a>
+      <a href="#">Casa</a>
+      <a href="#">Papelaria e Ofertas</a>
+      <a href="loja.html#colecoes">Coleções</a>
+      <a href="loja.html">Ver Loja</a>
+    </div>
+    <div class="footer-col">
+      <h4>Sócios</h4>
+      <a href="socios.html">Sócios Lisbon FC</a>
+      <a href="socios.html">Novos Sócios</a>
+      <a href="#">Quotas</a>
+      <a href="#">Débito Direto</a>
+      <a href="#">Família</a>
+      <a href="socios.html#vantagens">Mais Vantagens</a>
+    </div>
+    <div class="footer-col">
+      <h4>Business</h4>
+      <a href="#">Corporate Club</a>
+      <a href="#">Eventos</a>
+      <a href="#">Merchandising</a>
+      <a href="#">Patrocínios</a>
+      <a href="#">Fornecedores</a>
+    </div>
+    <div class="footer-col">
+      <h4>Instituição</h4>
+      <a href="#">Clube</a>
+      <a href="index.html#foundation">Fundação Lisbon FC</a>
+      <a href="#">Instalações</a>
+      <a href="#">Recrutamento</a>
+      <a href="#">Sustentabilidade</a>
+      <a href="#">Imprensa e Acreditação</a>
+    </div>
+    <div class="footer-col">
+      <h4>Apoio</h4>
+      <a href="#">Linha Lisbon FC</a>
+      <a href="index.html#contactos">Contactos</a>
+      <a href="#">FAQs</a>
+      <a href="#">Comprar</a>
+      <a href="#">Encomenda</a>
+      <a href="#">Livro de Reclamações</a>
+    </div>
+  </div>
+
+  <div class="footer-mid">
+    <div class="container footer-mid-grid">
+      <div class="footer-mid-col">
+        <h5>Descarrega para iOS ou Android</h5>
+        <div class="footer-app-badges">
+          <a href="#" class="footer-app-badge">
+            <img src="Logos/Logo_tranparent(yellow).png" alt="">
+          </a>
+          <a href="#" class="footer-app-badge">
+            <span>PLAY</span>
+          </a>
+          <a href="#" class="footer-app-badge">
+            <span>TV</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer-mid-col">
+        <h5>Acompanha a atualidade</h5>
+        <div class="footer-media-links">
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M8 3h8M9 19v2M15 19v2"/></svg>
+            <span>TV</span>
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3V9Z"/></svg>
+            <span>Play</span>
+          </a>
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3V4Z"/><line x1="8" y1="9" x2="15" y2="9"/><line x1="8" y1="13" x2="15" y2="13"/></svg>
+            <span>Notícias</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer-mid-col">
+        <h5>Segue @lisbonfc</h5>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook" class="footer-social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9.2"/><path d="M14 21v-7.5h2.2l.3-2.5H14V9.3c0-.7.2-1.2 1.2-1.2H16.6V6c-.3 0-1-.1-1.8-.1-1.8 0-3 1.1-3 3.1v1.8H9.6v2.5H11.8V21"/></svg>
+          </a>
+          <a href="#" aria-label="Instagram" class="footer-social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="16.6" cy="7.4" r="0.9" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn" class="footer-social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><line x1="8" y1="10.5" x2="8" y2="16.5"/><circle cx="8" cy="7.4" r="0.9" fill="currentColor" stroke="none"/><path d="M11.3 16.5v-4a1.9 1.9 0 0 1 3.8 0v4"/><line x1="11.3" y1="10.5" x2="11.3" y2="16.5"/></svg>
+          </a>
+          <a href="#" aria-label="TikTok" class="footer-social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13.5 4v10.2a3 3 0 1 1-3-3"/><path d="M13.5 4c0 2.2 1.8 4 4 4v3c-1.4 0-2.7-.4-3.8-1.2"/></svg>
+          </a>
+          <a href="#" aria-label="X" class="footer-social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" aria-label="YouTube" class="footer-social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6.5" width="18" height="11" rx="3"/><path d="M10.2 9.5l4.6 2.5-4.6 2.5v-5Z" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" aria-label="WhatsApp" class="footer-social-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9-9 4.03-9 9c0 1.6.42 3.1 1.15 4.4L3 21l4.7-1.13A8.96 8.96 0 0 0 12 21Z"/><path d="M8.3 7.7c-.5 2.8.9 5.6 2.8 7.5 1.9 1.9 4.7 3.3 7.5 2.8.2-.9.4-1.8.1-2.3l-2.5-1.3c-.3-.2-.7-.1-1 .2l-.8.8c-1.3-.7-2.4-1.8-3.1-3.1l.8-.8c.3-.3.4-.7.2-1l-1.3-2.5c-.5-.3-1.4-.1-2.7.7Z" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" aria-label="Threads" class="footer-social-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.781 3.629 2.695 6.54 2.717 2.623-.02 4.358-.631 5.8-2.048 1.647-1.617 1.618-3.61 1.09-4.795-.31-.694-.868-1.27-1.618-1.686-.192 1.362-.622 2.469-1.284 3.3-.885 1.108-2.14 1.712-3.734 1.795-1.213.065-2.383-.226-3.294-.821-1.079-.703-1.716-1.79-1.794-3.06-.154-2.5 1.851-4.297 4.99-4.478.994-.058 1.925-.024 2.782.101-.11-.667-.328-1.19-.652-1.559-.44-.5-1.121-.754-2.02-.756h-.024c-.72 0-1.702.198-2.328 1.128l-1.734-1.196c.838-1.246 2.202-1.933 3.837-1.933h.026c2.734.017 4.363 1.694 4.526 4.65.093.048.185.098.276.15 1.284.72 2.222 1.815 2.712 3.166.679 1.874.294 4.142-1.686 6.106-1.732 1.725-3.939 2.516-6.744 2.55Zm1.062-11.94c-.15 0-.302.005-.457.014-1.885.108-3.031.902-2.976 2.028.05.997 1.086 1.68 2.507 1.6 1.336-.077 2.64-.613 2.883-3.244a10.55 10.55 0 0 0-1.957-.398Z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom-bar">
+    <div class="container footer-bottom-inner">
+      <div class="footer-legal">
+        <a href="#" class="footer-lang">PT</a>
+        <a href="index.html#contactos">Contactos</a>
+        <a href="#">Política de Cookies</a>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos e Condições</a>
+        <a href="#">Livro de Reclamações</a>
+        <a href="#">Definições de Cookies</a>
+        <a href="#">Acessibilidade</a>
+      </div>
+      <p class="footer-copyright">&copy; 2026 Lisbon FC. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/collection-accordion.js"></script>
+</body>
+</html>
