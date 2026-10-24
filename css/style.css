@@ -103,6 +103,156 @@ h1, h2, h3 {
 .header-top-right { justify-content: flex-end; }
 .brand { display: flex; align-items: center; }
 .brand-crest { height: 42px; width: 42px; }
+.cart-bag-wide, .cart-count, .profile-bust, .header-compact, .search-overlay { display: none; }
+/* Laptop only: menu/search and right icons span the full width; desktop keeps the 1200px container */
+@media (min-width: 901px) and (max-width: 1599px) {
+  .header-top-inner { max-width: none; padding: 0 40px; height: 116px; }
+  .header-top-side { width: 170px; gap: 8px; }
+  .header-top-side .icon-btn { width: 48px; height: 48px; color: var(--blue); }
+  .header-top-side .icon-btn svg { width: 28px; height: 28px; }
+  .menu-toggle svg { transition: transform 0.25s ease; }
+  /* .is-hovered (set in main.js) holds the hover look after the menu closes, until the mouse actually moves off */
+  .menu-toggle:hover svg, .menu-toggle.is-hovered svg { transform: rotate(-45deg); }
+  /* top and bottom lines shrink toward their centre; the middle line keeps its length */
+  .menu-toggle svg line { transform-box: fill-box; transform-origin: center; transition: transform 0.25s ease; }
+  /* spread the lines further apart (8 instead of 6 units) */
+  /* and widen all three (18 → ~22 units) */
+  .menu-toggle svg line:nth-child(1) { transform: translateY(-2px) scaleX(1.2); }
+  .menu-toggle svg line:nth-child(2) { transform: scaleX(1.2); }
+  .menu-toggle svg line:nth-child(3) { transform: translateY(2px) scaleX(1.2); }
+  .menu-toggle svg line:nth-child(1),
+  .menu-toggle svg line:nth-child(3) { stroke-width: 1.5; }
+  /* search: the lens fills in blue on hover */
+  .search-toggle:hover svg circle { fill: currentColor; }
+  /* cart: wider bag with the item count inside */
+  .header-cart { position: relative; }
+  .header-cart .cart-bag { display: none; }
+  .header-cart .cart-bag-wide { display: inline; }
+  .header-cart .cart-count {
+    display: block;
+    position: absolute;
+    left: 50%; top: calc(50% + 3px);
+    transform: translate(-50%, -50%);
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+  /* hover: blue slides up from the bottom to fill the bag, number turns white */
+  .header-cart .cart-fill {
+    fill: currentColor;
+    stroke: none;
+    transform-box: fill-box;
+    transform-origin: bottom;
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+  }
+  .header-cart:hover .cart-fill { transform: scaleY(1); }
+  .header-cart:hover .cart-count { color: var(--white); }
+  /* account: chest-up silhouette instead of the basic circle + arch */
+  .header-top-side .profile-basic { display: none; }
+  .header-top-side .profile-bust { display: inline; }
+  .header-top-side a:hover .profile-bust path { fill: currentColor; }
+  .menu-toggle:hover svg line:nth-child(1), .menu-toggle.is-hovered svg line:nth-child(1) { transform: translateY(-2px) scaleX(0.72); }
+  .menu-toggle:hover svg line:nth-child(3), .menu-toggle.is-hovered svg line:nth-child(3) { transform: translateY(2px) scaleX(0.72); }
+  .brand-crest { height: 108px; width: 108px; }
+  /* the big header scrolls away; a compact copy (built in main.js) slides in once it's gone */
+  .site-header { position: relative; }
+  .header-compact {
+    display: block;
+    position: fixed; top: 0; left: 0; right: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--grey-200);
+    z-index: 695;
+    transform: translateY(-100%);
+    visibility: hidden;
+    transition: transform 0.3s ease, visibility 0.3s;
+  }
+  .header-compact.is-visible { transform: translateY(0); visibility: visible; }
+  /* opening the menu removes the compact header at once (no slide); it slides back in as the menu closes (body.mega-open, set in main.js) */
+  body.mega-open .header-compact.is-visible { transform: translateY(-100%); visibility: hidden; transition: none; }
+  /* with the menu open only the menu scrolls: the page is locked (its scrollbar's width is kept as padding, set in main.js,
+     so the page doesn't shift), and scrolling past the end of a menu column doesn't carry on to the page */
+  body.mega-open { overflow: hidden; padding-right: var(--scrollbar-w, 0px); }
+  .mega-primary, .mega-secondary { overscroll-behavior: contain; }
+  /* search: a white screen over the page, from just under the header's top row (its top is set in main.js) down.
+     The page is locked like with the menu; the compact header keeps clear of the scrollbar's old space so its icons don't shift */
+  body.search-open { overflow: hidden; padding-right: var(--scrollbar-w, 0px); }
+  body.search-open .header-compact { right: var(--scrollbar-w, 0px); }
+  .search-bar { display: none; }
+  .search-overlay {
+    display: block;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 700;
+    background: var(--white);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease, visibility 0.2s;
+  }
+  /* visible straight away when opening (not at the end of a fade), so the field can take focus on the same click */
+  .search-overlay.open { visibility: visible; opacity: 1; transition: opacity 0.2s ease, visibility 0s; }
+  .search-overlay-inner { padding: 28px 24px 0; }
+  /* the big search field */
+  .search-overlay-input {
+    width: 100%;
+    height: 72px;
+    padding: 0 28px;
+    border: 2px solid #000;
+    border-radius: 3px;
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    font-weight: 400;
+    outline: none;
+  }
+  .search-overlay-input::placeholder { color: #757575; opacity: 1; }
+  /* arrow on the right to search, like the results page's; only once something is typed (.has-text, main.js) */
+  .search-overlay-form { position: relative; }
+  .search-overlay-input { padding-right: 72px; }
+  .search-overlay-btn {
+    position: absolute; top: 2px; right: 2px; bottom: 2px;
+    width: 68px;
+    display: none; align-items: center; justify-content: center;
+    border: none; background: none; color: var(--ink); cursor: pointer;
+  }
+  .search-overlay.has-text .search-overlay-btn { display: flex; }
+  .search-overlay-btn svg { width: 38px; height: 38px; }
+  .search-overlay-btn:hover svg { color: var(--blue); }
+  /* suggestions under the field, lined up with its text */
+  .search-suggestions { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; margin-top: 32px; padding-left: 30px; }
+  .search-suggestions a { color: var(--ink); font-size: 1.5rem; }
+  .search-suggestions a:hover { color: var(--blue); }
+  /* while typing: the usual suggestions give way to a grey "Sugestões" title and suggestions that follow the typing */
+  .search-typed { display: none; margin-top: 20px; padding-left: 30px; }
+  .search-overlay.has-text .search-suggestions--default { display: none; }
+  .search-overlay.has-text .search-typed { display: block; }
+  /* same font as the site's usual titles (Inter, bold), bigger than the suggestions */
+  .search-typed-title { margin: 0; color: #B3B3B3; font-family: var(--font-body); font-size: 1.4rem; font-weight: 700; }
+  .search-typed .search-suggestions { margin-top: 16px; padding-left: 0; }
+  /* "Ver Todos": small underlined link under the suggestions; when nothing matches it's all that shows */
+  .search-typed-all { display: inline-block; margin-top: 18px; color: #000; font-size: 0.97rem; text-decoration: underline; text-underline-offset: 1.5px; }
+  .search-overlay.no-suggestions .search-typed-list { display: none; }
+  /* two columns while typing: "Sugestões" on the left, "Produtos" on the right */
+  .search-overlay.has-text .search-typed { display: flex; align-items: flex-start; gap: 120px; }
+  .search-typed-col:first-child { flex: 0 0 420px; }
+  .search-products { flex: 1; min-width: 0; }
+  .search-products-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 120px; margin-top: 36px; }
+  .search-product { display: flex; align-items: flex-start; gap: 18px; color: var(--ink); }
+  .search-product-img { position: relative; flex: 0 0 132px; height: 132px; overflow: hidden; background: var(--grey-100); }
+  .search-product-img .product-icon { width: 82px; height: 82px; }
+  .search-product-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .search-product-name { font-size: 0.97rem; line-height: 1.35; }
+  .search-product-name { max-width: 245px; margin-bottom: 2px; font-weight: 600; }
+  .search-product-price { display: flex; justify-content: space-between; gap: 12px; font-size: 0.85rem; color: var(--ink); }
+  .search-product-price.is-struck span:last-child { text-decoration: line-through; }
+  .search-product-price.is-promo { margin-top: 2px; color: var(--blue); }
+  .search-product:hover .search-product-name { color: var(--blue); }
+  .header-compact .header-top-inner { height: 72px; }
+  .header-compact .brand-crest { height: 70px; width: 70px; }
+}
 
 /* Search bar (collapsible) */
 .search-bar {
@@ -119,6 +269,18 @@ h1, h2, h3 {
 
 /* Header secondary row: icon + label quick links */
 .header-secondary { border-top: 1px solid var(--grey-200); border-bottom: 1px solid var(--grey-200); }
+@media (min-width: 901px) and (max-width: 1599px) {
+  /* hairline: a scaled 1px line renders thinner than a border can */
+  .header-secondary { border-top: none; position: relative; }
+  .header-secondary::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: #EDEFF2;
+    transform: scaleY(0.5);
+    transform-origin: top;
+  }
+}
 .secondary-inner { display: flex; justify-content: center; gap: 40px; overflow-x: auto; }
 .secondary-inner a {
   display: flex;
@@ -150,6 +312,10 @@ h1, h2, h3 {
   transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 .mega-menu.open { visibility: visible; opacity: 1; }
+/* Laptop: the menu sits above both headers so it covers the full height */
+@media (min-width: 901px) and (max-width: 1599px) {
+  .mega-menu { z-index: 900; }
+}
 .mega-menu::before {
   content: "";
   position: absolute; inset: 0;
@@ -191,13 +357,18 @@ h1, h2, h3 {
   border-left: 3px solid transparent;
 }
 .mega-primary-link:hover { background: var(--grey-100); }
+.mega-primary-link.mega-primary-link--minor { font-weight: 400; }
 .mega-primary-link.active { color: var(--blue); border-left-color: var(--yellow); background: var(--grey-100); }
 
 .mega-secondary {
+  --mega-pad-t: 70px; --mega-pad-r: 32px; --mega-pad-b: 20px; --mega-pad-l: 32px;
+  --mega-secondary-bg: var(--blue-900);
+  position: relative;
   flex: 1;
-  background: var(--blue-900);
-  padding: 70px 32px 20px;
+  background: var(--mega-secondary-bg);
+  padding: var(--mega-pad-t) var(--mega-pad-r) var(--mega-pad-b) var(--mega-pad-l);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .mega-secondary-group { display: none; flex-direction: column; gap: 4px; }
 .mega-secondary-group.active { display: flex; }
@@ -209,6 +380,215 @@ h1, h2, h3 {
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .mega-secondary-group a:hover { color: var(--yellow); }
+/* options that open a sub-list (e.g. Agora / Futebol / Eventos): the sub-list replaces them, with a back button */
+.mega-subroot, .mega-subpanel { display: flex; flex-direction: column; gap: 4px; }
+/* the sub-list is an overlay covering the whole column, so it slides in over the main list */
+.mega-subpanel {
+  position: absolute;
+  inset: 0;
+  padding: var(--mega-pad-t) var(--mega-pad-r) var(--mega-pad-b) var(--mega-pad-l);
+  background: var(--mega-secondary-bg);
+  visibility: hidden;
+  transform: translateX(100%);
+}
+.mega-subpanel.active { visibility: visible; transform: none; }
+.mega-subback {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* pulled up by its own height (46px + 2px underline) + margin + the list gap, less 2px for the left options' taller padding, so the first sub-option lines up with the first option on the left */
+  margin: -58px 0 8px;
+  /* the underline spans the whole blue column: stretch past its side padding, then pad the text back in */
+  margin-left: calc(-1 * var(--mega-pad-l));
+  margin-right: calc(-1 * var(--mega-pad-r));
+  padding: 11px 4px 11px calc(var(--mega-pad-l) + 4px);
+  line-height: 24px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid var(--yellow);
+  color: var(--yellow);
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+/* slides in from the right over the main list, and back out to the right */
+.mega-subpanel.is-animated { transition: transform 0.3s ease, visibility 0.3s; }
+.mega-subback::before {
+  content: "";
+  width: 14px; height: 14px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 5 8 12 15 19'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 5 8 12 15 19'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+/* Laptop opening (after the base menu rules so it wins): the white block slides in from the left, and partway through the blue block starts sliding out from behind it.
+   Closing is the same in reverse, quicker: the blue block slides back behind the white one, then the white one slides out to the left */
+@media (min-width: 901px) and (max-width: 1599px) {
+  /* only the dark backdrop fades; the menu stays visible until the blocks have slid away (0.3s) */
+  .mega-menu { opacity: 1; transition: visibility 0s 0.3s; }
+  .mega-menu.open { transition: visibility 0s; }
+  .mega-menu::before { background: rgba(0,0,0,0.79); opacity: 0; transition: opacity 0.22s ease 0.08s; }
+  .mega-menu.open::before { opacity: 1; transition: opacity 0.2s ease; }
+  /* the panel itself has no background, so no white shows where the blue block hasn't arrived yet; the shadow moves to the blue block */
+  .mega-menu-panel { background: none; box-shadow: none; transform: translateX(-100%); transition: transform 0.18s ease-in 0.12s; }
+  .mega-menu.open .mega-menu-panel { transform: none; transition: transform 0.32s ease; }
+  .mega-primary { z-index: 1; background: var(--white); }
+  .mega-secondary { box-shadow: var(--shadow); transform: translateX(-100%); transition: transform 0.22s ease-in; }
+  .mega-menu.open .mega-secondary { transform: none; transition: transform 0.6s ease 0.1s; }
+}
+.mega-indicator { display: none; }
+.mega-close svg { display: none; }
+.mega-trending, .mega-trending-more, .mega-social { display: none; }
+/* Laptop: menu text matches the site's nav links; the selected option gets a blue underline instead of a grey box */
+@media (min-width: 901px) and (max-width: 1599px) {
+  .mega-primary-link,
+  .mega-secondary-group a,
+  .mega-subback { font-weight: 600; font-size: 1.4rem; }
+  /* close: sits exactly on the header's menu icon (main.js moves it out of the sliding panel and sets --toggle-top/left),
+     drawn with the same three lines, which fold into a cross when the menu opens and back when it closes.
+     The × character is hidden. */
+  .mega-close {
+    top: var(--toggle-top, 34px); left: var(--toggle-left, 40px); right: auto;
+    z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    font-size: 0;
+    color: var(--blue);
+  }
+  /* while the menu is closed it copies the menu icon's hover look (tilted, short outer lines), since the icon is
+     always being hovered when it's clicked: the fold starts from what's on screen, and ends on it when closing */
+  .mega-close svg { display: block; width: 28px; height: 28px; transform: rotate(-45deg); transition: transform 0.3s ease; }
+  .mega-menu.open .mega-close svg { transform: none; }
+  /* hovered, the cross is turned a quarter left; when the mouse leaves it turns right back into place
+     (also right after opening, since the mouse is already on it) */
+  .mega-menu.open .mega-close:hover svg { transform: rotate(-90deg); }
+  /* same function lists open and closed, so each line simply turns rather than warping between the two */
+  .mega-close svg line { transform-box: fill-box; transform-origin: center; transition: transform 0.3s ease, opacity 0.2s ease; }
+  .mega-close svg line:nth-child(1) { transform: translateY(-2px) rotate(0deg) scaleX(0.72); }
+  .mega-close svg line:nth-child(2) { transform: scaleX(1.2); }
+  .mega-close svg line:nth-child(3) { transform: translateY(2px) rotate(0deg) scaleX(0.72); }
+  .mega-close svg line:nth-child(1),
+  .mega-close svg line:nth-child(3) { stroke-width: 1.5; }
+  /* open: the top and bottom lines turn into the cross, the middle one disappears */
+  .mega-menu.open .mega-close svg line:nth-child(1) { transform: translateY(6px) rotate(45deg) scaleX(1.2); }
+  .mega-menu.open .mega-close svg line:nth-child(2) { opacity: 0; }
+  .mega-menu.open .mega-close svg line:nth-child(3) { transform: translateY(-6px) rotate(-45deg) scaleX(1.2); }
+  /* closing by clicking the cross (.is-closing, set in main.js until the menu is hidden): the opening animation below,
+     played backwards. The icon doesn't turn; the ascending line stays put and becomes the menu icon's middle line,
+     and the descending line splits in two: its upper half turns into the top outer line, its lower half into the
+     bottom one. The result looks exactly like the hovered menu icon underneath, which these static values match.
+     (with the icon turned -90deg, each half's centre sits 3.82 units off the middle diagonally,
+     and the hovered menu icon's outer lines sit 5.66 units off it) */
+  .mega-close.is-closing svg { transform: rotate(-90deg); transition: none; }
+  .mega-close.is-closing svg line { transition: none; }
+  .mega-close.is-closing svg line:nth-child(1) { transform: translateY(6px) rotate(45deg) scaleX(1.2); stroke-width: 2; animation: mega-join-middle 0.3s ease reverse; }
+  .mega-close.is-closing svg line:nth-child(2) { transform: translate(5.66px, -5.66px) rotate(45deg) scaleX(0.72); stroke-width: 1.5; opacity: 1; animation: mega-join-top 0.3s ease reverse; }
+  .mega-close.is-closing svg line:nth-child(3) { transform: translate(-5.66px, -0.34px) rotate(45deg) scaleX(0.72); animation: mega-join-bottom 0.3s ease reverse; }
+  /* opening from the menu icon (.is-opening, set in main.js for the first 0.3s): the same in reverse.
+     The icon starts already turned like the hovered menu icon; the middle line stays put and becomes the ascending
+     line, and the top and bottom lines turn in and join into the descending one. They turn opposite ways so both
+     look like they fall: the top one ends at 135deg, which looks the same as -45deg for a line but gets there
+     the other way round. The top line, not needed in the cross, disappears once they've joined */
+  .mega-menu.open .mega-close.is-opening svg { transform: rotate(-90deg); transition: none; }
+  .mega-menu.open .mega-close.is-opening svg line { transition: none; }
+  .mega-menu.open .mega-close.is-opening svg line:nth-child(1) { animation: mega-join-middle 0.3s ease; }
+  .mega-menu.open .mega-close.is-opening svg line:nth-child(2) { animation: mega-join-top 0.3s ease; }
+  .mega-menu.open .mega-close.is-opening svg line:nth-child(3) { animation: mega-join-bottom 0.3s ease; }
+  @keyframes mega-join-middle {
+    from { stroke-width: 2; }
+    to { stroke-width: 1.5; }
+  }
+  @keyframes mega-join-top {
+    from { transform: translate(5.66px, -5.66px) rotate(45deg) scaleX(0.72); opacity: 1; stroke-width: 1.5; }
+    to { transform: translate(3.82px, -3.82px) rotate(135deg) scaleX(0.6); opacity: 1; stroke-width: 1.5; }
+  }
+  @keyframes mega-join-bottom {
+    from { transform: translate(-5.66px, -0.34px) rotate(45deg) scaleX(0.72); }
+    to { transform: translate(-3.82px, -2.18px) rotate(-45deg) scaleX(0.6); }
+  }
+  .mega-primary { width: 50%; padding-top: 0; padding-bottom: 40px; scrollbar-width: none; }
+  /* white block behind the cross, the width of the white column, fading out at the bottom: it's the 130px gap above the
+     first option (matching the blue column's top padding, so both columns stay lined up), and sticks to the top so the
+     options scroll underneath it */
+  .mega-primary::before {
+    content: "";
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    flex-shrink: 0;
+    height: 130px;
+    background: linear-gradient(var(--white) 58%, rgba(255,255,255,0));
+    pointer-events: none;
+  }
+  /* option spacing (the left keeps 2px more padding than the right so both columns stay lined up) */
+  .mega-primary-link { padding-top: 19px; padding-bottom: 19px; }
+  .mega-secondary-group a { padding-top: 17px; padding-bottom: 17px; }
+  .mega-secondary { --mega-pad-t: 130px; --mega-pad-r: 14px; --mega-pad-b: 0px; scrollbar-width: none; }
+  /* right column: no divider lines, a small arrow after each link instead */
+  .mega-secondary { --mega-secondary-bg: var(--blue); }
+  .mega-secondary-group a { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-right: 0; border-bottom: none; color: var(--yellow); font-weight: 400; }
+  .mega-secondary-group a::after {
+    content: "";
+    width: 14px; height: 14px;
+    flex-shrink: 0;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 5 16 12 9 19'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 5 16 12 9 19'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  /* links inside an opened sub-list go straight to a page, so no arrow */
+  .mega-subpanel a:not(.mega-subtoggle)::after,
+  .mega-secondary-group a.mega-direct::after { content: none; }
+  .mega-primary-link { position: relative; border-left: none; }
+  .mega-primary-link:hover { background: none; }
+  .mega-primary-link.active { background: none; color: var(--ink); }
+  /* underline runs from the start of the word to where the blue column begins.
+     It's a single element (added by main.js) moved under the selected option, so it slides between options */
+  .mega-primary { position: relative; }
+  .mega-indicator {
+    display: block;
+    position: absolute;
+    top: 0; left: 28px; right: 0;
+    height: 2px;
+    background: var(--blue);
+    pointer-events: none;
+  }
+  .mega-indicator.is-animated { transition: transform 0.7s ease; }
+  /* "Em Destaque": small grey label with three popular pages under the options */
+  .mega-trending { display: flex; flex-direction: column; gap: 20px; margin-top: 32px; padding: 0 28px; }
+  .mega-trending-title { margin-bottom: -5px; color: #767676; font-size: 0.9rem; font-weight: 600; }
+  .mega-trending a, .mega-trending-more a { align-self: flex-start; color: #000; font-size: 0.98rem; }
+  /* LisbonFC TV / Foundation under the grey line, as far below it as Equipa Principal is above it (the line's 12px margin + the 20px list gap) */
+  .mega-trending-more { display: flex; flex-direction: column; gap: 20px; margin-top: 32px; padding: 0 28px; }
+  /* small social icons in one line at the bottom, spread so the last icon ends where the grey line ends (the line is 88% of the space inside the 28px side padding; 3px less because the Threads logo sits inside its box) */
+  .mega-social { display: flex; align-items: center; justify-content: space-between; margin-top: 48px; padding: 0 calc(12% + 18.1px) 0 28px; }
+  .mega-social-btn { display: flex; color: #000; }
+  .mega-social-btn svg { width: 20px; height: 20px; }
+  /* the icons are drawn at different sizes inside their boxes, so scale them to look the same */
+  .mega-social-btn[aria-label="Instagram"] svg,
+  .mega-social-btn[aria-label="LinkedIn"] svg { transform: scale(1.12); }
+  .mega-social-btn[aria-label="TikTok"] svg { transform: scale(0.72); }
+  .mega-social-btn[aria-label="X"] svg { transform: scale(0.88); }
+  .mega-social-btn[aria-label="YouTube"] svg { transform: scale(1.15); }
+  .mega-social-btn[aria-label="WhatsApp"] svg { transform: scale(0.76); }
+  .mega-social-btn[aria-label="Threads"] svg { transform: scale(0.78); }
+  /* everything in the left panel turns blue on hover */
+  .mega-primary-link:hover,
+  .mega-primary-link.active:hover,
+  .mega-trending a:hover,
+  .mega-trending-more a:hover,
+  .mega-social-btn:hover { color: var(--blue); }
+  /* grey line under the last link, inside the column's side padding */
+  .mega-trending::after { content: ""; align-self: flex-start; width: 88%; height: 1px; margin-top: 12px; background: var(--grey-200); }
+  /* switching option: the new list on the right slides in from the left */
+  .mega-secondary-group.is-entering { animation: mega-group-in 0.3s ease; }
+  @keyframes mega-group-in {
+    from { transform: translateX(calc(-100% - var(--mega-pad-l))); }
+    to { transform: none; }
+  }
+}
 
 /* Hero — two full-bleed carousel tiles, side by side */
 .hero {
@@ -1697,7 +2077,7 @@ h1, h2, h3 {
   .secondary-inner a span { display: none; }
   .mega-menu-panel { max-width: 100%; }
   .mega-primary { width: 170px; padding-top: 60px; }
-  .mega-secondary { padding: 60px 20px 20px; }
+  .mega-secondary { --mega-pad-t: 60px; --mega-pad-r: 20px; --mega-pad-b: 20px; --mega-pad-l: 20px; }
   .mega-close { right: 10px; top: 10px; background: rgba(0,0,0,0.35); color: var(--ink); }
   .hero { flex-direction: column; }
   .hero-feature { min-height: 46vh; }
@@ -3180,4 +3560,438 @@ body.match-center-page { background: #F4F4F4; }
   .mc-timeline-item { grid-template-columns: 1fr; margin-left: 34px; margin-bottom: 24px; }
   .mc-timeline-item::before { left: -34px; }
   .mc-timeline-item--left .mc-timeline-card, .mc-timeline-item--right .mc-timeline-card, .mc-timeline-item--center .mc-timeline-card { grid-column: 1; justify-self: stretch; max-width: none; }
+}
+
+/* ===== My Lisbon FC (sócios landing page) ===== */
+.mlf-hero { display: flex; min-height: 560px; max-width: var(--container-wide); margin: 0 auto; }
+.mlf-hero-panel {
+  width: 25%;
+  min-width: 320px;
+  background: var(--blue);
+  color: var(--white);
+  padding: 48px 46px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.mlf-hero-panel h1 { font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-size: 2.1rem; line-height: 1.2; color: var(--white); margin: 0 0 10px; }
+.mlf-hero-panel p { margin: 0 0 40px; font-size: 1.2rem; line-height: 1.4; color: var(--yellow); }
+.mlf-hero-actions { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.mlf-hero-btn {
+  width: 100%;
+  max-width: 240px;
+  padding: 13px 16px;
+  background: var(--white);
+  color: var(--blue);
+  text-align: center;
+  font-size: 1.05rem;
+  transition: background 0.2s ease;
+}
+.mlf-hero-btn:hover { background: var(--yellow); }
+.mlf-hero-media { flex: 1; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 50%, var(--blue-800) 0%, var(--blue-900) 70%); }
+.mlf-hero-media img { width: 34%; max-width: 400px; }
+
+.mlf-section-title { font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-size: 2rem; color: var(--ink); margin: 0 0 40px; }
+.mlf-actions { padding: 70px 0 60px; }
+.mlf-actions .container,
+.mlf-quotas .container,
+.mlf-promos .container,
+.mlf-recover .container { max-width: var(--container-wide); padding: 0 40px; }
+.mlf-actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: center; }
+.mlf-action-icon { width: 64px; height: 64px; color: var(--ink); margin: 0 auto 14px; display: block; }
+.mlf-action-icon .mlf-accent { stroke: var(--blue); }
+.mlf-action h3 { font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-size: 1.3rem; font-weight: 500; margin: 0 0 6px; }
+.mlf-action p { margin: 0 auto 18px; max-width: 300px; color: var(--ink); }
+
+/* "Aderir ›" style text links */
+.mlf-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--ink); }
+.mlf-link::after {
+  content: "";
+  width: 10px; height: 10px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 5 16 12 9 19'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 5 16 12 9 19'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.2s ease;
+}
+.mlf-link:hover { color: var(--blue); }
+.mlf-link:hover::after { transform: translateX(3px); }
+.mlf-link--light { color: var(--white); }
+.mlf-promo:hover .mlf-link--light { color: var(--yellow); }
+
+.mlf-quotas { padding: 10px 0 60px; }
+.mlf-quotas-wrap { overflow-x: auto; }
+.mlf-quotas-table { width: 100%; border-collapse: collapse; text-align: center; min-width: 760px; }
+.mlf-quotas-table thead th { padding: 0 12px 18px; font-weight: 400; vertical-align: bottom; }
+.mlf-quotas-table thead strong { display: block; font-size: 1.35rem; font-weight: 500; }
+.mlf-quotas-table thead span { font-size: 0.9rem; }
+.mlf-quotas-table tbody th { text-align: left; font-size: 0.95rem; font-weight: 700; padding: 18px 0; width: 14%; }
+.mlf-quotas-table td { padding: 18px 12px; font-size: 0.95rem; }
+.mlf-quotas-table tbody tr { border-top: 1px solid var(--grey-200); }
+.mlf-quotas-table tbody tr:last-child { border-bottom: 1px solid var(--grey-200); }
+.mlf-quotas-table td b { font-size: 1.4rem; font-weight: 400; }
+.mlf-quotas-table td > span { display: block; font-size: 0.92rem; margin-top: 4px; }
+.mlf-quotas-small { display: block; margin-bottom: 6px; font-size: 0.92rem; line-height: 1.6; }
+.mlf-quotas-small b { font-size: 1.2rem; }
+.mlf-quotas-table tbody tr:first-child td b { color: var(--blue); }
+.mlf-quotas-notes { margin-top: 18px; font-size: 0.85rem; color: var(--ink); }
+.mlf-quotas-notes p { margin: 0 0 3px; }
+
+.mlf-promos { padding: 20px 0 80px; }
+.mlf-promos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.mlf-promo {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-height: 330px;
+  padding: 40px;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--blue-900) 0%, var(--blue-800) 45%, var(--blue) 100%);
+  color: var(--white);
+}
+.mlf-promo-text { position: relative; z-index: 1; }
+.mlf-promo-eyebrow { display: block; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 4px; }
+.mlf-promo h3 { font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-size: 2.3rem; color: var(--yellow); margin: 0 0 4px; }
+.mlf-promo p { margin: 0 0 22px; font-size: 1.15rem; font-weight: 600; }
+.mlf-promo-img { position: absolute; right: 40px; top: 50%; width: 220px; transform: translateY(-50%); opacity: 0.9; transition: transform 0.4s ease; }
+.mlf-promo:hover .mlf-promo-img { transform: translateY(-50%) scale(1.05); }
+
+.mlf-recover { background: var(--grey-100); padding: 60px 0; text-align: center; max-width: var(--container-wide); margin: 0 auto; }
+.mlf-recover h2 { font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-size: 1.9rem; color: var(--blue); margin: 0 0 8px; }
+.mlf-recover p { font-size: 1.9rem; line-height: 1.35; max-width: 1100px; margin: 0 auto 26px; color: var(--ink); }
+
+.mlf-feature { display: flex; align-items: center; max-width: var(--container-wide); margin: 50px auto 0; min-height: 480px; }
+.mlf-feature--reverse { flex-direction: row-reverse; }
+.mlf-feature-media { flex: 0 0 50%; align-self: stretch; min-height: 480px; background: var(--blue-900) center / cover no-repeat; }
+.mlf-feature-text { flex: 1; padding: 40px 8%; max-width: 760px; }
+.mlf-eyebrow { display: block; color: var(--blue); font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+.mlf-feature-text h2 { font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-size: 2.3rem; margin: 0 0 10px; }
+.mlf-feature-text p { font-size: 1.15rem; line-height: 1.5; margin: 0 0 22px; }
+.mlf-feature:last-child { margin-bottom: 80px; }
+.mlf-feature-media--card { display: flex; align-items: center; justify-content: center; }
+.mlf-feature-media--logo { display: flex; align-items: center; justify-content: center; background: var(--blue); }
+.mlf-feature-media--logo img { width: 46%; max-width: 320px; }
+.mlf-feature-media--yellow { background: var(--yellow); }
+.mlf-feature-media--dark { background: var(--blue-900); }
+/* member card drawn in CSS */
+.mlf-member-card {
+  width: 68%;
+  max-width: 420px;
+  aspect-ratio: 1.586;
+  border-radius: 18px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-800) 60%, var(--blue-900) 100%);
+  border: 1px solid rgba(255,222,90,0.5);
+  box-shadow: 0 24px 50px rgba(0,0,0,0.45);
+  transform: rotate(-6deg);
+}
+.mlf-member-card img { width: 70px; }
+.mlf-member-card strong { display: block; font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.04em; color: var(--yellow); line-height: 1; }
+.mlf-member-card span { color: var(--white); font-size: 0.95rem; }
+
+@media (max-width: 900px) {
+  .mlf-hero { flex-direction: column; min-height: 0; }
+  .mlf-hero-panel { width: 100%; min-width: 0; padding: 40px 20px; }
+  .mlf-hero-media { min-height: 260px; padding: 30px 0; }
+  .mlf-hero-media img { width: 45%; }
+  .mlf-actions .container, .mlf-quotas .container, .mlf-promos .container, .mlf-recover .container { padding: 0 20px; }
+  .mlf-actions-grid, .mlf-promos-grid { grid-template-columns: 1fr; }
+  .mlf-promo { min-height: 260px; padding: 28px; }
+  .mlf-promo-img { width: 140px; right: 20px; }
+  .mlf-recover p { font-size: 1.3rem; }
+  .mlf-feature, .mlf-feature--reverse { flex-direction: column; min-height: 0; }
+  .mlf-feature-media { flex-basis: auto; width: 100%; min-height: 280px; }
+  .mlf-feature-text { padding: 30px 20px 0; }
+}
+
+/* ===== Débito Direto (member sign-up steps) ===== */
+.dd-breadcrumb { border-bottom: 1px solid var(--grey-200); font-size: 0.85rem; }
+.dd-breadcrumb .container { max-width: var(--container-wide); padding: 16px 40px; display: flex; flex-wrap: wrap; gap: 6px; }
+.dd-breadcrumb a { color: var(--grey-700); }
+.dd-breadcrumb a:hover { color: var(--blue); }
+.dd-breadcrumb a::after { content: "›"; margin-left: 6px; color: var(--grey-700); }
+.dd-breadcrumb span { color: var(--ink); font-weight: 600; }
+
+.dd-steps-bar .container { max-width: var(--container-wide); padding: 26px 40px 36px; }
+.dd-steps { display: flex; justify-content: space-between; gap: 20px; margin: 0; padding: 0; list-style: none; }
+.dd-step { display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 300; text-transform: uppercase; color: #C4C9D0; white-space: nowrap; }
+.dd-step-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid currentColor; border-radius: 50%; font-size: 1.2rem; flex-shrink: 0; }
+.dd-step.is-active { color: var(--ink); }
+.dd-step.is-done { color: var(--blue); }
+.dd-step.is-done .dd-step-num { background: var(--blue); border-color: var(--blue); color: var(--white); }
+
+.dd-body { padding: 50px 20px 110px; }
+.dd-form-wrap { max-width: 880px; margin: 0 auto; }
+.dd-panel { display: none; }
+.dd-panel.is-active { display: block; }
+.dd-legend { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; margin: 0 0 10px; }
+.dd-legend small { font-size: 0.75rem; font-weight: 400; text-transform: none; }
+.dd-legend--sub { margin-top: 26px; }
+.dd-notice { background: var(--grey-100); padding: 14px; text-align: center; font-size: 0.8rem; text-transform: uppercase; text-decoration: underline; margin: 0 0 40px; }
+.dd-text { font-size: 1rem; line-height: 1.5; margin: 0 0 24px; }
+.dd-row { display: flex; gap: 22px; margin-bottom: 18px; }
+.dd-field { position: relative; flex: 1; }
+/* required marker to the right of each field */
+.dd-field::after { content: "*"; position: absolute; top: -4px; right: -14px; font-size: 1.1rem; }
+.dd-field input {
+  width: 100%;
+  height: 54px;
+  padding: 0 16px;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: var(--white);
+}
+.dd-field input::placeholder { color: var(--grey-700); }
+.dd-field input:focus { outline: none; border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+.dd-field.has-error input { border-color: var(--sale-red); }
+.dd-error { display: block; margin-top: 6px; font-size: 0.8rem; color: var(--sale-red); }
+.dd-check { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9rem; line-height: 1.4; margin-top: 8px; flex-wrap: wrap; }
+.dd-check input { margin-top: 3px; accent-color: var(--blue); }
+.dd-check .dd-error { flex-basis: 100%; margin-top: 0; }
+.dd-resend { background: none; border: none; padding: 0; font-family: var(--font-body); font-size: 0.9rem; color: var(--blue); text-decoration: underline; cursor: pointer; }
+.dd-resend:disabled { color: var(--grey-700); cursor: default; text-decoration: none; }
+.dd-actions { display: flex; justify-content: flex-end; gap: 14px; border-top: 1px solid var(--grey-200); margin-top: 30px; padding-top: 22px; }
+.dd-actions--center { justify-content: center; border-top: none; }
+.dd-btn {
+  min-width: 240px;
+  padding: 12px 24px;
+  border: 1px solid var(--blue);
+  background: var(--blue);
+  color: var(--yellow);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.dd-btn:hover { background: var(--blue-900); border-color: var(--blue-900); }
+.dd-btn--ghost { background: var(--white); color: var(--blue); min-width: 160px; }
+.dd-btn--ghost:hover { background: var(--grey-100); border-color: var(--blue); }
+.dd-done { text-align: center; }
+.dd-done svg { width: 72px; height: 72px; color: var(--blue); margin: 0 auto 18px; display: block; }
+.dd-done h2 { font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-size: 1.8rem; margin: 0 0 10px; }
+
+@media (max-width: 900px) {
+  .dd-breadcrumb .container, .dd-steps-bar .container { padding-left: 20px; padding-right: 20px; }
+  .dd-steps { overflow-x: auto; }
+  .dd-step { font-size: 1rem; }
+  .dd-step-num { width: 28px; height: 28px; font-size: 0.95rem; }
+  .dd-row { flex-direction: column; }
+  .dd-field::after { right: -12px; }
+  .dd-btn { min-width: 0; flex: 1; }
+}
+
+/* ===== Search results page (pesquisa.html) ===== */
+/* only the main header row here, so it carries the thin divider line the quick-links row normally draws */
+.site-header--simple { position: relative; }
+.site-header--simple::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: #EDEFF2;
+  transform: scaleY(0.5);
+  transform-origin: bottom;
+}
+.sr-page { max-width: var(--container-wide); margin: 0 auto; padding: 40px 24px 150px; }
+/* with a single tab picked the results are short, so less space above the footer */
+.sr-page:not([data-tab="todos"]) { padding-bottom: 104px; }
+/* search field: same look as the search screen's field, with a submit arrow */
+.sr-search { position: relative; display: flex; }
+.sr-search input {
+  flex: 1;
+  height: 72px;
+  padding: 0 72px 0 28px;
+  border: 1px solid #8C8C8C;
+  border-radius: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  font-weight: 400;
+  outline: none;
+}
+.sr-search input::placeholder { color: #757575; opacity: 1; }
+/* clicked into: a second, black box appears around the grey one, with a small gap between them */
+.sr-search input:focus { outline: 2px solid #000; outline-offset: 2px; }
+/* no browser clear (×) button in the search fields, here or on the search screen */
+.sr-search input::-webkit-search-cancel-button,
+.search-overlay-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
+.sr-search-btn {
+  position: absolute; top: 1px; right: 1px; bottom: 1px;
+  width: 68px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; background: none; color: var(--ink); cursor: pointer;
+}
+.sr-search-btn svg { width: 38px; height: 38px; }
+.sr-search-btn:hover svg { color: var(--blue); }
+
+.sr-count { margin: 30px 0 0; font-size: 1.5rem; font-weight: 600; color: var(--ink); }
+/* while searching: the whole page darkens and the Calendário loading bars (.calendario-loading) play in the middle;
+   it fades away once the results are in (pesquisa.js) */
+.sr-loading {
+  position: fixed; inset: 0; z-index: 800;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.55);
+  transition: opacity 0.3s ease;
+}
+.sr-loading[hidden] { display: none; }
+.sr-loading.is-done { opacity: 0; pointer-events: none; }
+.sr-loading .calendario-loading { padding: 0; }
+
+/* tabs + sort */
+.sr-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 34px; border-bottom: 1px solid var(--grey-200); }
+.sr-tabs { display: flex; align-items: center; gap: 40px; }
+.sr-tab, .sr-drop-btn, .sr-sort {
+  border: none; background: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 1.1rem; font-weight: 600; color: var(--ink);
+}
+.sr-tabs > .sr-tab, .sr-drop-btn { position: relative; padding: 16px 30px; }
+.sr-tabs > .sr-tab:hover, .sr-drop-btn:hover { color: var(--blue); }
+.sr-drop { position: relative; }
+/* the lists under "Mais" and "Ordenar": white, no outline or shadow, small options */
+.sr-drop-menu {
+  position: absolute; top: calc(100% - 6px); z-index: 20;
+  display: none; flex-direction: column; padding: 8px 0 4px;
+  background: var(--white);
+}
+.sr-drop-menu button { font-size: 0.9rem; white-space: nowrap; }
+/* "Mais": the box starts just before the word (which sits 30px in), and the options line up with that word */
+.sr-tabs .sr-drop-menu { left: 20px; }
+.sr-tabs .sr-drop-menu button { padding: 12px 56px 12px 10px; }
+/* "Ordenar": the mirror image, options aligned to the right, ending in line with the arrow */
+.sr-drop--right .sr-drop-menu { right: -10px; }
+.sr-drop--right .sr-drop-menu button { padding: 12px 10px 12px 56px; text-align: right; }
+/* "Mais" and "Ordenar": a word plus its own arrow, which flips when the list opens and turns blue on its own.
+   Hovering the word turns the word and arrow blue; hovering the arrow turns only the arrow blue */
+.sr-bar .sr-drop-btn { display: inline-flex; align-items: center; gap: 16px; padding-right: 0; }
+.sr-bar .sr-drop-btn:hover { color: var(--ink); }
+.sr-drop-arrow { display: flex; }
+/* the arrow's point swings to the right both ways: anticlockwise when the list opens, clockwise back when it closes
+   (closing is slower) */
+.sr-drop-arrow svg { width: 22px; height: 22px; transition: transform 0.6s ease; }
+.sr-drop.is-open .sr-drop-arrow svg { transform: rotate(-180deg); transition-duration: 0.4s; }
+.sr-bar .sr-drop-btn:has(.sr-drop-label:hover),
+.sr-drop-arrow:hover { color: var(--blue); }
+.sr-drop.is-open .sr-drop-menu { display: flex; }
+.sr-drop-menu button { text-align: left; font-weight: 400; }
+.sr-drop-menu button:hover { color: var(--blue); }
+
+/* sections */
+/* the first section sits a bit closer to the tabs than the sections sit to each other */
+.sr-section { margin-top: 44px; }
+.sr-section:not([hidden]) ~ .sr-section { margin-top: 64px; }
+/* same as the site's usual section titles (e.g. "Informações Lisbon FC"): Inter, bold, not uppercase */
+.sr-section h2 { margin: 0 0 32px; font-family: var(--font-body); font-size: 2rem; font-weight: 700; color: var(--ink); text-transform: none; letter-spacing: normal; }
+/* slide up into view (same as the Match Center's .mc-related-reveal; switched on by pesquisa.js) */
+.sr-reveal { opacity: 0; transform: translateY(90px); transition: opacity 0.85s ease, transform 0.85s ease; }
+.sr-reveal.is-visible { opacity: 1; transform: translateY(0); }
+.sr-grid { display: grid; gap: 40px 24px; }
+.sr-grid--produtos { grid-template-columns: repeat(6, 1fr); gap: 32px 24px; }
+/* "Todos": products in one row you can drag sideways (six in view), snapping to whole products */
+.sr-section[data-section="produtos"] { position: relative; }
+.sr-grid--produtos.sr-grid--carousel {
+  display: flex;
+  gap: 24px;
+  /* hidden, so a touchpad or wheel can't slide it: only dragging or the lines move it (touch drags sideways, the page still scrolls up and down) */
+  overflow-x: hidden;
+  touch-action: pan-y;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  user-select: none;
+}
+.sr-grid--carousel::-webkit-scrollbar { display: none; }
+.sr-grid--carousel > a { flex: 0 0 calc((100% - 5 * 24px) / 6); scroll-snap-align: start; }
+.sr-grid--carousel.is-dragging { scroll-snap-type: none; }
+.sr-grid--carousel.is-dragging > a { pointer-events: none; }
+/* position lines at the top right: one per stop, the current one black and taller */
+.sr-lines { position: absolute; top: 14px; right: 0; display: flex; align-items: flex-end; gap: 10px; height: 15px; }
+.sr-lines[hidden] { display: none; }
+.sr-lines span { width: 2.5px; height: 10px; background: #C4C4C4; transition: height 0.2s ease, background 0.2s ease; }
+.sr-lines span.is-active { height: 15px; background: #000; }
+/* each line can be clicked to go to that position; the clickable area is wider than the line itself */
+.sr-lines span { position: relative; cursor: pointer; }
+.sr-lines span::before { content: ""; position: absolute; inset: -6px -4px; }
+.sr-grid--cards { grid-template-columns: repeat(4, 1fr); }
+.sr-grid--outros { grid-template-columns: repeat(2, 1fr); gap: 28px 48px; }
+
+/* products: image and name only */
+.sr-product { display: block; color: var(--ink); }
+.sr-product-img { position: relative; aspect-ratio: 1/1; overflow: hidden; background: var(--grey-100); margin-bottom: 16px; }
+.sr-product-name { margin: 0; font-size: 1rem; line-height: 1.35; }
+.sr-product:not(.sr-player) .sr-product-name { text-align: center; font-size: 1.1rem; }
+.sr-product-name strong { font-weight: 700; }
+.sr-product:hover .sr-product-name { color: var(--blue); }
+/* players: cut-out photo standing on the bottom of the tile, position above the name, number before it */
+.sr-player .sr-product-img img { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; transition: transform 0.4s ease; }
+.sr-player:hover .sr-product-img img { transform: scale(1.04); }
+.sr-player .sr-product-name { font-weight: 600; }
+.sr-player-number { color: var(--blue); font-weight: 700; margin-right: 4px; }
+
+/* news, photos, videos */
+.sr-card { display: block; color: var(--ink); }
+.sr-card-img { position: relative; aspect-ratio: 16/10; overflow: hidden; margin-bottom: 14px; background: var(--blue-900); }
+.sr-card-img .media-card-thumb { position: absolute; inset: 0; aspect-ratio: auto; }
+.sr-card-media { width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.4s ease; }
+.sr-card:hover .sr-card-media, .sr-card:hover .media-card-crest { transform: scale(1.08); }
+/* photo and video icons: yellow, blue on hover (like the Vídeos e Fotos page); the photos icon a bit bigger */
+.sr-card:hover .media-card-play, .sr-card:hover .media-card-gallery { color: var(--blue); }
+.sr-card-img .media-card-gallery svg { width: 34px; height: 34px; stroke-width: 1.5; }
+.sr-card-img .media-card-play, .sr-card-img .media-card-gallery { left: 10px; bottom: 10px; }
+.sr-card-img .media-card-gallery { bottom: 5px; }
+/* same thin tag as the Vídeos e Fotos page (.media-card-tag) */
+.sr-card-tag { display: block; margin-bottom: 6px; font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; color: var(--blue); }
+.sr-card h3 { margin: 0; font-family: var(--font-body); font-size: 1.1rem; font-weight: 600; line-height: 1.3; color: var(--ink); text-transform: none; letter-spacing: normal; }
+.sr-card:hover h3 { color: var(--blue); }
+
+/* other pages: small picture, title and a line of text */
+.sr-other { display: flex; align-items: flex-start; gap: 18px; color: var(--ink); }
+.sr-other-img { flex-shrink: 0; width: 76px; height: 76px; display: flex; align-items: center; justify-content: center; background: var(--blue); }
+.sr-other-img img { width: 48px; height: 48px; object-fit: contain; }
+.sr-other-text { display: flex; flex-direction: column; gap: 6px; }
+.sr-other-text strong { font-size: 1.1rem; font-weight: 600; }
+.sr-other-text span { font-size: 0.95rem; color: var(--ink); line-height: 1.45; }
+.sr-other:hover strong { color: var(--blue); }
+
+.sr-more {
+  display: flex; align-items: center; gap: 8px; margin: 36px auto 0;
+  border: none; background: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 1rem; font-weight: 600; color: var(--ink);
+}
+/* thin arrow drawn as a line chevron; "Ver mais" stays black on hover, only the arrow nudges right */
+.sr-more::after {
+  content: "";
+  width: 12px; height: 12px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 5 16 12 9 19'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 5 16 12 9 19'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 0.2s ease;
+}
+.sr-more:hover::after { transform: translateX(3px); }
+.sr-more[hidden] { display: none; }
+/* no results: just a small blank space under the tabs */
+.sr-empty { height: 0; }
+.sr-page:has(.sr-empty:not([hidden])) { padding-bottom: 32px; }
+
+@media (max-width: 1200px) {
+  .sr-grid--produtos { grid-template-columns: repeat(4, 1fr); }
+  .sr-grid--cards { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .sr-page { padding: 24px 20px 60px; }
+  .sr-search input { height: 60px; font-size: 1.2rem; padding-left: 18px; }
+  .sr-bar { flex-wrap: wrap; }
+  .sr-tabs { overflow-x: auto; }
+  .sr-tabs > .sr-tab, .sr-drop-btn { padding: 14px 16px; }
+  .sr-grid--produtos { grid-template-columns: repeat(2, 1fr); }
+  .sr-grid--cards { grid-template-columns: repeat(2, 1fr); }
+  .sr-grid--outros { grid-template-columns: 1fr; }
+  .sr-section h2 { font-size: 1.8rem; }
 }

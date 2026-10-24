@@ -12,3 +12,7 @@ playersFilters.forEach((btn) => {
     });
   });
 });
+
+// Open with a filter already selected from the URL hash, e.g. equipa.html#tecnica (used by the menu)
+const initialFilter = document.querySelector(`.players-filter[data-filter="${location.hash.slice(1)}"]`);
+if (initialFilter) initialFilter.click();

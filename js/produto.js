@@ -157,7 +157,9 @@ if (pdpCartToastClose) pdpCartToastClose.addEventListener("click", pdpCloseCartT
 
 document.querySelectorAll(".pdp-add").forEach((btn) => {
   btn.addEventListener("click", () => {
-    if (pdpSelectedSize) pdpShowCartToast();
+    if (!pdpSelectedSize) return;
+    addToCart(pdpQty);
+    pdpShowCartToast();
   });
 });
 
@@ -239,6 +241,7 @@ if (bundleModalBuyAll) {
       firstInvalidItem.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
       return;
     }
+    addToCart(bundleModalItems.querySelectorAll(".bundle-modal-item:not([hidden])").length);
     closeBundleModal();
     pdpOpenCartToast({
       showPrice: false,
@@ -287,7 +290,9 @@ const pdpBuyRow = document.getElementById("pdpBuyRow");
 const pdpStickyBar = document.getElementById("pdpStickyBar");
 const pdpDescriptionEnd = document.querySelector(".pdp-details-section");
 if (pdpBuyRow && pdpStickyBar) {
-  const pdpHeaderEl = document.querySelector(".site-header");
+  // on laptop the fixed compact header is what covers the page, not the full header
+  const pdpCompactHeaderEl = document.querySelector(".header-compact");
+  const pdpHeaderEl = pdpCompactHeaderEl && pdpCompactHeaderEl.offsetHeight ? pdpCompactHeaderEl : document.querySelector(".site-header");
   const pdpHeaderHeight = pdpHeaderEl ? pdpHeaderEl.offsetHeight : 0;
   let pdpStickyBarTicking = false;
 
