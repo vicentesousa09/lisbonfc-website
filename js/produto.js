@@ -158,7 +158,19 @@ if (pdpCartToastClose) pdpCartToastClose.addEventListener("click", pdpCloseCartT
 document.querySelectorAll(".pdp-add").forEach((btn) => {
   btn.addEventListener("click", () => {
     if (!pdpSelectedSize) return;
-    addToCart(pdpQty);
+    const price = (cls) => {
+      const el = document.querySelector(`.pdp-price .${cls} strong`);
+      return el ? el.textContent.trim() : "";
+    };
+    addToCart(pdpQty, {
+      title: pdpTitle ? pdpTitle.textContent : "",
+      img: pdpImgs[1] ? pdpImgs[1].getAttribute("src") : "",
+      size: pdpSelectedSize,
+      sizes: [...pdpSizeBtns].map((b) => b.textContent.trim()),
+      socio: price("price-row--member"),
+      promo: price("price-row--promo"),
+      pvp: price("price-row--pvp"),
+    });
     pdpShowCartToast();
   });
 });

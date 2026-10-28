@@ -19,6 +19,7 @@ function openMenu(e) {
   const toggle = e && e.currentTarget instanceof Element ? e.currentTarget : menuToggle;
   megaOpenedFrom = toggle;
   closeSearchOverlay();
+  closeMiniCart();
   const r = toggle.getBoundingClientRect();
   megaClose.style.setProperty("--toggle-top", `${r.top}px`);
   megaClose.style.setProperty("--toggle-left", `${r.left}px`);
@@ -140,6 +141,10 @@ document.querySelectorAll(".mega-subback").forEach((btn) => {
 
 const searchToggle = document.querySelector(".search-toggle");
 const searchBar = document.getElementById("searchBar");
+// Laptop: a cross that stands in for the lens while the search screen is open (swapped in style.css);
+// added before the compact header is cloned, so its search icon gets one too
+searchToggle.querySelector("svg").classList.add("search-lens");
+searchToggle.insertAdjacentHTML("beforeend", '<svg class="search-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>');
 
 // Laptop: the search icon opens a full-page white search screen below the header's top row instead of the small bar
 const searchOverlay = document.createElement("div");
@@ -343,25 +348,33 @@ window.addEventListener("resize", () => {
   if (searchOverlay.classList.contains("has-text")) fitTypedSuggestions();
 });
 
-function openSearchOverlay() {
-  // start right under whichever top row is showing: the compact header once scrolled down (its bottom border stays visible),
-  // otherwise the main one, 1px lower so the divider line under the logo stays visible
+// where the search screen and the cart panel start: right under whichever top row is showing, the compact header once
+// scrolled down (its bottom border stays visible), otherwise the main one, 1px lower so the divider line under the logo stays visible
+function headerTopRowBottom() {
   const compact = document.querySelector(".header-compact.is-visible");
   const bottom = compact
     ? compact.getBoundingClientRect().bottom
     : document.querySelector(".site-header .header-top-inner").getBoundingClientRect().bottom + 1;
-  searchOverlay.style.top = `${Math.max(0, bottom)}px`;
+  return Math.max(0, bottom);
+}
+
+function openSearchOverlay() {
+  closeMiniCart();
+  searchOverlay.style.top = `${headerTopRowBottom()}px`;
   document.body.style.setProperty("--scrollbar-w", `${window.innerWidth - document.documentElement.clientWidth}px`);
   document.body.classList.add("search-open");
   searchOverlay.classList.add("open");
   searchToggle.setAttribute("aria-expanded", "true");
+  document.querySelectorAll(".search-toggle").forEach((t) => t.setAttribute("aria-label", "Fechar pesquisa"));
   loadSearchProducts();
-  searchOverlayInput.focus();
+  // the field is still off-screen while the overlay slides in: don't let focusing it scroll the page
+  searchOverlayInput.focus({ preventScroll: true });
 }
 function closeSearchOverlay() {
   document.body.classList.remove("search-open");
   searchOverlay.classList.remove("open");
   searchToggle.setAttribute("aria-expanded", "false");
+  document.querySelectorAll(".search-toggle").forEach((t) => t.setAttribute("aria-label", "Pesquisar"));
 }
 function toggleSearchOverlay() {
   if (searchOverlay.classList.contains("open")) closeSearchOverlay();
@@ -369,6 +382,55 @@ function toggleSearchOverlay() {
 }
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && searchOverlay.classList.contains("open")) closeSearchOverlay();
+});
+
+// Laptop: the cart icon opens a small box that slides in from the right, under the header's top row, with everything below
+// that row darkened (see .mini-cart-backdrop in style.css); smaller screens still go to the shop
+const miniCartBackdrop = document.createElement("div");
+miniCartBackdrop.className = "mini-cart-backdrop";
+const miniCart = document.createElement("aside");
+miniCart.className = "mini-cart";
+miniCart.setAttribute("aria-label", "Carrinho");
+miniCart.innerHTML = `
+  <button type="button" class="mini-cart-close" aria-label="Fechar carrinho">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+  </button>
+  <div class="mini-cart-head">
+    <p class="mini-cart-count"></p>
+    <a class="mini-cart-view" href="carrinho.html">Ver carrinho</a>
+  </div>
+  <div class="mini-cart-foot">
+    <p class="mini-cart-total"><span>Total</span><span class="mini-cart-total-price">0,00€</span></p>
+    <a class="mini-cart-buy" href="checkout.html">Comprar</a>
+  </div>`;
+document.body.append(miniCartBackdrop, miniCart);
+miniCartBackdrop.addEventListener("click", closeMiniCart);
+miniCart.querySelector(".mini-cart-close").addEventListener("click", closeMiniCart);
+
+function openMiniCart() {
+  closeSearchOverlay();
+  const n = getCartCount();
+  miniCart.querySelector(".mini-cart-count").textContent = `${n} ${n === 1 ? "Artigo" : "Artigos"}`;
+  miniCart.querySelector(".mini-cart-total-price").textContent = formatPrice(getCartTotal());
+  miniCart.style.top = miniCartBackdrop.style.top = `${headerTopRowBottom()}px`;
+  document.body.style.setProperty("--scrollbar-w", `${window.innerWidth - document.documentElement.clientWidth}px`);
+  document.body.classList.add("cart-open");
+  miniCart.classList.add("open");
+  miniCartBackdrop.classList.add("open");
+}
+function closeMiniCart() {
+  document.body.classList.remove("cart-open");
+  miniCart.classList.remove("open");
+  miniCartBackdrop.classList.remove("open");
+}
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".header-cart") || !laptopQuery.matches) return;
+  e.preventDefault();
+  if (miniCart.classList.contains("open")) closeMiniCart();
+  else openMiniCart();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && miniCart.classList.contains("open")) closeMiniCart();
 });
 
 searchToggle.addEventListener("click", () => {
@@ -476,8 +538,26 @@ function renderCartCount() {
     el.textContent = n > 99 ? "99+" : n;
   });
 }
-function addToCart(qty = 1) {
-  try { localStorage.setItem(CART_KEY, getCartCount() + qty); } catch {}
+// the products themselves (name, photo, prices) are kept alongside the count, for the cart page (carrinho.html)
+const CART_ITEMS_KEY = "lfcCartItems";
+function getCartItems() {
+  try { return JSON.parse(localStorage.getItem(CART_ITEMS_KEY)) || []; } catch { return []; }
+}
+// prices are stored as shown ("18,00€"); the total charges the promotion price when there is one, otherwise the PVP
+function parsePrice(text) {
+  return parseFloat(String(text || "").replace(/[^\d,]/g, "").replace(",", ".")) || 0;
+}
+function formatPrice(value) {
+  return `${value.toFixed(2).replace(".", ",")}€`;
+}
+function getCartTotal() {
+  return getCartItems().reduce((sum, item) => sum + parsePrice(item.promo || item.pvp) * item.qty, 0);
+}
+function addToCart(qty = 1, item = null) {
+  try {
+    localStorage.setItem(CART_KEY, getCartCount() + qty);
+    if (item) localStorage.setItem(CART_ITEMS_KEY, JSON.stringify([...getCartItems(), { ...item, qty }]));
+  } catch {}
   renderCartCount();
 }
 renderCartCount();

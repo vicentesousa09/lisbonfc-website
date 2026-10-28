@@ -103,7 +103,7 @@ h1, h2, h3 {
 .header-top-right { justify-content: flex-end; }
 .brand { display: flex; align-items: center; }
 .brand-crest { height: 42px; width: 42px; }
-.cart-bag-wide, .cart-count, .profile-bust, .header-compact, .search-overlay { display: none; }
+.cart-bag-wide, .cart-count, .profile-bust, .header-compact, .search-overlay, .search-toggle .search-cross, .mini-cart, .mini-cart-backdrop { display: none; }
 /* Laptop only: menu/search and right icons span the full width; desktop keeps the 1200px container */
 @media (min-width: 901px) and (max-width: 1599px) {
   .header-top-inner { max-width: none; padding: 0 40px; height: 116px; }
@@ -124,6 +124,13 @@ h1, h2, h3 {
   .menu-toggle svg line:nth-child(3) { stroke-width: 1.5; }
   /* search: the lens fills in blue on hover */
   .search-toggle:hover svg circle { fill: currentColor; }
+  /* with the search open the lens becomes a cross (added in main.js), which turns a quarter right on hover and back left
+     when the mouse leaves. The turn is a keyframe animation rather than a transition so it also plays on the click that
+     opens the search (the cross has only just appeared then, and a transition wouldn't run) */
+  body.search-open .search-toggle .search-lens { display: none; }
+  body.search-open .search-toggle .search-cross { display: block; transition: transform 0.3s ease; }
+  body.search-open .search-toggle:hover .search-cross { transform: rotate(90deg); animation: search-cross-turn 0.3s ease; }
+  @keyframes search-cross-turn { from { transform: none; } to { transform: rotate(90deg); } }
   /* cart: wider bag with the item count inside */
   .header-cart { position: relative; }
   .header-cart .cart-bag { display: none; }
@@ -188,11 +195,12 @@ h1, h2, h3 {
     z-index: 700;
     background: var(--white);
     visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s ease, visibility 0.2s;
+    transform: translateX(-100%);
+    transition: transform 0.18s ease-in, visibility 0s 0.18s;
   }
-  /* visible straight away when opening (not at the end of a fade), so the field can take focus on the same click */
-  .search-overlay.open { visibility: visible; opacity: 1; transition: opacity 0.2s ease, visibility 0s; }
+  /* slides in from the left like the menu panel; visible straight away when opening (not at the end of the slide),
+     so the field can take focus on the same click */
+  .search-overlay.open { visibility: visible; transform: none; transition: transform 0.32s ease, visibility 0s; }
   .search-overlay-inner { padding: 28px 24px 0; }
   /* the big search field */
   .search-overlay-input {
@@ -252,6 +260,60 @@ h1, h2, h3 {
   .search-product:hover .search-product-name { color: var(--blue); }
   .header-compact .header-top-inner { height: 72px; }
   .header-compact .brand-crest { height: 70px; width: 70px; }
+  /* cart: a small box sliding in from the right, just under the header's top row (logo, menu, search). Everything below that
+     row is darkened, the nav row under it included: the backdrop starts there too (both tops set in main.js) and sits above
+     the header; the page is locked like with the search */
+  body.cart-open { overflow: hidden; padding-right: var(--scrollbar-w, 0px); }
+  body.cart-open .header-compact { right: var(--scrollbar-w, 0px); }
+  .mini-cart-backdrop {
+    display: block;
+    position: fixed; left: 0; right: 0; bottom: 0;
+    z-index: 698;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    /* closing: waits for the cart to slide out (0.18s), then fades */
+    transition: opacity 0.25s ease 0.18s, visibility 0s 0.43s;
+  }
+  .mini-cart-backdrop.open { opacity: 1; visibility: visible; transition: opacity 0.25s ease, visibility 0s; }
+  .mini-cart {
+    display: block;
+    position: fixed;
+    right: 0;
+    width: 360px;
+    z-index: 700;
+    padding: 16px 24px 24px;
+    background: var(--white);
+    /* a soft shadow on the top edge only (the negative spread keeps it off the sides) */
+    box-shadow: 0 -4px 8px -4px rgba(0, 0, 0, 0.15);
+    visibility: hidden;
+    transform: translateX(100%);
+    transition: transform 0.18s ease-in, visibility 0s 0.18s;
+  }
+  /* opening: the page starts darkening first, and the cart slides in before it has fully darkened */
+  .mini-cart.open { visibility: visible; transform: none; transition: transform 0.32s ease 0.12s, visibility 0s 0.12s; }
+  .mini-cart-head { margin-bottom: 64px; }
+  .mini-cart-close {
+    position: absolute; top: 12px; right: 12px;
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; padding: 0;
+    background: none; border: none; cursor: pointer;
+    color: var(--blue);
+  }
+  .mini-cart-close svg { width: 18px; height: 18px; }
+  .mini-cart-count { margin: 0 0 4px; font-size: 1.1rem; font-weight: 600; color: var(--ink); }
+  .mini-cart-view { font-size: 0.8rem; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .mini-cart-view:hover { color: var(--blue); }
+  .mini-cart-total {
+    display: flex; justify-content: space-between;
+    margin: 0 0 16px;
+    font-size: 0.85rem; font-weight: 400; color: var(--ink);
+  }
+  /* the usual black button: sharp corners, yellow text, blue fill rising on hover (like .pdp-cart-toast-btn) */
+  .mini-cart-buy { position: relative; overflow: hidden; z-index: 0; display: block; width: 100%; height: 52px; line-height: 52px; text-align: center; background: var(--ink); color: var(--yellow); border: 1px solid var(--ink); border-radius: 0; font-size: 1.1rem; font-weight: 400; text-decoration: none; transition: border-color 0.2s ease; }
+  .mini-cart-buy::before { content: ""; position: absolute; inset: 0; background: var(--blue); transform: translateY(100%); transition: transform 0.28s ease; z-index: -1; }
+  .mini-cart-buy:hover { border-color: var(--blue); }
+  .mini-cart-buy:hover::before { transform: translateY(0); }
 }
 
 /* Search bar (collapsible) */
@@ -3800,6 +3862,314 @@ body.match-center-page { background: #F4F4F4; }
   transform: scaleY(0.5);
   transform-origin: bottom;
 }
+/* Cart page (carrinho.html): the items on the left, codes and summary on the right, split by a thin line */
+.cart-page { max-width: 1272px; margin: 0 auto; padding: 40px 24px 60px; }
+.cart-layout { display: flex; min-height: 374px; }
+.cart-items { flex: 0 0 55.5%; padding-right: 77px; border-right: 1px solid var(--grey-200); }
+.cart-items-head { display: flex; justify-content: space-between; align-items: baseline; }
+.cart-title { margin: 0; font-family: var(--font-body); font-size: 18px; font-weight: 500; text-transform: none; letter-spacing: normal; color: var(--ink); }
+.cart-clear { padding: 0; background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 14px; color: var(--ink); }
+.cart-clear:hover { color: var(--blue); }
+/* the products: a line above each one like the vertical one (the first sits under the heading); they stop short of the vertical line, ending under "Limpar Carrinho" */
+.cart-list { margin-top: 20px; }
+.cart-list[hidden] { display: none; }
+.cart-item { position: relative; display: flex; gap: 24px; padding: 48px 0 24px; border-top: 1px solid var(--grey-200); }
+/* "Remover": looks like "Limpar Carrinho" (same .cart-clear) and sits right under the line, as far below it as that one is above it */
+.cart-item-remove { position: absolute; top: 20px; right: 0; }
+.cart-item-img { flex-shrink: 0; width: 250px; height: 250px; object-fit: contain; background: var(--grey-100); }
+/* only as wide as its widest part, the row of sizes, so the prices (stretching across it) end where the last size ends */
+.cart-item-info { flex: 0 1 auto; min-width: 0; }
+.cart-item-name { max-width: 230px; margin: 0 0 26px; font-family: var(--font-body); font-size: 17px; font-weight: 600; line-height: 1.35; text-transform: none; letter-spacing: normal; color: var(--ink); }
+/* the prices sit halfway between the name and the sizes (26px either side) */
+.cart-item .product-price { margin-bottom: 26px; }
+/* on sale: "Promoção" in blue, set like the PVP line, over the PVP with its price struck through */
+.cart-item-tag { margin: 0 0 6px; font-size: 14px; font-weight: 600; color: var(--blue); }
+.cart-item .price-row--promo { color: var(--blue); font-weight: 400; }
+.cart-item .price-row--struck { font-size: 0.92rem; }
+/* the PVP line, label and price, in a mid grey */
+.cart-item .price-row:not(.price-row--promo) { color: #6B7280; }
+/* size boxes and quantity: the product page's own (.pdp-size-btn, .pdp-qty), stacked */
+.cart-item .pdp-size-options { flex-wrap: nowrap; gap: 6px; margin-bottom: 28px; }
+/* a little more compact than on the product page so all six sizes fit on one row beside the photo */
+.cart-item .pdp-size-btn { min-width: 40px; height: 40px; padding: 0 8px; font-size: 0.85rem; }
+/* sizes not picked and the quantity box get a dark grey outline, close to the picked size's black (which is also thicker);
+   unlike on the product page, hovering a size doesn't turn it blue */
+.cart-item .pdp-size-btn:not(.is-active),
+.cart-item .pdp-qty-value { border-color: #53585F; }
+.cart-item .pdp-size-btn:hover { color: var(--ink); }
+.cart-item .pdp-size-btn.is-active:hover { border-color: var(--ink); }
+.cart-item .pdp-qty { margin-left: -10px; }
+.cart-info { flex: 1; min-width: 0; padding: 20px 0 60px 77px; }
+.cart-codes { display: flex; gap: 10px; }
+.cart-code { flex: 1; min-width: 0; }
+.cart-code label { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 500; text-transform: uppercase; color: var(--ink); }
+.cart-code-field { position: relative; }
+.cart-code-field input { width: 100%; height: 50px; padding: 0 96px 0 20px; border: 1px solid #757575; border-radius: 0; background: var(--white); font-family: var(--font-body); font-size: 18px; color: var(--ink); outline: none; }
+/* selected: a 1.7px black border, the extra drawn inside so the field and its text don't shift */
+.cart-code-field input:focus { border-color: var(--ink); box-shadow: inset 0 0 0 0.7px var(--ink); }
+.cart-code-field button { position: absolute; top: 5px; right: 0; width: 80px; height: 40px; padding: 0 20px 0 0; text-align: right; background: none; border: none; cursor: pointer; font-family: var(--font-body); font-size: 14px; font-weight: 500; color: #757575; }
+/* "Adicionar" stays grey and can't be clicked until something is typed (disabled in carrinho.js); until then
+   clicks go straight through it to the field underneath, so it acts as part of the box */
+.cart-code-field button:disabled { pointer-events: none; }
+.cart-code-field button:not(:disabled) { color: var(--ink); }
+/* after a code is checked "Adicionar" disappears until the code is changed (.is-checked, set in carrinho.js) */
+.cart-code.is-checked .cart-code-field button { visibility: hidden; }
+/* refused code: red box, red title and "Código inválido" under the box on the right (hanging below it, so nothing moves) */
+.cart-code { position: relative; }
+.cart-code-error { position: absolute; top: 100%; right: 0; margin: 6px 0 0; font-size: 9.75px; font-weight: 500; color: var(--sale-red); visibility: hidden; opacity: 0; transform: translateY(-8px); transition: transform 0.25s ease, opacity 0.25s ease, visibility 0s 0.25s; }
+/* slides down into place from just under the box as it appears */
+.cart-code.is-invalid .cart-code-error { visibility: visible; opacity: 1; transform: none; transition: transform 0.45s ease, opacity 0.45s ease, visibility 0s; }
+.cart-code.is-invalid label { color: var(--sale-red); }
+.cart-code.is-invalid .cart-code-field input { border-color: var(--sale-red); }
+.cart-code.is-invalid .cart-code-field input:focus { border-color: var(--sale-red); box-shadow: inset 0 0 0 0.7px var(--sale-red); }
+/* reCAPTCHA popup over a darkened page */
+.captcha-modal { position: fixed; inset: 0; z-index: 800; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.55); }
+.captcha-modal[hidden] { display: none; }
+.captcha-modal-box { padding: 24px; background: var(--white); }
+.captcha-modal-box p { margin: 0 0 16px; font-size: 14px; color: var(--ink); }
+.captcha-modal-box #captchaWidget { min-height: 78px; }
+.cart-summary { margin-top: 30px; }
+.cart-summary p { display: flex; justify-content: space-between; margin: 0 0 7px; font-size: 14px; color: var(--ink); }
+.cart-summary .cart-summary-total { font-weight: 700; }
+/* the usual black button: sharp corners, yellow text, blue fill rising on hover (like .mini-cart-buy) */
+.cart-buy { position: relative; overflow: hidden; z-index: 0; display: block; height: 50px; line-height: 50px; margin-top: 20px; text-align: center; background: var(--ink); color: var(--yellow); border: 1px solid var(--ink); border-radius: 0; font-size: 18px; text-decoration: none; transition: border-color 0.2s ease; }
+.cart-buy::before { content: ""; position: absolute; inset: 0; background: var(--blue); transform: translateY(100%); transition: transform 0.28s ease; z-index: -1; }
+.cart-buy:hover { border-color: var(--blue); }
+.cart-buy:hover::before { transform: translateY(0); }
+@media (max-width: 900px) {
+  .cart-page { padding: 24px 20px 48px; }
+  .cart-layout { flex-direction: column; min-height: 0; }
+  .cart-items { padding: 0 0 24px; border-right: none; border-bottom: 1px solid var(--grey-200); }
+  .cart-item { gap: 16px; }
+  .cart-item-img { width: 140px; height: 140px; }
+  .cart-info { padding: 24px 0 0; }
+}
+
+/* Checkout page (checkout.html): its own slim header and footer, the form on the left and the order summary on the right,
+   split by a thin line like the cart page */
+.co-header { display: flex; align-items: center; justify-content: space-between; height: 70px; padding: 0 24px; border-bottom: 1px solid var(--grey-200); background: var(--white); }
+.co-header-left, .co-header-right { display: flex; align-items: center; }
+.co-header-left { gap: 20px; }
+.co-header-right { gap: 24px; }
+.co-logo img { width: 59px; height: 59px; }
+.co-steps { display: flex; gap: 14px; margin: 0; padding: 0; list-style: none; font-size: 14px; color: #757575; }
+.co-steps .is-current { font-weight: 500; color: var(--ink); }
+.co-steps a { color: inherit; text-decoration: none; }
+.co-steps a:hover { color: var(--blue); }
+.co-phone { font-size: 15px; color: var(--ink); }
+.co-icon { position: relative; display: flex; color: var(--blue); }
+.co-icon svg { width: 28px; height: 28px; }
+.co-icon:hover { color: var(--blue-800); }
+.co-cart-count { position: absolute; left: 50%; top: calc(50% + 3px); transform: translate(-50%, -50%); font-size: 10px; font-weight: 600; line-height: 1; }
+
+.co-page { max-width: 1272px; margin: 0 auto; padding: 40px 24px 60px; }
+.co-layout { display: flex; }
+.co-form { flex: 0 0 55.5%; padding-right: 77px; border-right: 1px solid var(--grey-200); }
+.co-summary { flex: 1; min-width: 0; padding-left: 77px; }
+
+.co-login { display: flex; align-items: center; gap: 10px; padding: 0 0 18px 8px; margin-bottom: 22px; border-bottom: 1px solid var(--grey-200); }
+.co-login[hidden] { display: none; }
+.co-login > svg { flex-shrink: 0; width: 32px; height: 32px; color: var(--blue); }
+.co-login p { flex: 1; margin: 0; font-size: 14px; color: var(--ink); }
+.co-login a { color: var(--blue); }
+.co-login-close { display: flex; padding: 0 4px; background: none; border: none; cursor: pointer; color: var(--ink); }
+.co-login-close svg { width: 12px; height: 12px; }
+.co-login-close:hover { color: var(--blue); }
+
+.co-section { margin-bottom: 40px; }
+.co-section[hidden] { display: none; }
+.co-section h2 { margin: 0 0 20px; font-family: var(--font-body); font-size: 18px; font-weight: 500; text-transform: none; letter-spacing: normal; color: var(--ink); }
+.co-intro { margin: -2px 0 20px; font-size: 14px; color: #757575; }
+.co-field { margin-bottom: 10px; }
+.co-field label { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 500; text-transform: uppercase; color: var(--ink); }
+/* a required box left empty: red outline and red title */
+.co-field.is-invalid label { color: var(--sale-red); }
+.co-field.is-invalid input, .co-field.is-invalid select { border-color: var(--sale-red); }
+.co-field input, .co-field select { width: 100%; height: 50px; padding: 0 20px; border: 1px solid #757575; border-radius: 0; background: var(--white); font-family: var(--font-body); font-size: 18px; color: var(--ink); outline: none; }
+.co-field select { appearance: none; -webkit-appearance: none; cursor: pointer; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111418' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 18px center / 18px; padding-right: 50px; }
+/* País: a plain field with its suggestions dropping down underneath */
+.co-combo { position: relative; }
+/* the box's outline (same grey, no change when selected) carries on around the open list, so the list reads as the box growing downwards */
+.co-combo input[aria-expanded="true"] { border-bottom-color: transparent; }
+/* five countries showing, cut just under the word "Afeganistão" (5 rows of 44px less most of the last row's bottom padding), the rest by scrolling; the browser's scrollbar is hidden and a small light grey
+   dot down the right edge shows where you are instead (moved in checkout.js) */
+.co-combo-list { position: absolute; top: 100%; left: 0; right: 0; z-index: 20; max-height: 213px; overflow-y: auto; margin: 0; padding: 0; list-style: none; background: var(--white); border: 1px solid #757575; border-top: none; scrollbar-width: none; }
+.co-combo-list:not(.co-tel-list)::-webkit-scrollbar { display: none; }
+.co-combo-dot { position: absolute; right: 9px; z-index: 21; width: 6px; height: 6px; border-radius: 50%; background: #D1D5DB; pointer-events: none; }
+.co-combo-dot[hidden] { display: none; }
+.co-combo-list[hidden] { display: none; }
+.co-combo-list li { padding: 11px 20px; font-size: 18px; line-height: 22px; color: var(--ink); cursor: pointer; }
+.co-combo-list li:hover, .co-combo-list li.is-active { color: var(--blue); }
+.co-row { display: flex; gap: 7px; }
+.co-field--cp { flex: 0 0 171px; }
+.co-field--grow { flex: 1; min-width: 0; }
+.co-cp { display: flex; gap: 7px; }
+.co-cp input { padding: 0 12px; text-align: center; }
+.co-tel { position: relative; }
+/* the country button inside the phone box, on a light grey block: flag, the dialing code in black and a small ▼ (the number box's left
+   padding is set in phone-codes.js to fit it); it opens the list of codes in a small separate popup just under the box */
+.co-tel-code { position: absolute; left: 1px; top: 1px; bottom: 1px; z-index: 1; display: flex; align-items: center; gap: 8px; padding: 0 5px 0 10px; background: #F0F2F4; border: none; cursor: pointer; font-family: var(--font-body); font-size: 18px; color: var(--ink); }
+.co-tel-flag { flex-shrink: 0; width: 24px; height: 18px; line-height: 18px; background-size: cover; }
+.co-tel-code .co-tel-flag { margin-right: 7px; }
+.co-tel-caret { margin-left: 6px; width: 0; height: 0; border-left: 3.5px solid transparent; border-right: 3.5px solid transparent; border-top: 4px solid var(--ink); }
+.co-tel.is-open .co-tel-caret { transform: rotate(180deg); }
+.co-tel-list { top: calc(100% + 6px); right: auto; width: 162px; max-height: 205px; border: 1px solid var(--grey-200); box-shadow: 0 6px 18px rgba(17, 20, 24, .12); scrollbar-width: auto; }
+/* unlike the País list, this popup shows the browser's regular scroll bar, with its arrows */
+.co-tel-list li { padding: 9px 14px; font-size: 16px; line-height: 20px; }
+/* the line under the chosen country, Portugal and Spain; 5 rows plus it fill the popup */
+.co-tel-list .co-tel-sep { height: 1px; margin: 6px 0; padding: 0; background: var(--grey-200); cursor: default; }
+/* example number shown in grey until something is typed */
+.co-tel input::placeholder { color: #848B95; opacity: 1; }
+.co-tel-list li { display: flex; align-items: center; gap: 12px; }
+.co-tel-list-dial { margin-left: -4px; color: #757575; }
+
+/* delivery types: white boxes; the chosen one's outline turns blue (same thickness) */
+.co-shipping { display: flex; flex-direction: column; gap: 10px; }
+.co-ship { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding: 20px; border: 1px solid var(--grey-200); cursor: pointer; }
+/* a thin line separates "Meio de pagamento" from the discounts above */
+#pgForm { padding-top: 22px; border-top: 1px solid var(--grey-200); }
+.co-section:has(> .cart-codes) { margin-bottom: 32px; }
+/* payment methods: no boxes, just a round option on the left of each, then the service's logo(s) and its name */
+.co-payments { display: flex; flex-direction: column; gap: 22px; }
+.co-pay-option { display: flex; width: fit-content; align-items: center; gap: 14px; font-size: 17px; font-weight: 600; color: var(--ink); cursor: pointer; }
+/* the Klarna option ("Paga em 3 prestações sem juros") is the only name in regular weight */
+.co-pay-option:has(input[value="prestacoes"]) { font-weight: 400; }
+.co-pay-logos { display: flex; flex-shrink: 0; align-items: center; gap: 6px; }
+/* the logo files are already drawn at about 24px tall, so they're shown at their own size to stay sharp */
+.co-pay-logos img { display: block; }
+/* MB Way phone box: opens under the MB Way line, lined up with the "Meio de pagamento" title */
+.co-mbway { margin: -6px 0 4px; }
+.co-mbway[hidden] { display: none; }
+/* "Adicionar": an outlined button, not filled; grey while there's no full number yet; on hover the black fill slides up from the bottom and the text turns yellow (the usual black button) */
+.co-mbway-add { margin-top: 22px; }
+/* the card boxes already have room under them (each field's own margin), so the same 22px gap needs less here */
+#pgCard .co-mbway-add { margin-top: 12px; }
+/* a small filled card icon in front of the card number */
+.co-card-number { position: relative; }
+.co-card-icon svg { position: absolute; left: 15px; top: 50%; width: 35px; height: 35px; transform: translateY(-50%); color: #D6E5F9; pointer-events: none; }
+.co-field .co-card-number input { padding-left: 62px; }
+/* the grey examples in the card boxes (number, MM/AA, CVC) */
+.co-card-number input::placeholder, #pgCardExpiry::placeholder, #pgCardCvc::placeholder { font-size: 21px; color: #DDE0E4; }
+/* Link saved card, at the right of the empty card number box: a wide, short black box with rounded corners holding a
+   square to tick, the green link logo and the saved card (brand + last 4 digits); it goes once something is typed */
+.co-card-link { position: absolute; right: 21px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 10px; height: 27px; padding: 0 12px 0 10px; border: none; border-radius: 8px; background: #111418; color: var(--white); font-family: var(--font-body); font-size: 14px; cursor: pointer; transition: background 0.2s ease, opacity 0.3s ease, visibility 0s; }
+.co-card-link.is-gone { opacity: 0; visibility: hidden; transition: background 0.2s ease, opacity 0.3s ease, visibility 0s 0.3s; }
+.co-card-link:hover { background: #2A2F36; }
+.co-card-link[hidden] { display: none; }
+.co-card-link-box { flex-shrink: 0; width: 13px; height: 13px; border: 1.5px solid var(--white); border-radius: 3px; background: #3A3F46; }
+.co-card-link[aria-checked="true"] .co-card-link-box { background: #00D66F url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5' fill='none' stroke='%23111418' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 11px no-repeat; border-color: #00D66F; }
+.co-card-link-logo { display: flex; align-items: center; gap: 5px; font-size: 15px; font-weight: 700; letter-spacing: -0.2px; color: #00D66F; }
+.co-card-link-logo svg { width: 16px; height: 16px; }
+.co-card-link-card { display: flex; align-items: center; gap: 6px; }
+.co-card-link-card svg { width: 26px; height: 26px; }
+/* Link card ticked: the Link box turns light grey and moves to the left of the number box, without its square, the card
+   icon and example number go */
+#pgCard.is-link .co-card-link { left: 22px; right: auto; padding-left: 12px; background: #F0F2F4; color: var(--ink); box-shadow: inset 0 0 0 0.6px #D5D9DE; }
+#pgCard.is-link .co-card-link-logo { color: #000; }
+#pgCard.is-link .co-card-link:hover { background: #E8EAED; }
+#pgCard.is-link .co-card-link-box { display: none; }
+#pgCard.is-link .co-card-icon { visibility: hidden; }
+#pgCard.is-link #pgCardNumber::placeholder { color: transparent; }
+/* ...and Validade and CVC get the same light grey box, holding the saved card's date and "•••" */
+.co-card-chip-wrap { position: relative; }
+.co-card-chip { position: absolute; left: 22px; top: 50%; transform: translateY(-50%); display: none; align-items: center; height: 27px; padding: 0 12px; border-radius: 8px; background: #F0F2F4; box-shadow: inset 0 0 0 0.6px #D5D9DE; font-size: 14px; color: var(--ink); pointer-events: none; }
+#pgCard.is-link .co-card-chip { display: flex; }
+#pgCard.is-link #pgCardExpiry::placeholder, #pgCard.is-link #pgCardCvc::placeholder { color: transparent; }
+#pgCard.is-link #pgCardExpiry, #pgCard.is-link #pgCardCvc { cursor: default; }
+.co-pay.co-mbway-add { background: var(--white); color: var(--ink); border-color: var(--ink); transition: color 0.28s ease; }
+.co-pay.co-mbway-add::before { background: var(--ink); }
+.co-pay.co-mbway-add:not(:disabled):hover { border-color: var(--ink); color: var(--yellow); }
+.co-pay.co-mbway-add:disabled { background: var(--white); border-color: #B3B3B3; color: #B3B3B3; }
+/* the added MB Way number: just the number, in a box outlined in blue */
+.co-mbway-added { position: relative; display: flex; align-items: center; height: 60px; margin: -6px 0 4px; padding: 0 20px; border: 1px solid var(--blue); font-size: 14px; color: var(--ink); }
+.co-mbway-added[hidden] { display: none; }
+.co-mbway-edit { position: absolute; right: 0; bottom: calc(100% + 20px); }
+/* "Alterar" with an incomplete number: the box and "Telemóvel" turn red (.co-field.is-invalid) and "Valor inválido." slides a little
+   under the box's right end, like "Código inválido.", in the gap kept above the button (so the button doesn't move) */
+.co-mbway-error { margin-top: 8px; transform: translateY(-4px); }
+.co-field.is-invalid .co-mbway-error { visibility: visible; opacity: 1; transform: none; transition: transform 0.3s ease, opacity 0.3s ease, visibility 0s; }
+.co-pay-option input { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 20px; height: 20px; margin: 0; border: 1px solid #BBBBBB; border-radius: 50%; background: var(--white); cursor: pointer; }
+.co-pay-option input:checked { border-color: var(--ink); background: radial-gradient(circle, var(--ink) 0 5px, var(--white) 5.5px); }
+.co-pay-option input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.co-ship[hidden] { display: none; }
+.co-ship input { position: absolute; opacity: 0; pointer-events: none; }
+.co-ship:has(input:checked) { border-color: var(--blue); }
+.co-ship:has(input:focus-visible) { outline: 2px solid var(--blue); outline-offset: 2px; }
+.co-ship-text { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--ink); }
+.co-ship-text strong { font-weight: 700; }
+.co-ship-price { font-size: 16px; color: var(--ink); }
+
+/* checkboxes: a plain square that fills black with a white tick */
+.co-check { display: flex; width: fit-content; align-items: center; gap: 10px; font-size: 14px; color: var(--ink); cursor: pointer; }
+.co-check input { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 20px; height: 20px; margin: 0; border: 1px solid #BBBBBB; border-radius: 0; background: var(--white); cursor: pointer; }
+.co-check input:checked { border-color: var(--ink); background: var(--ink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center / 14px; }
+.co-check input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+/* round option (Pickup Points): a light grey circle with a black dot when picked */
+.co-radio { display: flex; width: fit-content; align-items: center; gap: 10px; font-size: 14px; color: var(--ink); cursor: pointer; }
+.co-radio span { font-size: 18px; font-weight: 500; }
+.co-radio input { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: 20px; height: 20px; margin: 0; border: 1px solid #BBBBBB; border-radius: 50%; background: var(--white); cursor: pointer; }
+.co-radio input:checked { border-color: var(--ink); background: radial-gradient(circle, var(--ink) 0 5px, var(--white) 5.5px); }
+.co-radio input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.co-pickup-point { margin-top: 20px; }
+.co-pickup-point[hidden] { display: none; }
+.co-check--terms { margin-top: 40px; }
+.co-billing { margin-top: 24px; }
+.co-billing[hidden] { display: none; }
+.co-billing h3 { margin: 0 0 16px; font-family: var(--font-body); font-size: 16px; font-weight: 500; text-transform: none; letter-spacing: normal; color: var(--ink); }
+.co-legal { margin: 16px 0 0; font-size: 14px; line-height: 1.3; color: var(--ink); }
+.co-legal a { color: var(--blue); }
+.co-note { margin: 16px 0 0; font-size: 11px; color: var(--ink); }
+/* a bit more room between the consent text and "*Campos de preenchimento obrigatório" */
+.co-legal + .co-note { margin-top: 22px; }
+.co-note--payments { margin-top: 20px; }
+/* the payment step is short, so more room before the footer */
+.co-page:has(#pgForm) { padding-bottom: 100px; }
+.co-legal sup, .co-note sup { font-size: 0.7em; }
+
+/* order summary */
+.co-products { background: var(--grey-100); }
+.co-products[hidden] { display: none; }
+.co-product { display: flex; gap: 8px; padding: 15px; }
+.co-product + .co-product { border-top: 1px solid var(--grey-200); }
+.co-product img { flex-shrink: 0; width: 44px; height: 44px; object-fit: contain; }
+.co-product-text { flex: 1; min-width: 0; }
+.co-product-head { display: flex; justify-content: space-between; gap: 16px; }
+.co-product-tag { margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--blue); }
+.co-product-name { margin: 0; font-family: var(--font-body); font-size: 18px; font-weight: 500; line-height: 1.35; text-transform: none; letter-spacing: normal; color: var(--ink); }
+.co-product-edit { flex-shrink: 0; font-size: 14px; color: var(--ink); text-decoration: none; }
+.co-product-edit:hover { color: var(--blue); }
+.co-product-meta { display: block; margin: 8px 0; font-size: 14px; color: #757575; }
+.co-product-prices p { display: flex; justify-content: space-between; margin: 0 0 4px; font-size: 14px; color: var(--ink); }
+.co-product-prices .is-promo, .co-product-prices .is-socio { color: var(--blue); }
+.co-product-prices .is-socio { margin-bottom: 7px; }
+.co-product-prices .is-struck span:last-child { text-decoration: line-through; }
+.co-totals { margin-top: 28px; }
+.co-iva { margin: 16px 0 20px; font-size: 14px; color: var(--ink); }
+.co-iva a { color: var(--blue); }
+/* "Pagamento": grey and off until the form is complete, then the usual black button (yellow text, blue fill rising on hover) */
+.co-pay { position: relative; overflow: hidden; z-index: 0; display: block; width: 100%; height: 50px; border: 1px solid var(--ink); border-radius: 0; background: var(--ink); color: var(--yellow); font-family: var(--font-body); font-size: 18px; cursor: pointer; transition: border-color 0.2s ease; }
+.co-pay::before { content: ""; position: absolute; inset: 0; background: var(--blue); transform: translateY(100%); transition: transform 0.28s ease; z-index: -1; }
+.co-pay:not(:disabled):hover { border-color: var(--blue); }
+.co-pay:not(:disabled):hover::before { transform: translateY(0); }
+.co-pay:disabled { border-color: #B3B3B3; background: #B3B3B3; color: var(--white); cursor: default; }
+.co-pay:disabled::before { display: none; }
+
+.co-footer-strip { display: flex; gap: 100px; padding: 20px 50px; background: var(--grey-100); }
+.co-footer-item { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink); }
+.co-footer-item svg { flex-shrink: 0; width: 24px; height: 24px; }
+.co-footer-bottom { display: flex; flex-direction: column; gap: 12px; padding: 40px 50px; }
+
+@media (max-width: 900px) {
+  .co-phone { display: none; }
+  .co-steps { gap: 10px; }
+  .co-page { padding: 24px 20px 48px; }
+  .co-layout { flex-direction: column-reverse; gap: 32px; }
+  .co-form { padding-right: 0; border-right: none; }
+  .co-summary { padding-left: 0; }
+  .co-footer-strip { flex-direction: column; gap: 14px; padding: 20px; }
+  .co-footer-bottom { padding: 28px 20px; }
+}
+
 .sr-page { max-width: var(--container-wide); margin: 0 auto; padding: 40px 24px 150px; }
 /* with a single tab picked the results are short, so less space above the footer */
 .sr-page:not([data-tab="todos"]) { padding-bottom: 104px; }
