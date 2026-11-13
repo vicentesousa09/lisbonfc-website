@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lisbon FC - Site oficial do Lisbon Football Club</title>
+<meta name="description" content="Introduz a tua palavra-passe para aceder à tua Conta Lisbon FC.">
+<link rel="icon" href="Logos/Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Condensed:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="ac-body">
+
+<!-- Account header, step 2: crest, the two steps (Verificação done, Palavra-Passe current) and the support line -->
+<header class="ac-header">
+  <div class="ac-header-left ac-header-left--steps">
+    <a href="/" class="ac-logo"><img src="Logos/Favicon.png" alt="Lisbon FC"></a>
+    <ol class="ac-steps">
+      <li>1. Verificação</li>
+      <li class="is-current">2. Palavra-Passe</li>
+    </ol>
+  </div>
+  <div class="ac-phone">
+    <strong>923 525 245</strong>
+    <span>(Chamada para rede móvel nacional)</span>
+  </div>
+</header>
+
+<main class="ac-page">
+  <div class="ac-layout ac-layout--pass">
+
+    <section class="ac-main">
+      <form class="ac-pass-form" novalidate>
+        <h1 class="ac-pass-title">Introduz a Palavra-passe</h1>
+        <div class="ac-input-wrap">
+          <input class="ac-input" id="acPass" type="password" autocomplete="current-password" aria-label="Palavra-passe" placeholder=" ">
+          <button type="button" class="ac-eye" aria-label="Mostrar palavra-passe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><g class="ac-eye-slash" stroke-linecap="round"><path d="M3.5 3.5l17 17" stroke="#fff" stroke-width="4.8"/><path d="M3.5 3.5l17 17"/></g></svg></button>
+        </div>
+        <p class="ac-error" hidden>Palavra-passe está incorreta.</p>
+        <a href="#" class="ac-recover">Recuperar palavra-passe</a>
+        <button type="submit" class="ac-btn" disabled>Iniciar Sessão</button>
+        <a href="conta.html" class="ac-back"><svg viewBox="0 0 8 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6.5 1 1.5 6l5 5"/></svg>Voltar</a>
+      </form>
+    </section>
+
+    <aside class="ac-side">
+      <p class="ac-pass-note">Introduz a tua <strong>palavra-passe</strong> para conseguires aceder ao teu perfil.</p>
+    </aside>
+
+  </div>
+</main>
+
+<!-- Account footer: languages, the legal links and the copyright -->
+<footer class="ac-footer ac-footer--inline">
+  <div class="ac-footer-left">
+    <div class="ac-langs">
+      <span class="is-active">PT</span><span>EN</span><span>ES</span><span>FR</span>
+    </div>
+    <nav class="ac-footer-links">
+      <a href="#">Contactos</a>
+      <a href="#">FAQs</a>
+      <a href="#">Política de Cookies</a>
+      <a href="politica-de-privacidade.html">Política de Privacidade</a>
+      <a href="termos-e-condicoes.html">Termos e Condições</a>
+      <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener">Livro de Reclamações</a>
+      <a href="#">Definições de Cookies</a>
+    </nav>
+  </div>
+  <p class="ac-copy">© 2026 Lisbon FC. Todos os direitos reservados.</p>
+</footer>
+
+<script src="js/conta-loader.js"></script>
+<script src="js/conta-palavra-passe.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lisbon Football Club</title>
+<meta name="robots" content="noindex">
+<!-- (paths start at the site's root, as this page also answers addresses in folders that don't exist) -->
+<link rel="icon" href="/Logos/Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="pnf-page">
+
+<!-- Page not found, as Benfica's: only the crest at the top; "Como assim fora?" with its translation, the message and
+     Homepage on the left, a whistle on the right; then three ways back in (News, Videos and Galleries, Match Center)
+     and a thin blue bar with the rights line -->
+<header class="pnf-header">
+  <a href="/" class="pnf-logo"><img src="/Logos/Logo.png" alt="Lisbon FC"></a>
+</header>
+
+<main class="pnf-main">
+  <div class="pnf-top">
+    <section class="pnf-message">
+      <blockquote>Como assim fora?</blockquote>
+      <p class="pnf-transl">transl: Out? How is it out?</p>
+      <h1>Page temporarily unavailable.</h1>
+      <p>We are solving the problem.</p>
+      <a href="/" class="pnf-btn">Homepage</a>
+    </section>
+    <div class="pnf-art" aria-hidden="true">
+      <img src="/Logos/404/whistle-blue.png" alt="" class="pnf-whistle">
+    </div>
+  </div>
+
+  <nav class="pnf-links" aria-label="Sugestões">
+    <div class="pnf-link">
+      <img src="/Logos/404/news-blue-shade.png" alt="" aria-hidden="true">
+      <div>
+        <h3>News</h3>
+        <a href="/noticias.html" class="pnf-btn pnf-btn--small">See More</a>
+      </div>
+    </div>
+    <div class="pnf-link">
+      <img src="/Logos/404/galleries-blue-shade.png" alt="" aria-hidden="true">
+      <div>
+        <h3>Videos and Galleries</h3>
+        <a href="/videos.html" class="pnf-btn pnf-btn--small">See More</a>
+      </div>
+    </div>
+    <div class="pnf-link">
+      <img src="/Logos/404/match-blue-shade.png" alt="" aria-hidden="true">
+      <div>
+        <h3>Match Center</h3>
+        <a href="/match-center.html" class="pnf-btn pnf-btn--small">See More</a>
+      </div>
+    </div>
+  </nav>
+</main>
+
+<footer class="pnf-bar">
+  <p>© <span data-pnf-year>2026</span> Lisbon FC. All rights reserved</p>
+</footer>
+
+<script>
+  // the rights line says the current year
+  document.querySelector("[data-pnf-year]").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

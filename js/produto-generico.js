@@ -19,7 +19,7 @@ const adepto = params.get("adepto") || "";
 const carteira = params.get("carteira") || "";
 const pvp = params.get("pvp") || "";
 
-document.title = `${nome} | Loja | Lisbon FC`;
+document.title = `${nome} - Loja - Lisbon FC`;
 document.getElementById("genericName").textContent = nome;
 document.getElementById("genericSocio").textContent = socio || "—";
 document.getElementById("genericAdepto").textContent = adepto || "—";

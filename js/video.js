@@ -976,7 +976,7 @@ const activeVideoSlug = mediaData[requestedVideo] ? requestedVideo : mediaSlugs[
 const activeMedia = mediaData[activeVideoSlug];
 
 function renderVideo() {
-  document.title = `${activeMedia.title} | Lisbon FC`;
+  document.title = `${activeMedia.title} - Lisbon FC`;
 
   document.querySelectorAll("[data-video-tag]").forEach((el) => { el.textContent = activeMedia.tagLabel; });
   document.querySelectorAll("[data-video-title]").forEach((el) => { el.textContent = activeMedia.title; });

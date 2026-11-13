@@ -172,7 +172,7 @@ function buildVideoPlayer(media) {
           </button>
           <div class="video-settings-divider"></div>
           <button type="button" class="video-settings-row video-settings-row--debug-log" id="videoSettingsDebugLog">
-            <svg class="video-settings-row-icon" viewBox="0 0 24 24" aria-hidden="true"><circle class="video-settings-row-icon-ring" cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.5" r="0.9" fill="currentColor" stroke="none"/></svg>
+            <svg class="video-settings-row-icon" viewBox="0 0 24 24" aria-hidden="true"><circle class="video-settings-row-icon-ring" cx="12" cy="12" r="9"/><path d="M10.4 10.8H12v6.4M10.2 17.2h3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7.4" r="1.15" fill="currentColor" stroke="none"/></svg>
             <span class="video-settings-label">Registro de depuração</span>
           </button>
         </div>

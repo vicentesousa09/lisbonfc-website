@@ -5,9 +5,11 @@ const megaPanel = document.querySelector(".mega-menu-panel");
 
 // Laptop: the close button is drawn like the menu icon (see .mega-close in style.css) and sits right on top of it,
 // so it lives outside the sliding panel; desktop keeps it inside the panel
-megaClose.appendChild(menuToggle.querySelector("svg").cloneNode(true));
+// (pages with their own menu, such as the account pages, have none of this)
+if (menuToggle && megaClose) megaClose.appendChild(menuToggle.querySelector("svg").cloneNode(true));
 const laptopQuery = window.matchMedia("(min-width: 901px) and (max-width: 1599px)");
 function placeMegaClose() {
+  if (!megaClose) return;
   if (laptopQuery.matches) megaMenu.appendChild(megaClose);
   else megaPanel.prepend(megaClose);
 }
@@ -42,7 +44,7 @@ function closeMenu() {
   menuToggle.setAttribute("aria-expanded", "false");
 }
 
-menuToggle.addEventListener("click", openMenu);
+menuToggle?.addEventListener("click", openMenu);
 let megaClosingTimer;
 let megaOpeningTimer;
 let megaOpenedFrom = menuToggle;
@@ -54,7 +56,7 @@ function releaseHeldHover(e) {
   document.removeEventListener("mousemove", releaseHeldHover);
 }
 // clicking the cross plays its own fold back into the menu icon (.is-closing in style.css), kept until the menu has gone
-megaClose.addEventListener("click", () => {
+megaClose?.addEventListener("click", () => {
   clearTimeout(megaOpeningTimer);
   megaClose.classList.remove("is-opening");
   megaOpenedFrom.classList.add("is-hovered");
@@ -64,7 +66,7 @@ megaClose.addEventListener("click", () => {
   clearTimeout(megaClosingTimer);
   megaClosingTimer = setTimeout(() => megaClose.classList.remove("is-closing"), 350);
 });
-megaMenu.addEventListener("click", (e) => {
+megaMenu?.addEventListener("click", (e) => {
   if (e.target === megaMenu) closeMenu();
 });
 
@@ -72,10 +74,10 @@ megaMenu.addEventListener("click", (e) => {
 const megaPrimary = document.querySelector(".mega-primary");
 const megaIndicator = document.createElement("span");
 megaIndicator.className = "mega-indicator";
-megaPrimary.appendChild(megaIndicator);
+megaPrimary?.appendChild(megaIndicator);
 
 function moveIndicator(animate) {
-  const active = megaPrimary.querySelector(".mega-primary-link.active");
+  const active = megaPrimary?.querySelector(".mega-primary-link.active");
   if (!active) return;
   megaIndicator.classList.toggle("is-animated", animate);
   megaIndicator.style.transform = `translateY(${active.offsetTop + active.offsetHeight - 8}px)`;
@@ -354,7 +356,7 @@ function headerTopRowBottom() {
   const compact = document.querySelector(".header-compact.is-visible");
   const bottom = compact
     ? compact.getBoundingClientRect().bottom
-    : document.querySelector(".site-header .header-top-inner").getBoundingClientRect().bottom + 1;
+    : (document.querySelector(".site-header .header-top-inner") || document.querySelector(".nh-inner")).getBoundingClientRect().bottom + 1;
   return Math.max(0, bottom);
 }
 
@@ -399,19 +401,97 @@ miniCart.innerHTML = `
     <p class="mini-cart-count"></p>
     <a class="mini-cart-view" href="carrinho.html">Ver carrinho</a>
   </div>
+  <div class="mini-cart-items"></div>
   <div class="mini-cart-foot">
     <p class="mini-cart-total"><span>Total</span><span class="mini-cart-total-price">0,00€</span></p>
     <a class="mini-cart-buy" href="checkout.html">Comprar</a>
   </div>`;
 document.body.append(miniCartBackdrop, miniCart);
-miniCartBackdrop.addEventListener("click", closeMiniCart);
+// (a click on the darkened page around it does not close it: only its X, the bag icon or Esc do)
 miniCart.querySelector(".mini-cart-close").addEventListener("click", closeMiniCart);
 
-function openMiniCart() {
-  closeSearchOverlay();
+// the products, each like the checkout summary's cards: small photo, "Promoção" tag, name, "1x / M", the prices
+// ("Promoção", "Sócio" in blue, "PVP", then what it adds to the Carteira Adepto) and "Remover" at the top right, which takes it out of the cart there and then
+function renderMiniCart() {
   const n = getCartCount();
   miniCart.querySelector(".mini-cart-count").textContent = `${n} ${n === 1 ? "Artigo" : "Artigos"}`;
   miniCart.querySelector(".mini-cart-total-price").textContent = formatPrice(getCartTotal());
+  const items = getCartItems();
+  const list = miniCart.querySelector(".mini-cart-items");
+  list.hidden = items.length === 0;
+  list.replaceChildren(...items.map((item, index) => {
+    const card = document.createElement("div");
+    card.className = "mini-cart-item";
+    const img = document.createElement("img");
+    img.src = item.img;
+    img.alt = item.title;
+    const text = document.createElement("div");
+    text.className = "mini-cart-item-text";
+    const head = document.createElement("div");
+    head.className = "mini-cart-item-head";
+    const titles = document.createElement("div");
+    if (item.promo) {
+      const tag = document.createElement("p");
+      tag.className = "mini-cart-item-tag";
+      tag.textContent = "Promoção";
+      titles.append(tag);
+    }
+    const name = document.createElement("p");
+    name.className = "mini-cart-item-name";
+    name.textContent = item.title;
+    titles.append(name);
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "mini-cart-item-remove";
+    remove.textContent = "Remover";
+    remove.addEventListener("click", () => {
+      const all = getCartItems();
+      const [removed] = all.splice(index, 1);
+      try {
+        localStorage.setItem(CART_ITEMS_KEY, JSON.stringify(all));
+        localStorage.setItem(CART_KEY, Math.max(0, getCartCount() - removed.qty));
+      } catch {}
+      renderCartCount();
+      renderMiniCart();
+      // (on the cart page, its list follows)
+      if (typeof renderCartItems === "function") renderCartItems();
+    });
+    head.append(titles, remove);
+    const meta = document.createElement("span");
+    meta.className = "mini-cart-item-meta";
+    meta.textContent = `${item.qty}x / ${item.size}`;
+    const prices = document.createElement("div");
+    prices.className = "mini-cart-item-prices";
+    const row = (label, value, cls) => {
+      const p = document.createElement("p");
+      p.className = cls;
+      const l = document.createElement("span");
+      l.textContent = label;
+      const v = document.createElement("span");
+      v.textContent = value;
+      p.append(l, v);
+      return p;
+    };
+    if (item.promo) prices.append(row("Promoção", item.promo, "is-promo"));
+    if (item.socio) prices.append(row("Sócio", item.socio, "is-socio"));
+    if (item.pvp) prices.append(row("PVP", item.pvp, item.promo ? "is-struck" : ""));
+    // (always shown; the main shirt added before the product page saved the amount gets its page's +1,00€)
+    const wallet = item.wallet || (item.title === "Camisola Principal do Lisbon FC 2026-2027" ? "+1,00€" : "");
+    prices.append(row("Acumula em carteira adepto", wallet.replace(/^\+\s*/, ""), "is-wallet"));
+    text.append(head, meta, prices);
+    card.append(img, text);
+    return card;
+  }));
+}
+
+// an empty cart: the panel opens as usual, then after a few seconds the shop (loja.html) loads
+// (unless the panel is closed first, or this is already the shop)
+let miniCartShopTimer = 0;
+function openMiniCart() {
+  closeSearchOverlay();
+  renderMiniCart();
+  const goShop = getCartCount() === 0 && !/\/loja\.html$/.test(location.pathname);
+  if (goShop) miniCartShopTimer = setTimeout(() => { location.href = "loja.html"; }, 2500);
   miniCart.style.top = miniCartBackdrop.style.top = `${headerTopRowBottom()}px`;
   document.body.style.setProperty("--scrollbar-w", `${window.innerWidth - document.documentElement.clientWidth}px`);
   document.body.classList.add("cart-open");
@@ -419,6 +499,7 @@ function openMiniCart() {
   miniCartBackdrop.classList.add("open");
 }
 function closeMiniCart() {
+  clearTimeout(miniCartShopTimer);
   document.body.classList.remove("cart-open");
   miniCart.classList.remove("open");
   miniCartBackdrop.classList.remove("open");
@@ -442,6 +523,96 @@ searchToggle.addEventListener("click", () => {
   searchToggle.setAttribute("aria-expanded", String(isOpen));
   if (isOpen) searchBar.querySelector("input").focus();
 });
+
+// Signed in (lfcSession, set by the account pages): a blue wallet goes between the cart and the account icon. Every
+// 3 seconds it rolls over to the balance in the wallet (0,00€ until there's a server to ask) and back. It's added
+// before the compact header copies the top row, so both headers get it
+const headerAccount = document.querySelector('.header-top-right .icon-btn[aria-label="Área de Sócio"]');
+let signedIn = false;
+let session = {};
+try {
+  signedIn = localStorage.getItem("lfcSession") !== null;
+  session = JSON.parse(localStorage.getItem("lfcSession")) || {};
+} catch {}
+// signed in, the account icon becomes a circle with the initials of the name (first and last), in black
+const initials = (session.name || "").trim().split(/\s+/).filter(Boolean)
+  .filter((w, i, all) => i === 0 || i === all.length - 1).map((w) => w[0].toLocaleUpperCase("pt")).join("");
+if (signedIn && headerAccount && initials) {
+  headerAccount.classList.add("header-initials");
+  headerAccount.innerHTML = `<span class="initials-circle">${initials}</span>`;
+}
+if (signedIn && headerAccount) {
+  const balance = "0,00€";
+  const wallet = document.createElement("span");
+  wallet.className = "icon-btn header-wallet";
+  wallet.setAttribute("role", "img");
+  wallet.setAttribute("aria-label", `Carteira: ${balance}`);
+  wallet.innerHTML =
+    '<span class="wallet-face wallet-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><rect x="2" y="7" width="20" height="16" rx="1.5"/><path d="M3.5 7V5.5A1.5 1.5 0 0 1 5 4h14a1.5 1.5 0 0 1 1.5 1.5V7"/><g stroke-width="1.1"><path d="M14.4 13.15a2.4 2.4 0 1 0 0 3.7"/><path d="M9.4 14.35h3.4M9.4 15.65h3.4"/></g></svg></span>' +
+    `<span class="wallet-face wallet-amount">${balance}</span>`;
+  headerAccount.before(wallet);
+  setInterval(() => {
+    document.querySelectorAll(".header-wallet").forEach((w) => w.classList.toggle("show-amount"));
+  }, 3000);
+}
+
+// Signed in, the account icon opens a small popup on the right edge, under the header's top row, that slides in from the right (the page isn't
+// darkened or locked): "Olá" with the name, the member number, the account sections, and "Terminar Sessão" (which signs out here
+// and reloads). Each section opens the profile page (perfil.html) at its tab, in a new tab
+if (signedIn) {
+  const accountPanel = document.createElement("aside");
+  accountPanel.className = "account-panel";
+  accountPanel.setAttribute("aria-label", "A minha conta");
+  accountPanel.innerHTML = `
+    <p class="account-panel-hello">Olá <strong data-account-name></strong></p>
+    <p class="account-panel-member" data-account-member hidden>Sócio Nº <span></span></p>
+    <ul class="account-panel-list">
+      <li><a href="perfil.html#socio" target="_blank">Carteira (0,00 €)</a></li>
+      <li><a href="perfil.html#preferencias" target="_blank">Notificações</a></li>
+      <li><a href="perfil.html#dados-pessoais" target="_blank">Dados Pessoais</a></li>
+      <li><a href="perfil.html#encomendas" target="_blank">Encomendas</a></li>
+      <li><a href="perfil.html#preferencias" target="_blank">Preferências</a></li>
+      <li><a href="perfil.html#consentimentos" target="_blank">Consentimentos</a></li>
+    </ul>
+    <button type="button" class="account-panel-logout">Terminar Sessão</button>`;
+  accountPanel.querySelector("[data-account-name]").textContent = (session.name || "").toLocaleUpperCase("pt");
+  if (session.socio) {
+    const member = accountPanel.querySelector("[data-account-member]");
+    member.querySelector("span").textContent = session.socio;
+    member.hidden = false;
+  }
+  document.body.append(accountPanel);
+
+  // it hangs from the line under the header's top row (big header or compact one), against the right edge of the screen
+  const openAccountPanel = () => {
+    closeMiniCart();
+    accountPanel.style.top = `${headerTopRowBottom()}px`;
+    accountPanel.classList.add("open");
+  };
+  const closeAccountPanel = () => accountPanel.classList.remove("open");
+  document.addEventListener("click", (e) => {
+    const icon = e.target.closest('.header-top-right .icon-btn[aria-label="Área de Sócio"]');
+    if (icon) {
+      e.preventDefault();
+      if (accountPanel.classList.contains("open")) closeAccountPanel();
+      else openAccountPanel();
+    } else if (!accountPanel.contains(e.target)) {
+      // a click anywhere else closes it
+      closeAccountPanel();
+    }
+  });
+  // it belongs to the icon, so scrolling the page closes it
+  window.addEventListener("scroll", () => { if (accountPanel.classList.contains("open")) closeAccountPanel(); }, { passive: true });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && accountPanel.classList.contains("open")) closeAccountPanel();
+  });
+  // each section opens the profile page at its tab, in a new tab; the popup closes behind it
+  accountPanel.querySelectorAll(".account-panel-list a").forEach((a) => a.addEventListener("click", closeAccountPanel));
+  accountPanel.querySelector(".account-panel-logout").addEventListener("click", () => {
+    try { localStorage.removeItem("lfcSession"); } catch {}
+    location.reload();
+  });
+}
 
 // Compact header: a smaller copy of the top row that slides in once the main header
 // has scrolled away (only shown on laptop widths, see .header-compact in style.css)
@@ -492,6 +663,19 @@ function initCarousel(containerSelector, prevSelector, nextSelector, intervalMs)
   container.querySelector(prevSelector).addEventListener("click", () => show(index - 1));
 
   setInterval(() => show(index + 1), intervalMs);
+}
+
+// The grey strip under the header: its messages take turns, rolling up one after the next
+const promoItems = document.querySelectorAll(".promo-item");
+if (promoItems.length > 1) {
+  let promoIndex = 0;
+  setInterval(() => {
+    const leaving = promoItems[promoIndex];
+    leaving.classList.replace("is-active", "is-leaving");
+    setTimeout(() => leaving.classList.remove("is-leaving"), 600);
+    promoIndex = (promoIndex + 1) % promoItems.length;
+    promoItems[promoIndex].classList.add("is-active");
+  }, 5000);
 }
 
 if (document.querySelector("#heroFeature")) {

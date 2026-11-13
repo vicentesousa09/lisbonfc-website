@@ -342,7 +342,7 @@ const activeSlug = noticiasData[requestedNoticia] ? requestedNoticia : "supertac
 const noticia = noticiasData[activeSlug];
 
 function renderNoticia() {
-  document.title = `${noticia.title} | Lisbon FC`;
+  document.title = `${noticia.title} - Lisbon FC`;
 
   const tagLabel = TAG_LABELS[noticia.tag] || noticia.tag;
   document.querySelectorAll("[data-noticia-tag]").forEach((el) => { el.textContent = tagLabel; });

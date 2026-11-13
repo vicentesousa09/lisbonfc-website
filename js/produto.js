@@ -170,6 +170,8 @@ document.querySelectorAll(".pdp-add").forEach((btn) => {
       socio: price("price-row--member"),
       promo: price("price-row--promo"),
       pvp: price("price-row--pvp"),
+      // (what it adds to the Carteira Adepto, "+1,00€")
+      wallet: price("price-note"),
     });
     pdpShowCartToast();
   });

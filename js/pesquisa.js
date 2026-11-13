@@ -66,7 +66,7 @@ function setQuery(text) {
   words = [...new Set(normalize(query).split(/[^a-z0-9]+/).filter((w) => w.length >= 3))];
   stems = words.map(stem);
   srQuery.value = query;
-  document.title = query ? `${query} | Pesquisa | Lisbon FC` : "Resultados de pesquisa | Lisbon FC";
+  document.title = query ? `${query} - Pesquisa - Lisbon FC` : "Resultados de pesquisa - Lisbon FC";
 }
 
 function score(text) {
