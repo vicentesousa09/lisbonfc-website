@@ -18,7 +18,7 @@ const HE_STEPS = [
 // an order's state picks its step (anything else stays on the first)
 const HE_STEP_OF = { Processada: 0, "A preparar": 1, Preparada: 2, "Em distribuição": 3, Entregue: 4 };
 
-const heOrders = (account.orders || []).map((o, i) => ({ ...o, index: i, ...(HE_DETAILS[o.id] || { kind: "produtos", total: "", items: [] }) }));
+const heOrders = (account.orders || []).map((o, i) => ({ kind: "produtos", total: "", items: [], ...o, index: i, ...(HE_DETAILS[o.id] || {}) }));
 const heCard = (account.cards || [])[0];
 const heParseDate = (d) => { const [day, month, year] = d.split("/").map(Number); return new Date(year, month - 1, day); };
 

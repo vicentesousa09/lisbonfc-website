@@ -129,14 +129,48 @@ ckAllowAll.addEventListener("click", () => {
   saveCookies();
 });
 
-// an account without a member number: no "Sócio Nº" line under the name
-if (!profile.socio) document.querySelector("[data-pf-member-line]").hidden = true;
+// an account without a member number: no "Sócio Nº" line under the name; the card with dashes for the number and the
+// year (as Benfica's), and instead of the rows "Já sou sócio" and "Ainda não és sócio?"
+if (!profile.socio) {
+  document.querySelector("[data-pf-member-line]").hidden = true;
+  document.querySelector(".pf-card-text [data-pf-member]").textContent = "- - - - -";
+  document.querySelector("[data-pf-card-since]").textContent = "- - - - - - - - - - - -";
+  document.querySelector("[data-pf-rows]").hidden = true;
+  document.querySelector("[data-pf-join]").hidden = false;
+  document.querySelector(".pf-card-box").classList.add("is-join");
+}
+// "Já sou sócio": both boxes needed (an empty one turns red); Guardar links the number to the account (until there's a
+// server to check it against the ID document) and the page shows the member's layout
+const pfJoinForm = document.querySelector("[data-pf-join-form]");
+pfJoinForm.addEventListener("input", (e) => e.target.classList.remove("is-invalid"));
+pfJoinForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const empty = [...pfJoinForm.querySelectorAll(".pf-join-input")].filter((i) => !i.value.trim());
+  empty.forEach((i) => i.classList.add("is-invalid"));
+  if (empty.length) { empty[0].focus(); return; }
+  profile.socio = pfJoinForm.socio.value.trim();
+  try { localStorage.setItem("lfcSession", JSON.stringify(profile)); } catch {}
+  location.reload();
+});
 
-// quotas: monthly; overdue (the row and its button in red) until there's a server with the real state
-const feesOverdue = true;
+// quotas: monthly; overdue (the row and its button in red) until they're paid (the last month paid kept on the account
+// by the quotas' Finalizar). Paid up, the row is as the others: "Mensal Pago até nov 26" with a blue tick, and a plain
+// Pagar Quotas (to pay ahead)
+const PF_MONTHS = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const pfNow = new Date();
+const pfThisMonth = `${pfNow.getFullYear()}-${String(pfNow.getMonth() + 1).padStart(2, "0")}`;
+const feesOverdue = !(profile.quotasPaidUntil && profile.quotasPaidUntil >= pfThisMonth);
 const feesRow = document.querySelector("[data-pf-fees]");
 feesRow.classList.toggle("is-alert", feesOverdue);
-feesRow.querySelector("[data-pf-fees-text]").textContent = feesOverdue ? "Mensal em atraso" : "Mensal em dia";
+feesRow.querySelector(".pf-btn").classList.toggle("pf-btn--alert", feesOverdue);
+const feesText = feesRow.querySelector("[data-pf-fees-text]");
+if (feesOverdue) feesText.textContent = "Mensal em atraso";
+else {
+  const [year, month] = profile.quotasPaidUntil.split("-").map(Number);
+  feesText.textContent = `Mensal Pago até ${PF_MONTHS[month - 1]} ${String(year).slice(-2)}`;
+  // (and a thin blue tick after it)
+  feesText.insertAdjacentHTML("afterend", '<svg class="pf-paid-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-label="Pagas"><path d="m5 12.5 5 5 10-11"/></svg>');
+}
 
 // the photo: the camera picks one; it's kept in this browser and shown in the banner and on the card
 const avatarImg = document.querySelector(".pf-avatar-img");
@@ -165,7 +199,9 @@ photoInput.addEventListener("change", (e) => {
       canvas.width = canvas.height = size;
       const side = Math.min(img.width, img.height);
       canvas.getContext("2d").drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
-      const src = canvas.toDataURL("image/jpeg", 0.85);
+      // (a .jpg stays a .jpg; any other picture is kept as a .png, so its see-through parts stay see-through and the
+      // circle's own background shows behind them, not black)
+      const src = file.type === "image/jpeg" ? canvas.toDataURL("image/jpeg", 0.85) : canvas.toDataURL("image/png");
       showPhoto(src);
       try { localStorage.setItem("lfcAvatar", src); } catch {}
     };
@@ -194,3 +230,12 @@ function showTab() {
 }
 showTab();
 window.addEventListener("hashchange", showTab);
+
+// Débito Direto: active once joined (debito-direto-validacao.html), with how often it's charged; Aderir then says Alterar
+if (profile.directDebit) {
+  const periods = { mensal: "Mensal", bimestral: "Bimestral", trimestral: "Trimestral", semestral: "Semestral", anual: "Anual" };
+  const debit = document.querySelector("[data-pf-debit]");
+  debit.textContent = `Ativo · ${periods[profile.directDebit.period] || ""}`;
+  const btn = debit.closest(".pf-row").querySelector(".pf-btn");
+  if (btn) btn.textContent = "Alterar";
+}

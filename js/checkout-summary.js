@@ -6,8 +6,11 @@ const CART_ITEMS_KEY = "lfcCartItems";
 function getCartCount() {
   try { return parseInt(localStorage.getItem(CART_KEY), 10) || 0; } catch { return 0; }
 }
+// (the membership inscription, from the adhesion's Confirmação, is always named "Inscrição de Sócio" and shows the tilted sócio card)
 function getCartItems() {
-  try { return JSON.parse(localStorage.getItem(CART_ITEMS_KEY)) || []; } catch { return []; }
+  let items = [];
+  try { items = JSON.parse(localStorage.getItem(CART_ITEMS_KEY)) || []; } catch {}
+  return items.map((item) => (item.id === "adesao" ? { ...item, title: "Inscrição de Sócio", img: "Logos/CartaoSocio_Inclinado.png" } : item));
 }
 function parsePrice(text) {
   return parseFloat(String(text || "").replace(/[^\d,]/g, "").replace(",", ".")) || 0;
@@ -63,7 +66,7 @@ coProducts.replaceChildren(...items.map((item) => {
   head.append(titles, edit);
   const meta = document.createElement("span");
   meta.className = "co-product-meta";
-  meta.textContent = `${item.qty}x / ${item.size}`;
+  meta.textContent = `${item.qty}x${item.size ? ` / ${item.size}` : ""}`;
   const prices = document.createElement("div");
   prices.className = "co-product-prices";
   const row = (label, value, cls) => {
@@ -95,7 +98,7 @@ coProducts.replaceChildren(...items.map((item) => {
       item.size = s;
       saveCartItems();
       sizes.querySelectorAll(".pdp-size-btn").forEach((x) => x.classList.toggle("is-active", x === b));
-      meta.textContent = `${item.qty}x / ${item.size}`;
+      meta.textContent = `${item.qty}x${item.size ? ` / ${item.size}` : ""}`;
       // (picking a size closes the card again)
       setEditing(false);
     });
@@ -132,7 +135,7 @@ coProducts.replaceChildren(...items.map((item) => {
     const total = Math.max(0, getCartCount() + change);
     try { localStorage.setItem(CART_KEY, total); } catch {}
     document.querySelectorAll("[data-co-count]").forEach((el) => { el.textContent = total > 99 ? "99+" : total; });
-    meta.textContent = `${item.qty}x / ${item.size}`;
+    meta.textContent = `${item.qty}x${item.size ? ` / ${item.size}` : ""}`;
     renderTotal();
     setEditing(false);
   });

@@ -60,6 +60,7 @@ form.addEventListener("submit", async (e) => {
       }));
       sessionStorage.removeItem("acLoginId");
     } catch {}
-    location.href = "/";
+    // back to the page that asked for an account (Lisbon FC TV's live page), else the home page
+    location.href = (() => { let n = "/"; try { n = sessionStorage.getItem("lfcAfterLogin") || "/"; sessionStorage.removeItem("lfcAfterLogin"); } catch {} return n; })();
   }, 1600);
 });

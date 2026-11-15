@@ -2,6 +2,7 @@
 <html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
+<script src="js/i18n.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quotas - Lisbon FC</title>
 <meta name="description" content="Paga as tuas quotas de sócio do Lisbon FC.">
@@ -26,7 +27,7 @@
 
 <main id="top" class="qt-page">
   <!-- step 3: how to pay, as Benfica's: by recurring payment (Débito Direto or a card charged each period) or a single
-       one (card or MB WAY); Seguinte once one is chosen (quotas-pagamento.js) -->
+       one (card, Referência Multibanco or MB WAY); Seguinte once one is chosen (quotas-pagamento.js) -->
   <div class="qv-box">
     <h1 class="qp-title">Escolhe a forma de pagamento</h1>
     <p class="qp-subtitle">Pagamento</p>
@@ -50,10 +51,35 @@
         <span class="qp-logos"><img src="Logos/Pagamentos/visa.jpg" alt="Visa" class="qp-logo-visa"><img src="Logos/Pagamentos/mastercard-logo-png.jpg" alt="Mastercard" class="qp-logo-mc"></span>
         <span class="qp-option-name">Cartão de Débito/Crédito</span>
       </button>
-      <button type="button" class="qv-option qp-option" data-method="mbway" aria-pressed="false">
-        <span class="qp-logos"><img src="Logos/Pagamentos/mbway-logo-small.png" alt="" class="qp-logo-mb"></span>
-        <span class="qp-option-name">MB WAY</span>
+      <!-- (picked, a line at its right end says where its payment details will be) -->
+      <button type="button" class="qv-option qp-option" data-method="multibanco" aria-pressed="false">
+        <span class="qp-logos"><img src="Logos/Pagamentos/MB.png" alt="" class="qp-logo-mb"></span>
+        <span class="qp-option-name">Referência Multibanco</span>
+        <span class="qp-option-note">Os dados de pagamento ficam disponíveis na confirmação da encomenda.</span>
       </button>
+      <!-- MB WAY, picked, opens under its name: a line at the right saying what happens, and the phone number (the
+           country's flag and code on its left, picked from the list) that Seguinte waits for -->
+      <div class="qv-option qp-option qp-option--mbway" data-method="mbway" role="button" tabindex="0" aria-pressed="false">
+        <div class="qp-mbway-head">
+          <span class="qp-logos"><img src="Logos/Pagamentos/mbway-logo-small.png" alt="" class="qp-logo-mb"></span>
+          <span class="qp-option-name">MB WAY</span>
+          <span class="qp-option-note qp-mbway-note">Para finalizar <u>introduz o teu número de telemóvel</u> e será redirecionado para o website da MB Way.</span>
+        </div>
+        <div class="qp-mbway-panel" data-qp-mbway-panel inert>
+          <div class="qp-mbway-inner">
+            <div class="qd-field qp-mbway-field" data-field="phone">
+              <label class="qt-label" for="qpPhone">Telemóvel *</label>
+              <div class="ac-tel qd-tel">
+                <div class="ac-tel-code">
+                  <button type="button" class="ac-flag-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Escolher indicativo do país"><img class="ac-flag" src="https://flagcdn.com/w40/pt.png" alt=""><span class="qd-dial" data-qp-dial>+351</span><svg class="ac-caret" viewBox="0 0 6 4" aria-hidden="true"><path d="M0 0h6L3 4Z" fill="currentColor"/></svg></button>
+                  <select id="qpPhoneCode" hidden></select>
+                </div>
+                <input class="qd-input" id="qpPhone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" placeholder="Telemóvel">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <button type="button" class="qv-next" data-qp-next-btn disabled>Seguinte</button>
@@ -109,6 +135,7 @@
   </div>
 </footer>
 
+<script src="js/paises.js"></script>
 <script src="js/quotas-pagamento.js"></script>
 </body>
 </html>

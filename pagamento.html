@@ -2,6 +2,7 @@
 <html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
+<script src="js/i18n.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkout - Lisbon FC</title>
 <meta name="description" content="Finaliza a tua encomenda na Loja Oficial do Lisbon FC.">
@@ -201,164 +202,7 @@
   </div>
 </div>
 
-<!-- Link sign-in: the email of the Link account, opened from "Utilizar" in the card number box (see pagamento.js) -->
-<div class="captcha-modal link-modal" id="linkModal" hidden>
-  <form class="captcha-modal-box link-modal-box" id="linkForm" role="dialog" aria-modal="true" aria-labelledby="linkModalTitle" novalidate>
-    <button type="button" class="link-modal-close" id="linkModalClose" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-    <!-- on the Link details: the same grey circle on the left, with an arrow back to the email box -->
-    <button type="button" class="link-modal-close link-modal-back" id="linkModalBack" aria-label="Voltar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6 8.5 12l6 6"/></svg></button>
-    <!-- on "Formas de pagamento": a grey circle with three dots in the top-left corner, opening a small menu -->
-    <button type="button" class="link-modal-close link-modal-menu-btn" id="linkPayMenuBtn" aria-label="Mais opções" aria-haspopup="menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9" fill="currentColor"/><circle cx="12" cy="12" r="1.9" fill="currentColor"/><circle cx="18.5" cy="12" r="1.9" fill="currentColor"/></svg><svg class="link-modal-menu-done" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2 8.8-9.4"/></svg></button>
-    <!-- each with a small black icon on its left (a square with a pencil, the "opens elsewhere" arrow, a half square with
-         an arrow out); under "Sair", inside it, the email signed in to Link, small and grey. "Editar carteira" puts a red minus by each card, to remove it (the dots circle turns black with a yellow tick
-         meanwhile, to stop); "Abrir aplicativo" goes to the Link account on link.com (in a new tab), "Sair" signs out -->
-    <div class="link-modal-menu" id="linkPayMenu" role="menu" hidden>
-      <button type="button" role="menuitem" id="linkPayEdit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"/><path d="M17.6 3.4a1.9 1.9 0 0 1 2.7 2.7l-8 8-3.6.9.9-3.6z"/></svg>Editar carteira</button>
-      <a href="https://app.link.com/login" role="menuitem" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Abrir aplicativo</a>
-      <button type="button" role="menuitem" id="linkPaySignOut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/><path d="M10 12h10M16 8l4 4-4 4"/></svg><span>Sair<span class="link-modal-menu-email" id="linkPayEmail"></span></span></button>
-    </div>
-    <!-- the link logo switches the popup to the "what is Link" details (and back): its own title, no email box or "Continuar" -->
-    <button type="button" class="co-card-link-logo link-modal-logo" id="linkModalLogo" aria-expanded="false" aria-controls="linkModalInfo" aria-label="Sobre o Link"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="#00D66F"/><path d="M6.6 4.6 10 8l-3.4 3.4" fill="none" stroke="#011E0F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>link</button>
-    <h2 id="linkModalTitle"><span class="link-modal-title-form">Checkout rápido e seguro</span><span class="link-modal-title-info">Pague rapidamente,<br>compre com confiança</span><span class="link-modal-title-code">Confirme sua identidade</span><span class="link-modal-title-pay">Formas de pagamento</span><span class="link-modal-title-add">Adicionar um cartão</span><span class="link-modal-title-update">Atualizar cartão</span><span class="link-modal-title-remove">Remover cartão?</span><span class="link-modal-title-logout">Fazer logout?</span></h2>
-    <p>Informe seu e-mail para fazer login ou registrar-se</p>
-    <div class="co-field link-modal-email">
-      <label for="linkEmail">E-mail</label>
-      <input type="email" id="linkEmail" autocomplete="email" placeholder=" " aria-describedby="linkEmailError">
-      <span class="link-modal-alert" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 5.6v5.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="14" r="1.1" fill="currentColor"/></svg></span>
-      <!-- while the email is looked up: a profile picture on the left, and the email again on top of the box's own
-           (hidden) text, with a green wave running through it -->
-      <span class="link-modal-avatar" id="linkEmailAvatar" aria-hidden="true"></span>
-      <span class="link-modal-wave" id="linkEmailWave" aria-hidden="true"></span>
-      <span class="link-modal-spinner" aria-hidden="true"></span>
-      <p class="link-modal-error" id="linkEmailError">O e-mail inserido era inválido.</p>
-    </div>
-    <!-- an email with no Link account yet: a phone number box opens under it, for the code that creates the account -->
-    <div class="co-field link-modal-email link-modal-phone" id="linkPhoneField" hidden>
-      <!-- on its left, a small white box with the country's flag and code (Portugal, +351, to start with); clicking it opens
-           the list of every country with its code ("Portugal (+351)"), the select itself lying invisible over the box.
-           Then "Telemóvel": big in the middle while empty, small at the top over an example number once clicked -->
-      <span class="link-modal-phone-code">
-        <span class="fi fi-pt" id="linkPhoneFlag" aria-hidden="true"></span>
-        <span id="linkPhoneDial">+351</span>
-        <select id="linkPhoneCountry" aria-label="País do telefone"></select>
-      </span>
-      <label for="linkPhone">Telemóvel</label>
-      <input type="tel" id="linkPhone" inputmode="tel" autocomplete="tel-national" placeholder=" " data-example="912 345 678" aria-describedby="linkPhoneError">
-      <span class="link-modal-alert" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 5.6v5.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="14" r="1.1" fill="currentColor"/></svg></span>
-      <p class="link-modal-error" id="linkPhoneError">O número de telefone é inválido.</p>
-    </div>
-    <button type="submit" class="co-pay">Continuar</button>
-    <!-- after the email is looked up: the 6-digit code sent to the account's phone (only its last digits shown) -->
-    <div class="link-modal-code" id="linkModalCode">
-      <p>Insira o código enviado para <span id="linkCodeTo">••• ••• •20</span> para usar seus dados salvos.</p>
-      <div class="link-modal-code-boxes" id="linkCodeBoxes" role="group" aria-label="Código de 6 dígitos">
-        <input type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="Dígito 1">
-        <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
-        <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
-        <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
-        <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
-        <input type="text" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
-      </div>
-      <!-- send the code again, or to the email instead of the phone; while a full code is checked, a black ring spins in
-           their place, and a code that didn't work is said under them -->
-      <div class="link-modal-code-actions" id="linkCodeActions">
-        <button type="button" id="linkCodeResend">Reenviar código</button>
-        <button type="button" id="linkCodeByEmail">Enviar código por e-mail</button>
-        <span class="link-modal-code-spinner" aria-hidden="true"></span>
-        <svg class="link-modal-code-check" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="transparent" stroke="#00D66F" stroke-width="2" transform="rotate(-90 17 17)"/><path d="M11 17.5l4 4 8-8.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <p class="link-modal-code-error" id="linkCodeError" role="alert" hidden>Esse código não funcionou. Verifique e tente novamente.</p>
-      </div>
-      <!-- the email being signed in with, and a way back to change it -->
-      <div class="link-modal-code-account">
-        <span id="linkCodeAccount"></span>
-        <button type="button" id="linkCodeNotYou">Não é você?</button>
-      </div>
-    </div>
-    <!-- signed in: the cards saved in Link to pick from (filled in by pagamento.js), and "Continuar" to use the picked one -->
-    <div class="link-modal-pay" id="linkModalPay">
-      <p>Selecione como você deseja pagar</p>
-      <ul class="link-modal-pay-list" id="linkPayList" role="radiogroup" aria-label="Formas de pagamento"></ul>
-      <!-- or a new card: the same grey block, with a black card on a darker grey rounded square, "Cartão" and an arrow -->
-      <p>Adicionar forma de pagamento</p>
-      <button type="button" class="link-modal-pay-card link-modal-pay-new" id="linkPayNewCard">
-        <em aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6 15h4"/></svg></em>
-        <span>Cartão</span>
-        <b aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 6l6 6-6 6"/></svg></b>
-      </button>
-      <button type="button" class="co-pay" id="linkPayContinue">Continuar</button>
-    </div>
-    <!-- "Adicionar um cartão", from "Cartão": a new card for the Link account (the countries are filled in by pagamento.js) -->
-    <!-- the red minus on a card (editing the wallet) asks first, on a page of its own: the card named, then "Cancelar" and
-         "Remover" (red) side by side -->
-    <div class="link-modal-remove" id="linkModalRemove">
-      <p id="linkRemoveText"></p>
-      <div class="link-modal-remove-actions">
-        <button type="button" class="link-modal-remove-cancel" id="linkRemoveCancel">Cancelar</button>
-        <button type="button" class="link-modal-remove-ok" id="linkRemoveOk">Remover</button>
-      </div>
-    </div>
-    <!-- "Sair" (in the three dots' menu) asks first too, on its own page laid out the same way -->
-    <div class="link-modal-remove link-modal-logout" id="linkModalLogout">
-      <p>Isso fará com que você saia da conta e<br>removerá suas informações de<br>checkout da Link deste dispositivo.<br>Você poderá fazer login novamente a<br>qualquer momento usando seu e-mail.</p>
-      <div class="link-modal-remove-actions">
-        <button type="button" class="link-modal-remove-cancel" id="linkLogoutCancel">Cancelar</button>
-        <button type="button" class="link-modal-remove-ok" id="linkLogoutOk">Sair</button>
-      </div>
-    </div>
-    <div class="link-modal-add" id="linkModalAdd">
-      <div class="link-modal-field">
-        <input type="text" id="linkAddNumber" inputmode="numeric" autocomplete="cc-number" placeholder=" " data-example="1234 1234 1234 1234">
-        <label for="linkAddNumber">Número do cartão</label>
-        <span class="link-modal-card-brand" id="linkAddBrand" aria-hidden="true"></span>
-        <p class="link-modal-field-error">O número do cartão está incompleto</p>
-      </div>
-      <div class="link-modal-add-row">
-        <div class="link-modal-field">
-          <input type="text" id="linkAddExpiry" inputmode="numeric" autocomplete="cc-exp" placeholder=" " data-example="MM/AA">
-          <label for="linkAddExpiry">Validade</label>
-          <span class="link-modal-alert" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 5.6v5.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="14" r="1.1" fill="currentColor"/></svg></span>
-          <p class="link-modal-field-error">A validade do cartão é inválida</p>
-        </div>
-        <div class="link-modal-field">
-          <input type="text" id="linkAddCvc" inputmode="numeric" autocomplete="cc-csc" placeholder=" " data-example="CVC">
-          <label for="linkAddCvc">CVC</label>
-          <span class="link-modal-alert" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 5.6v5.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="14" r="1.1" fill="currentColor"/></svg></span>
-          <p class="link-modal-field-error">CVC é inválido</p>
-        </div>
-      </div>
-      <div class="link-modal-field">
-        <select id="linkAddCountry" autocomplete="off"></select>
-        <label for="linkAddCountry">País ou região</label>
-        <svg class="link-modal-field-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-      </div>
-      <button type="button" class="co-pay" id="linkAddSubmit" disabled>Continuar</button>
-    </div>
-    <div class="link-modal-info" id="linkModalInfo">
-      <div class="link-modal-info-inner">
-        <ul>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
-            <div><strong>Rápido e simples</strong><p>Preencha automaticamente os seus dados de pagamento, de contacto e de envio na finalização da compra.</p></div>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>
-            <div><strong>Várias formas de pagamento</strong><p>Escolha entre os seus cartões favoritos ou conta bancária.</p></div>
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-            <div><strong>Protege os seus dados</strong><p>Compre em segurança sabendo que as suas informações estão encriptadas.</p></div>
-          </li>
-        </ul>
-        <a href="https://link.com/pt-pt" class="co-pay link-modal-more" target="_blank" rel="noopener">Saiba mais</a>
-        <!-- Link's privacy and cookie policies (addresses still to be filled in) -->
-        <div class="link-modal-legal">
-          <a href="#">Privacidade</a>
-          <a href="#">Cookies</a>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
+<!-- (the Link popup, opened from "Utilizar" in the card number box, is added by link-popup.js) -->
 
 <!-- Checkout footer: reassurance strip, legal links -->
 <footer class="co-footer">
@@ -393,6 +237,7 @@
 <script src="js/checkout-summary.js"></script>
 <script src="js/cart-codes.js"></script>
 <script src="js/phone-codes.js"></script>
+<script src="js/link-popup.js"></script>
 <script src="js/pagamento.js"></script>
 </body>
 </html>

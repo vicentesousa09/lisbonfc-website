@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="native-scrollbar">
+<head>
+<meta charset="UTF-8">
+<script src="js/i18n.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmação - Lisbon FC</title>
+<meta name="description" content="Torna-te Sócio do Lisbon FC: confirma a inscrição e paga.">
+<link rel="icon" href="Logos/Favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700&family=Roboto+Condensed:wght@300;400;700&family=Urbanist:wght@400;600&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Main header (account pages, as Benfica's): the menu, the crest and two links on the left; on the right the search,
+     the name and initials, the wallet, the cart and the language, with "Lisbon FC" under them -->
+<header class="nh-header">
+  <div class="nh-inner">
+    <button class="nh-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="nmMenu">
+      <svg viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-width="1.6"><path class="nh-menu-top" d="M0 1h24"/><path class="nh-menu-mid" d="M0 11h24"/><path class="nh-menu-bottom" d="M0 21h24"/></svg>
+    </button>
+    <a href="/" class="nh-logo"><img src="Logos/Logo.png" alt="Lisbon FC"></a>
+    <nav class="nh-nav" aria-label="Secções">
+      <a href="adesao-dados-pessoais.html" class="is-current" aria-current="page">Adesão</a>
+      <a href="quotas.html">Quotas</a>
+      <a href="my-lisbon-fc.html">Família</a>
+      <a href="debito-direto-adesao.html">Débito Direto</a>
+    </nav>
+
+    <div class="nh-tools">
+      <!-- scrolled down, "Lisbon FC" folds into this arrow, which drops it in a small box -->
+      <div class="nh-more">
+        <button type="button" class="nh-more-btn" aria-label="Mais" aria-expanded="false"><svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m1.5 1.5 4.5 4.5 4.5-4.5"/></svg></button>
+        <div class="nh-more-list" hidden><a href="/">Lisbon FC</a></div>
+      </div>
+      <button class="nh-search search-toggle" aria-label="Pesquisar" aria-expanded="false" aria-controls="searchBar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9.1" cy="9.1" r="8.1"/><path d="m14.9 14.9 8.1 8.1"/></svg>
+      </button>
+      <!-- "Olá, VICENTE" and the initials: one button, so a click anywhere on it opens the account popup -->
+      <button type="button" class="nh-user" aria-label="A minha conta" aria-expanded="false" aria-controls="nhAccount">
+        <span class="nh-hello">Olá, <span data-nh-name></span><svg viewBox="0 0 10 7.4" fill="currentColor"><path d="M0 2.4 2.4 0 5 2.6 7.6 0 10 2.4 5 7.4Z"/></svg></span>
+        <span class="nh-initials"><span data-nh-initials></span></span>
+      </button>
+      <a href="perfil.html#socio" class="nh-wallet" aria-label="Carteira">
+        <b>0,00 €</b>
+        <svg viewBox="0 0 28 25" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M5 8 4.6 5.8a1 1 0 0 1 .8-1.1L21 2.5a1 1 0 0 1 1.1.8L23 8"/><rect x="1" y="8" width="26" height="16" rx="1.5"/><path d="M1 14.5h26M4.5 14.5V11.5h19v3"/></svg>
+      </a>
+      <a href="carrinho.html" class="nh-cart header-cart" aria-label="Carrinho">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6.5 7h11l.9 15H5.6L6.5 7Z"/><path d="M9.2 7V5.6a2.8 2.8 0 0 1 5.6 0V7"/></svg><span class="nh-cart-badge" data-cart-count hidden></span>
+      </a>
+      <a href="#" class="nh-lang" aria-label="Idioma">PT</a>
+    </div>
+    <a href="/" class="nh-club">Lisbon FC</a>
+
+    <!-- The account popup ("Olá, VICENTE" opens it): the initials (or photo), name, member number and since when, the
+         profile's sections, and Logout -->
+    <div class="nh-account" id="nhAccount" hidden>
+      <div class="nh-account-head">
+        <span class="nh-account-avatar"><span data-nh-initials></span><img alt="" hidden data-nh-photo></span>
+        <div>
+          <p class="nh-account-name" data-nh-fullname></p>
+          <p class="nh-account-member" data-nh-member>Sócio Nº <span></span></p>
+          <p class="nh-account-since">Desde <span data-nh-since></span></p>
+        </div>
+      </div>
+      <ul class="nh-account-list">
+        <li><a href="perfil.html#socio">Dados de Sócio<svg viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1"><rect x=".5" y=".5" width="19" height="13" rx="1"/><path d="M.5 9.5h6.5M8.5 9.5h3M13 9.5h6.5"/></svg></a></li>
+        <li><a href="perfil.html#dados-pessoais">Dados Pessoais<svg viewBox="0 0 18 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"><path d="M9 11.5c-2.6 0-4.3-2.3-4.3-5.3S6.4 1 9 1s4.3 2.2 4.3 5.2-1.7 5.3-4.3 5.3Z"/><path d="M6.6 10.4v1.4c-3.3.6-5.3 2.4-5.6 7.2h16c-.3-4.8-2.3-6.6-5.6-7.2v-1.4"/><path d="M1 19h16"/></svg></a></li>
+        <li><a href="perfil.html#encomendas">Encomendas<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"><path d="M10 1 18.5 5v10L10 19 1.5 15V5Z"/><path d="M1.5 5 10 9l8.5-4M10 9v10M5.8 3l8.5 4v3.5"/></svg></a></li>
+        <li><a href="perfil.html#preferencias">Preferências<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"><path d="M8.6 1h2.8l.5 2.4 1.6.9 2.3-.8 1.4 2.4-1.8 1.6v1.9l1.8 1.6-1.4 2.4-2.3-.8-1.6.9-.5 2.5H8.6l-.5-2.5-1.6-.9-2.3.8-1.4-2.4 1.8-1.6V7.5L2.8 5.9l1.4-2.4 2.3.8 1.6-.9Z"/><circle cx="10" cy="10" r="2.6"/></svg></a></li>
+        <li><a href="perfil.html#consentimentos">Consentimentos<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"><path d="M8.6 1h2.8l.5 2.4 1.6.9 2.3-.8 1.4 2.4-1.8 1.6v1.9l1.8 1.6-1.4 2.4-2.3-.8-1.6.9-.5 2.5H8.6l-.5-2.5-1.6-.9-2.3.8-1.4-2.4 1.8-1.6V7.5L2.8 5.9l1.4-2.4 2.3.8 1.6-.9Z"/><circle cx="10" cy="10" r="2.6"/></svg></a></li>
+      </ul>
+      <button type="button" class="nh-account-logout">Logout<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m1.5 1.5 13 13M14.5 1.5l-13 13"/></svg></button>
+    </div>
+  </div>
+
+  <div class="search-bar" id="searchBar">
+    <div class="container search-bar-inner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" placeholder="Pesquisar no site…" aria-label="Pesquisar no site">
+    </div>
+  </div>
+</header>
+
+<!-- Menu (account pages, as Benfica's): a white page that slides down under the header, with the site's sections in
+     columns of four, each a grey title over its links -->
+<div class="nm-menu" id="nmMenu">
+  <div class="nm-grid">
+    <div class="nm-item"><a href="lisbon-fc-tv.html" class="nm-title">Lisbon FC TV</a></div>
+    <div class="nm-item">
+      <a href="#" class="nm-title">Lisbon FC Foundation</a>
+      <a href="#">Doar</a>
+    </div>
+    <div class="nm-item"><a href="my-lisbon-fc.html" class="nm-title">My Lisbon FC</a></div>
+    <div class="nm-item"><a href="loja.html" class="nm-title">Loja Oficial</a></div>
+
+    <div class="nm-item">
+      <p class="nm-title">Futebol</p>
+      <a href="calendario.html">Calendário e Resultados</a>
+      <a href="equipa.html">Plantel</a>
+      <a href="equipa.html#tecnica">Equipa Técnica</a>
+    </div>
+    <div class="nm-item">
+      <p class="nm-title">Agora</p>
+      <a href="noticias.html">Notícias</a>
+      <a href="calendario.html">Agenda</a>
+      <a href="videos.html">Vídeos e Fotogalerias</a>
+    </div>
+    <div class="nm-item">
+      <p class="nm-title">Sócios</p>
+      <a href="socios.html">Vantagens ao ser Sócio</a>
+      <a href="adesao-dados-pessoais.html">Adesão</a>
+      <a href="my-lisbon-fc.html#quotas">Pagamento de Quotas</a>
+      <a href="debito-direto.html" class="nm-more">Ver Mais</a>
+    </div>
+    <div class="nm-item">
+      <p class="nm-title">Loja</p>
+      <a href="loja.html#produtos">Novidades</a>
+      <a href="colecao-equipamentos.html">Equipamentos Oficiais</a>
+      <a href="loja.html#outlet">Outlet</a>
+      <a href="loja.html" class="nm-more">Ver Mais</a>
+    </div>
+
+    <div class="nm-item">
+      <p class="nm-title">Eventos</p>
+      <a href="#">Gala Corvo Dourado</a>
+    </div>
+    <div class="nm-item">
+      <p class="nm-title">Fãs</p>
+      <a href="#">Man of The Match</a>
+      <a href="#">Calendário Digital</a>
+    </div>
+    <div class="nm-item">
+      <p class="nm-title">Business</p>
+      <a href="#">Merchandising</a>
+      <a href="#">Licenciamento</a>
+      <a href="#" class="nm-more">Ver Mais</a>
+    </div>
+    <div class="nm-item">
+      <p class="nm-title">Instituição</p>
+      <a href="#">Lisbon FC Foundation</a>
+      <a href="#">Clube</a>
+      <a href="#">Recrutamento</a>
+      <a href="#">Imprensa e Acreditação</a>
+    </div>
+
+    <div class="nm-item">
+      <p class="nm-title">Apoio</p>
+      <a href="#">Linha Lisbon FC</a>
+      <a href="/#contactos">Contactos</a>
+      <a href="#">Perguntas Frequentes</a>
+    </div>
+    <!-- the legal pages, in the last column, in a row of their own under Apoio -->
+    <div class="nm-item nm-legal">
+      <a href="politica-de-privacidade.html">Política de Cookies</a>
+      <a href="politica-de-privacidade.html">Política de Privacidade</a>
+      <a href="termos-e-condicoes.html">Termos e Condições</a>
+      <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener">Livro de Reclamações</a>
+      <a href="#">Declaração de Acessibilidade</a>
+    </div>
+  </div>
+</div>
+
+<main id="top" class="nt-page dda-page ad-page acf-page">
+
+  <!-- the adhesion's four steps: the first three done (their ticks, links back to them), Confirmação the current one -->
+  <ol class="dda-steps" aria-label="Passos da adesão">
+    <li class="is-done"><a href="adesao-dados-pessoais.html" class="dda-step-link"><span class="dda-step-num" aria-label="Passo 1, feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 5 5 10-11"/></svg></span><span class="dda-step-name">Dados Pessoais</span></a></li>
+    <li class="is-done"><a href="adesao-familia.html" class="dda-step-link"><span class="dda-step-num" aria-label="Passo 2, feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 5 5 10-11"/></svg></span><span class="dda-step-name">Família</span></a></li>
+    <li class="is-done"><a href="adesao-quotas.html" class="dda-step-link"><span class="dda-step-num" aria-label="Passo 3, feito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 5 5 10-11"/></svg></span><span class="dda-step-name">Quotas</span></a></li>
+    <li class="is-current" aria-current="step"><span class="dda-step-num">4</span><span class="dda-step-name">Confirmação</span></li>
+  </ol>
+
+  <!-- step 4, the confirmation, as Benfica's: "Valor a Pagar" over a light line; the inscription with the new member's
+       name and its price, the periodicity and the payment method chosen on step 3; the total; a line, Anterior (back to
+       step 3) on the left, Adicionar (to the cart) and Pagar on the right (adesao-confirmacao.js); "Recomendados para ti" -->
+  <div class="ad-form acf-form">
+    <h2 class="ad-legend aq-legend">Valor a Pagar</h2>
+    <dl class="acf-summary">
+      <div class="acf-row"><dt>Inscrição de Sócio: <span data-acf-name></span></dt><dd data-acf-price>10,00€</dd></div>
+      <div class="acf-row"><dt>Periodicidade</dt><dd data-acf-period></dd></div>
+      <div class="acf-row"><dt>Meio de Pagamento</dt><dd data-acf-method></dd></div>
+      <div class="acf-row acf-total"><dt>Total</dt><dd data-acf-total>10,00€</dd></div>
+    </dl>
+
+    <div class="dda-actions af-actions acf-actions">
+      <a href="adesao-quotas.html" class="af-back">Anterior</a>
+      <div class="acf-buttons">
+        <button type="button" class="dda-btn acf-btn" data-acf-add><svg class="acf-ico-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M5.5 7h13l.9 15.5H4.6L5.5 7Z"/><path d="M8.8 7V5.2a3.2 3.2 0 0 1 6.4 0V7"/></svg><span>Adicionar</span></button>
+        <button type="button" class="dda-btn acf-btn" data-acf-pay><svg class="acf-ico-pay" viewBox="0 0 30 18" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M1 5.5h6M2.5 9h4.5M4 12.5h3"/><path d="M10 1.5h18.5v15H9.5l.5-15Z"/><path d="M15 1.5v4.5h8V1.5"/></svg><span>Pagar</span></button>
+      </div>
+    </div>
+
+    <section class="acf-recommended" aria-label="Recomendados para ti"><h2>Recomendados para ti</h2></section>
+  </div>
+
+
+  <!-- the grey band of promises, as Benfica's: free returns, safe payment, official products and the help line -->
+  <section class="qt-promises" aria-label="Vantagens">
+    <div>
+      <img src="Logos/Dados Sócio/footer-package.png" alt="">
+      <p>Trocas e devoluções gratuitas*<br>durante 30 dias</p>
+      <small>*Apenas para países da UE</small>
+    </div>
+    <div>
+      <img src="Logos/Dados Sócio/footer-lock.png" alt="">
+      <p>Pagamento seguro<br>em todas as transações</p>
+    </div>
+    <div>
+      <img src="Logos/Dados Sócio/footer-produtos-oficiais-lfc.png" alt="">
+      <p>Produtos<br>oficiais</p>
+    </div>
+    <div>
+      <img src="Logos/Dados Sócio/footer-help.png" alt="">
+      <p>923 525 245<br>Todos os dias das 9h às 20h</p>
+      <small>Chamada para a rede móvel nacional</small>
+    </div>
+  </section>
+
+
+  <!-- back to the top, once the page has scrolled down -->
+  <button type="button" class="nt-top" aria-label="Voltar ao topo" hidden><svg viewBox="0 0 24 14" fill="none" stroke="currentColor" stroke-width="2.9"><path d="m2 12 10-10 10 10"/></svg>Top</button>
+
+</main>
+
+<!-- Footer (account pages, as Benfica's): an empty white strip, then a blue bar with the languages, the legal links,
+     "Definições de cookies" and the rights line -->
+<footer class="nf-footer">
+  <div class="nf-gap"></div>
+  <div class="nf-bar">
+    <div class="nf-langs">
+      <a href="#" class="is-active">PT</a>
+      <a href="#">EN</a>
+      <a href="#">ES</a>
+      <a href="#">FR</a>
+    </div>
+    <nav class="nf-links" aria-label="Informação legal">
+      <a href="politica-de-privacidade.html">Política de Cookies</a>
+      <a href="politica-de-privacidade.html">Política de Privacidade</a>
+      <a href="termos-e-condicoes.html">Termos e Condições</a>
+      <a href="https://www.livroreclamacoes.pt" target="_blank" rel="noopener">Livro de Reclamações</a>
+      <a href="#">Declaração de Acessibilidade</a>
+      <a href="perfil.html#consentimentos" class="nf-cookies">Definições de cookies</a>
+    </nav>
+    <p class="nf-rights">Lisbon FC. Todos os direitos reservados</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/conta-header.js"></script>
+<script src="js/adesao-confirmacao.js"></script>
+</body>
+</html>

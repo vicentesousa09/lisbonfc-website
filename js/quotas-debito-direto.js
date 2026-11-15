@@ -65,10 +65,10 @@ dd.address.value = upper(ddData.address);
 dd.town.value = upper(ddData.town || ddData.city);
 setCountry(dd.country, ddData.country || "PT");
 
-// typing helps: the IBAN in groups of 4, the BIC in capitals, the postcode digits only (on to the second box when
+// typing helps: the IBAN in capitals with no spaces, the BIC in capitals, the postcode digits only (on to the second box when
 // the first is full)
 dd.iban.addEventListener("input", () => {
-  dd.iban.value = dd.iban.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 34).replace(/(.{4})(?=.)/g, "$1 ");
+  dd.iban.value = dd.iban.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 34);
 });
 dd.bic.addEventListener("input", () => { dd.bic.value = dd.bic.value.toUpperCase().replace(/[^A-Z0-9]/g, ""); });
 [dd.postcode1, dd.postcode2].forEach((f) => f.addEventListener("input", () => {
@@ -156,7 +156,8 @@ ddForm.addEventListener("submit", (e) => {
   }
   const debit = { period: dd.period.value, ibanLast4: dd.iban.value.replace(/\s/g, "").slice(-4) };
   try { sessionStorage.setItem("lfcQuotasChoice", JSON.stringify({ ...ddChoice, method: "debito-direto", debit })); } catch {}
-  // (what comes after the adhesion is built next)
+  // then the billing details
+  location.href = "quotas-faturacao.html";
 });
 
 // back to the top: always there, as on the other steps

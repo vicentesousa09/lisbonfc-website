@@ -459,7 +459,7 @@ function renderMiniCart() {
     head.append(titles, remove);
     const meta = document.createElement("span");
     meta.className = "mini-cart-item-meta";
-    meta.textContent = `${item.qty}x / ${item.size}`;
+    meta.textContent = `${item.qty}x${item.size ? ` / ${item.size}` : ""}`;
     const prices = document.createElement("div");
     prices.className = "mini-cart-item-prices";
     const row = (label, value, cls) => {
@@ -527,7 +527,7 @@ searchToggle.addEventListener("click", () => {
 // Signed in (lfcSession, set by the account pages): a blue wallet goes between the cart and the account icon. Every
 // 3 seconds it rolls over to the balance in the wallet (0,00€ until there's a server to ask) and back. It's added
 // before the compact header copies the top row, so both headers get it
-const headerAccount = document.querySelector('.header-top-right .icon-btn[aria-label="Área de Sócio"]');
+const headerAccount = document.querySelector('.header-top-right .icon-btn:is([aria-label="Área de Sócio"], [data-pt-label="Área de Sócio"])');
 let signedIn = false;
 let session = {};
 try {
@@ -591,7 +591,7 @@ if (signedIn) {
   };
   const closeAccountPanel = () => accountPanel.classList.remove("open");
   document.addEventListener("click", (e) => {
-    const icon = e.target.closest('.header-top-right .icon-btn[aria-label="Área de Sócio"]');
+    const icon = e.target.closest('.header-top-right .icon-btn:is([aria-label="Área de Sócio"], [data-pt-label="Área de Sócio"])');
     if (icon) {
       e.preventDefault();
       if (accountPanel.classList.contains("open")) closeAccountPanel();
@@ -720,12 +720,17 @@ function renderCartCount() {
   const n = getCartCount();
   document.querySelectorAll("[data-cart-count]").forEach((el) => {
     el.textContent = n > 99 ? "99+" : n;
+    // the account pages' bag shows its blue circle only when something is in the cart
+    if (el.classList.contains("nh-cart-badge")) el.hidden = n === 0;
   });
 }
 // the products themselves (name, photo, prices) are kept alongside the count, for the cart page (carrinho.html)
 const CART_ITEMS_KEY = "lfcCartItems";
+// (the membership inscription, from the adhesion's Confirmação, is always named "Inscrição de Sócio" and shows the tilted sócio card)
 function getCartItems() {
-  try { return JSON.parse(localStorage.getItem(CART_ITEMS_KEY)) || []; } catch { return []; }
+  let items = [];
+  try { items = JSON.parse(localStorage.getItem(CART_ITEMS_KEY)) || []; } catch {}
+  return items.map((item) => (item.id === "adesao" ? { ...item, title: "Inscrição de Sócio", img: "Logos/CartaoSocio_Inclinado.png" } : item));
 }
 // prices are stored as shown ("18,00€"); the total charges the promotion price when there is one, otherwise the PVP
 function parsePrice(text) {

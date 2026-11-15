@@ -45,7 +45,8 @@ form.addEventListener("submit", (e) => {
       localStorage.setItem("lfcSession", JSON.stringify({ name: confirm.name || "", email: confirm.email || "", phone: confirm.phone || "", since: Date.now() }));
       ["acRegId", "acRegConfirm"].forEach((k) => sessionStorage.removeItem(k));
     } catch {}
-    location.href = "/";
+    // back to the page that asked for an account (Lisbon FC TV's live page), else the home page
+    location.href = (() => { let n = "/"; try { n = sessionStorage.getItem("lfcAfterLogin") || "/"; sessionStorage.removeItem("lfcAfterLogin"); } catch {} return n; })();
   }, 1600);
 });
 

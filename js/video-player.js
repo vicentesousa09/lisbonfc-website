@@ -69,7 +69,7 @@ function buildVideoPlayer(media) {
         <path d="M6 8 L10 12 M10 9.4 L10 12 L7.4 12"/>
         <rect x="14" y="15" width="10" height="7" fill="currentColor" stroke="none"/>
       </svg>
-      <p>Reproduzindo em PiP (picture-in-picture)</p>
+      <p>A reproduzir em PiP (imagem na imagem)</p>
     </div>
     <div class="video-seek-indicator video-seek-indicator--left" id="videoSeekLeft">
       <div class="video-seek-indicator-content">
@@ -173,7 +173,7 @@ function buildVideoPlayer(media) {
           <div class="video-settings-divider"></div>
           <button type="button" class="video-settings-row video-settings-row--debug-log" id="videoSettingsDebugLog">
             <svg class="video-settings-row-icon" viewBox="0 0 24 24" aria-hidden="true"><circle class="video-settings-row-icon-ring" cx="12" cy="12" r="9"/><path d="M10.4 10.8H12v6.4M10.2 17.2h3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7.4" r="1.15" fill="currentColor" stroke="none"/></svg>
-            <span class="video-settings-label">Registro de depuração</span>
+            <span class="video-settings-label">Registo de depuração</span>
           </button>
         </div>
         <div class="video-settings-panel" id="videoSettingsQuality">
@@ -193,13 +193,13 @@ function buildVideoPlayer(media) {
           <button type="button" class="video-settings-item" data-value="Português (geradas automaticamente)"><svg class="video-settings-tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>Português (geradas automaticamente)</button>
           <div class="video-settings-divider"></div>
           <button type="button" class="video-settings-row video-settings-row--customize" data-panel="captions-customize">
-            <span class="video-settings-label">Customizar</span>
+            <span class="video-settings-label">Personalizar</span>
             <span class="video-settings-value"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span>
           </button>
         </div>
         <div class="video-settings-panel" id="videoSettingsCaptionsCustomize">
           <div class="video-settings-back">
-            <button type="button" class="video-settings-back-icon" data-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="video-settings-back-label">Customizar</span>
+            <button type="button" class="video-settings-back-icon" data-back><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><span class="video-settings-back-label">Personalizar</span>
           </div>
           <button type="button" class="video-settings-row" data-panel="captions-font">
             <span class="video-settings-label">Fonte</span>
@@ -358,17 +358,17 @@ function buildVideoPlayer(media) {
         <h3 class="video-shortcuts-title">Atalhos do Teclado</h3>
         <div class="video-shortcuts-list">
           <div class="video-shortcut-item"><span class="video-shortcut-key"><svg class="video-shortcut-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 8 L12 4.5 L15.5 8"/><line x1="12" y1="4" x2="12" y2="21"/></svg></span><span class="video-shortcut-desc">Aumentar volume</span></div>
-          <div class="video-shortcut-item"><span class="video-shortcut-key"><svg class="video-shortcut-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 16 L12 19.5 L15.5 16"/><line x1="12" y1="3" x2="12" y2="20"/></svg></span><span class="video-shortcut-desc">Abaixar volume</span></div>
-          <div class="video-shortcut-item"><span class="video-shortcut-key"><svg class="video-shortcut-arrow video-shortcut-arrow--horizontal" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8.5 L19.5 12 L16 15.5"/><line x1="3" y1="12" x2="20" y2="12"/></svg></span><span class="video-shortcut-desc">Para frente</span></div>
-          <div class="video-shortcut-item"><span class="video-shortcut-key"><svg class="video-shortcut-arrow video-shortcut-arrow--horizontal" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8.5 L4.5 12 L8 15.5"/><line x1="4" y1="12" x2="21" y2="12"/></svg></span><span class="video-shortcut-desc">Para trás</span></div>
+          <div class="video-shortcut-item"><span class="video-shortcut-key"><svg class="video-shortcut-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 16 L12 19.5 L15.5 16"/><line x1="12" y1="3" x2="12" y2="20"/></svg></span><span class="video-shortcut-desc">Baixar volume</span></div>
+          <div class="video-shortcut-item"><span class="video-shortcut-key"><svg class="video-shortcut-arrow video-shortcut-arrow--horizontal" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8.5 L19.5 12 L16 15.5"/><line x1="3" y1="12" x2="20" y2="12"/></svg></span><span class="video-shortcut-desc">Avançar</span></div>
+          <div class="video-shortcut-item"><span class="video-shortcut-key"><svg class="video-shortcut-arrow video-shortcut-arrow--horizontal" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8.5 L4.5 12 L8 15.5"/><line x1="4" y1="12" x2="21" y2="12"/></svg></span><span class="video-shortcut-desc">Recuar</span></div>
           <div class="video-shortcut-item"><span class="video-shortcut-key">C</span><span class="video-shortcut-desc">Ativar/Desativar Closed Captions (CC)</span></div>
-          <div class="video-shortcut-item"><span class="video-shortcut-key">F</span><span class="video-shortcut-desc">Ativar/Desativar tela cheia</span></div>
+          <div class="video-shortcut-item"><span class="video-shortcut-key">F</span><span class="video-shortcut-desc">Ativar/Desativar ecrã inteiro</span></div>
           <div class="video-shortcut-item"><span class="video-shortcut-key">&#8679;T</span><span class="video-shortcut-desc">Alternar transcrição</span></div>
-          <div class="video-shortcut-item"><span class="video-shortcut-key">J</span><span class="video-shortcut-desc">Para trás</span></div>
+          <div class="video-shortcut-item"><span class="video-shortcut-key">J</span><span class="video-shortcut-desc">Recuar</span></div>
           <div class="video-shortcut-item"><span class="video-shortcut-key">K</span><span class="video-shortcut-desc">Reproduzir/Pausar</span></div>
-          <div class="video-shortcut-item"><span class="video-shortcut-key">L</span><span class="video-shortcut-desc">Para frente</span></div>
+          <div class="video-shortcut-item"><span class="video-shortcut-key">L</span><span class="video-shortcut-desc">Avançar</span></div>
           <div class="video-shortcut-item"><span class="video-shortcut-key">M</span><span class="video-shortcut-desc">Ativar som ou silenciar</span></div>
-          <div class="video-shortcut-item"><span class="video-shortcut-key">P</span><span class="video-shortcut-desc">Frame da captura de tela</span></div>
+          <div class="video-shortcut-item"><span class="video-shortcut-key">P</span><span class="video-shortcut-desc">Fotograma da captura de ecrã</span></div>
         </div>
       </div>
     </div>
@@ -388,7 +388,7 @@ function buildVideoPlayer(media) {
       <h3>Transcrição</h3>
       <div class="video-transcript-search">
         <svg class="video-transcript-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="21" y2="21"/></svg>
-        <input type="text" placeholder="Buscar transcrição" id="videoTranscriptInput">
+        <input type="text" placeholder="Pesquisar na transcrição" id="videoTranscriptInput">
         <div class="video-transcript-search-controls" id="videoTranscriptControls" hidden>
           <span class="video-transcript-search-count" id="videoTranscriptCount">0/0</span>
           <button type="button" class="video-transcript-nav-btn" id="videoTranscriptPrev" aria-label="Resultado anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
@@ -1223,7 +1223,7 @@ function initVideoPlayer(player) {
         : Promise.reject(new Error("clipboard unavailable"));
       const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 1500));
       Promise.race([write, timeout])
-        .then(() => showCopyToast("Captura de tela copiada para a sua área de transferência!", false))
+        .then(() => showCopyToast("Captura de ecrã copiada para a área de transferência!", false))
         .catch(() => showToast("Não foi possível copiar"));
     }, "image/png");
   }
