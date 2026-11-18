@@ -53,12 +53,21 @@
     }
     return false;
   }
+  // (a sentence's opening article that the language has no word for, as Russian's for "A <b>nova camisola</b> ...",
+  // is translated to nothing: the text that follows it then takes the capital letter)
+  let capNext = false;
   function doText(node) {
     if (written.get(node) === node.data) return;
     const p = node.parentElement;
     if (!p || skipped(p)) return;
-    const t = tr(node.data);
-    if (t != null) { written.set(node, t); node.data = t; }
+    let t = tr(node.data);
+    if (t == null) { if (node.data.trim()) capNext = false; return; }
+    if (capNext && t.trim()) {
+      t = t.replace(/^(\s*)(\S)/, (m, ws, c) => ws + c.toLocaleUpperCase());
+      capNext = false;
+    } else if (!t.trim() && !node.previousSibling) capNext = true;
+    written.set(node, t);
+    node.data = t;
   }
   function doAttrs(el) {
     if (el.getAttribute("translate") === "no") return;
@@ -177,7 +186,7 @@
     pop.classList.remove("is-open");
     openFor?.setAttribute("aria-expanded", "false");
     openFor = null;
-    setTimeout(() => { if (!openFor) pop.hidden = true; }, 200);
+    setTimeout(() => { if (!openFor) pop.hidden = true; }, 350);
   }
 
   document.addEventListener("click", (e) => {
@@ -205,6 +214,13 @@
 
   // the triggers: the globe, the account header's language box and the footer's; the boxes show the language
   function markTriggers() {
+    // the documents to download (Documentos/<name>-v1.pdf) have a copy in each language: <name>-v1-EN.pdf, -ES, -RU
+    if (lang !== "pt") {
+      document.querySelectorAll('a[href^="Documentos/"][href$=".pdf"]').forEach((a) => {
+        const href = a.getAttribute("href");
+        if (!/-(EN|ES|RU)\.pdf$/.test(href)) a.setAttribute("href", href.replace(/\.pdf$/, `-${LANGS[lang].code}.pdf`));
+      });
+    }
     document.querySelectorAll('[aria-label="Idioma"], [data-lang-open], .nh-lang, .footer-lang').forEach((el) => {
       el.setAttribute("data-lang-open", "");
       el.setAttribute("aria-haspopup", "dialog");

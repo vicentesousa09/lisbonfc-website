@@ -730,6 +730,12 @@ h1, h2, h3 {
 }
 .hero-feature { flex: 1 1 65%; }
 .hero-promo { flex: 1 1 35%; }
+@media (min-width: 901px) and (max-width: 1599px) {
+  /* (taller tiles on the laptop) */
+  .hero { min-height: max(85vh, 580px); }
+  .hero-feature { flex-basis: 67%; }
+  .hero-promo { flex-basis: 33%; }
+}
 
 .hero-slide {
   position: absolute;
@@ -795,6 +801,40 @@ h1, h2, h3 {
 }
 .hero-arrow:hover { background: rgba(0,0,0,0.4); }
 
+/* Home banners: yellow text, the left image zooms in slowly on hover (a copy of the slide's background, scaled, under
+   its text), and simple line arrows in yellow that turn blue and slide outwards on hover, as on the Lisbon FC TV page */
+.hero .hero-tag, .hero .hero-slide-text h2 { color: var(--yellow); }
+/* (the big banner: a larger title, and a larger, lighter tag over it) */
+.hero-feature .hero-slide-text { max-width: calc(100% - 130px); }
+.hero-feature .hero-slide-text h2 { font-size: clamp(1.6rem, 3vw, 2.5rem); }
+.hero-feature .hero-tag { font-size: 0.92rem; font-weight: 500; }
+.hero-promo .hero-slide { padding-left: 31px; }
+.hero-promo .hero-slide-text h2 { font-size: clamp(1.15rem, 1.8vw, 1.45rem); }
+/* (the banner's Comprar: square, as the profile's buttons, yellow on the dark banner (buttons are black or yellow, never
+   white); a blue block slides up on hover and the text turns yellow) */
+.hero .hero-cta, .kit-banner .hero-cta { position: relative; z-index: 0; display: inline-flex; align-items: center; justify-content: center; min-width: 136px; min-height: 50px; margin-top: 20px; padding: 10px 22px; overflow: hidden; border: 1px solid var(--yellow); border-radius: 0; background: var(--yellow); font-size: 16px; font-weight: 400; line-height: 18px; text-transform: uppercase; color: var(--blue); transition: color 0.28s ease; }
+.hero .hero-cta::before, .kit-banner .hero-cta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--blue); transform: translateY(100%); transition: transform 0.28s ease; }
+.hero .hero-cta:hover, .kit-banner .hero-cta:hover { border-color: var(--blue); background: var(--yellow); color: var(--yellow); }
+.hero .hero-cta:hover::before, .kit-banner .hero-cta:hover::before { transform: translateY(0); }
+.kit-banner .hero-cta { margin-top: 0; }
+.kit-banner .hero-cta:hover { border-color: var(--yellow); } /* yellow outline shows the button on the blue panel */
+.hero-feature .hero-slide { isolation: isolate; }
+/* (the slides sit side by side out of view and slide in, rather than fading: js/main.js moves them) */
+.hero .hero-slide { opacity: 1; transform: translateX(100%); transition: none; }
+.hero .hero-slide.active { transform: none; }
+.hero-feature .hero-slide::before { content: ""; position: absolute; inset: 0; z-index: -1; background: inherit; background-size: cover; background-position: center; transition: transform 0.7s ease; }
+.hero-feature:hover .hero-slide::before { transform: scale(1.06); }
+/* (each slide is a link: a layer over the whole slide, under its text and button; the arrows stay on top) */
+.hero-slide-link { position: absolute; inset: 0; z-index: 1; }
+.hero .hero-slide-text { position: relative; z-index: 2; pointer-events: none; }
+.hero .hero-slide-text .hero-cta { pointer-events: auto; }
+.hero .hero-arrows { bottom: 26px; right: 26px; gap: 6px; }
+.hero .hero-arrow { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 0; background: none; color: var(--yellow); transition: color 0.2s ease; }
+.hero .hero-arrow svg { width: 13px; height: 24px; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.25s ease; }
+.hero .hero-arrow:hover { background: none; color: var(--blue); }
+.hero .hero-arrow[class*="-prev"]:hover svg { transform: translateX(-6px); }
+.hero .hero-arrow[class*="-next"]:hover svg { transform: translateX(6px); }
+
 /* Fixtures */
 .fixtures-section { padding: 56px 0; }
 .fixtures-section .container { max-width: var(--container-wide); padding: 0 40px; }
@@ -807,9 +847,17 @@ h1, h2, h3 {
   color: var(--ink);
   margin: 0 0 8px;
 }
-.fixtures-head p { color: var(--grey-700); margin: 0 0 12px; white-space: nowrap; }
-.fixtures-head p a { color: var(--blue); font-weight: 600; text-decoration: underline; }
+.fixtures-head p { color: var(--ink); margin: 0 0 12px; white-space: nowrap; }
+.fixtures-head p a { color: inherit; font-weight: inherit; text-decoration: underline; }
 .fixtures-head .section-link { font-weight: 700; color: var(--ink); }
+/* (the › a little away from the words, sliding forward on hover) */
+.section-link-arrow { display: inline-block; margin-left: 3px; transition: transform 0.25s ease; }
+.section-link:hover .section-link-arrow { transform: translateX(5px); }
+@media (min-width: 901px) and (max-width: 1599px) {
+  .fixtures-head h2 { font-size: 2.2rem; }
+  .fixtures-head p { font-size: 1.2rem; margin-bottom: 25px; }
+  .fixtures-head .section-link { font-size: 1.05rem; }
+}
 .fixtures-arrows { display: flex; gap: 32px; flex-shrink: 0; }
 .fixtures-arrows .hero-arrow {
   width: auto; height: auto;
@@ -835,6 +883,10 @@ h1, h2, h3 {
   scrollbar-width: none;
 }
 .fixtures-row::-webkit-scrollbar { display: none; }
+/* (dragged with the mouse, with the normal pointer: no hand icon) */
+.fixtures-row { user-select: none; scroll-snap-type: none; }
+/* (an opponent with no crest yet: the calendar's grey circle, at the cards' crest size) */
+.fixture-team .calendario-crest-badge { width: 68px; height: 68px; }
 .fixture-card {
   flex: 0 0 33.333%;
   min-width: 300px;
@@ -845,18 +897,33 @@ h1, h2, h3 {
 .fixture-card:last-child { border-right: none; }
 .fixture-card:nth-child(3) { border-right: none; }
 .fixture-card:first-child { padding-left: 0; }
-.fixture-status { font-weight: 700; font-size: 0.92rem; color: var(--ink); margin-bottom: 4px; }
-.fixture-comp { font-size: 0.92rem; letter-spacing: 0.03em; color: var(--grey-700); text-transform: uppercase; margin-bottom: 24px; }
+/* (a divider before the first card too, as between the others) */
+/* (a line on the left of every card: so whichever cards are in view, there's one before the first and between each) */
+.fixtures-row .fixture-card { border-right: none; border-left: 1px solid var(--grey-200); }
+.fixtures-row .fixture-card, .fixtures-row .fixture-card:first-child { padding-left: 46px; }
+/* (the row starts 12px further left, so that first line sits just left of the heading; every line is 36px from the
+   text after it) */
+.fixtures-row { margin-left: -12px; }
+/* (the dividers start level with the date, and run on below the links as before) */
+.fixtures-row .fixture-card { padding-top: 0; padding-bottom: 26px; margin: 12px 0 0; }
+.fixtures-row .fixture-links { margin-top: 36px; }
+.fixture-status { font-weight: 700; font-size: 1rem; color: var(--ink); margin-bottom: 4px; }
+/* (the time after the date in regular weight; its comma comes from here, so the date and time translate separately) */
+.fixture-hour { font-weight: 400; }
+.fixture-hour::before { content: ", "; }
+.fixture-comp { font-size: 0.88rem; letter-spacing: 0.03em; color: #747B85; text-transform: uppercase; margin-bottom: 24px; }
 .fixture-team { display: flex; align-items: center; gap: 16px; padding: 10px 0; }
 .fixture-team img { width: 68px; height: 68px; object-fit: contain; }
 .fixture-team img.crest-boost { transform: scale(1.35); }
 .fixture-team span { flex: 1; font-weight: 400; font-size: 1.4rem; color: var(--grey-700); }
-.fixture-team strong { font-family: var(--font-body); font-weight: 600; font-size: 1.25rem; color: var(--grey-400, #9aa3af); }
+.fixture-team strong { font-family: var(--font-body); font-weight: 600; font-size: 1.85rem; line-height: 1; color: var(--grey-400, #9aa3af); }
 .fixture-team--focus span { font-weight: 700; color: var(--ink); }
 .fixture-team--focus strong { font-weight: 700; color: var(--ink); }
 .fixture-links { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 20px; }
-.fixture-links a { font-size: 0.92rem; font-weight: 700; color: var(--ink); }
-.fixture-links a:hover { color: var(--blue); }
+.fixture-links a { font-size: 1.12rem; font-weight: 700; color: var(--ink); }
+/* (no colour change on hover: the thin › slides forward instead, as on Ver Calendário) */
+.fixture-link-arrow { display: inline-block; margin-left: 2px; font-weight: 300; transition: transform 0.25s ease; }
+.fixture-links a:hover .fixture-link-arrow { transform: translateX(5px); }
 
 /* Kit banner */
 .kit-banner {
@@ -888,6 +955,15 @@ h1, h2, h3 {
   height: 220px;
   filter: drop-shadow(0 20px 45px rgba(0,10,30,0.3));
 }
+/* photo fills the box (cropped to its proportions, box size unchanged) */
+.kit-banner-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
 .kit-banner-caption {
   position: absolute;
   bottom: 28px;
@@ -901,7 +977,7 @@ h1, h2, h3 {
 .kit-banner-overlay {
   flex: 0 0 14px;
   overflow: hidden;
-  background: var(--blue-900);
+  background: #004AAD; /* same blue as the logo */
   transition: flex-basis 0.35s ease;
 }
 .kit-banner-media:hover .kit-banner-overlay { flex-basis: 34%; }
@@ -918,22 +994,25 @@ h1, h2, h3 {
   color: var(--white);
 }
 .kit-banner-tag { text-transform: uppercase; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: var(--yellow); margin-bottom: 12px; white-space: nowrap; }
-.kit-banner-overlay-inner h3 { font-family: var(--font-body); font-size: 1.6rem; font-weight: 700; text-transform: none; letter-spacing: normal; margin: 0 0 8px; white-space: nowrap; }
-.kit-banner-overlay-inner p { color: rgba(255,255,255,0.75); margin: 0 0 22px; white-space: nowrap; }
+.kit-banner-overlay-inner h3 { font-family: var(--font-body); font-size: 1.9rem; font-weight: 700; text-transform: none; letter-spacing: normal; margin: 0 0 8px; white-space: nowrap; }
+.kit-banner-overlay-inner h3 { color: var(--yellow); }
+.kit-banner-overlay-inner p { color: var(--yellow); margin: 0 0 22px; white-space: nowrap; }
 
 /* Services */
-.services-section { padding: 56px 0 64px; }
+.services-section { padding: 16px 0 64px; }
 .services-grid { display: flex; align-items: flex-start; justify-content: flex-start; gap: 30px; flex-wrap: nowrap; }
+/* (same wide container as the matches section, so the title lines up on the left) */
+.services-section .container { max-width: var(--container-wide); padding: 0 40px; justify-content: space-between; }
 .services-head { flex-shrink: 0; }
 .services-head h2 {
   font-family: var(--font-body);
   text-transform: none;
   letter-spacing: normal;
-  font-size: 2.3rem;
+  font-size: 2.15rem;
   color: var(--ink);
   margin: 0 0 10px;
 }
-.services-head p { color: var(--ink); margin: 0; max-width: 360px; font-size: 1.1rem; }
+.services-head p { color: var(--ink); margin: 0; max-width: 420px; font-size: 1.22rem; font-weight: 500; }
 .services-items { display: flex; gap: 100px; flex-wrap: nowrap; }
 .service-item { display: flex; align-items: center; gap: 50px; flex-shrink: 0; }
 .service-item svg { width: 64px; height: 64px; color: var(--blue); flex-shrink: 0; }
@@ -1052,7 +1131,7 @@ h1, h2, h3 {
 }
 .outlet-row .product-card h3 { min-height: 54.4px; }
 .product-price { margin-bottom: 14px; }
-.price-row { display: flex; justify-content: space-between; font-size: 0.92rem; padding: 2px 0; color: var(--ink); }
+.price-row { display: flex; justify-content: space-between; font-size: 0.92rem; padding: 2px 0; color: var(--ink); white-space: nowrap; }
 .price-row strong { font-weight: 400; }
 .price-row--member { color: var(--blue); font-weight: 400; }
 .price-row--pvp { color: #9CA3AF; font-size: 0.85rem; }
@@ -2225,6 +2304,7 @@ h1, h2, h3 {
   .header-top-side { width: auto; }
   .hero-slide { padding: 28px; }
   .fixtures-section .container { padding: 0 20px; }
+  .services-section .container { padding: 0 20px; }
   .news-section .container { padding: 0 20px; }
   .player-related .news-grid--secondary { padding-left: 20px; padding-right: 20px; }
   .shop-section .container { padding: 0 20px; }
@@ -5275,6 +5355,9 @@ html.is-modal-open { overflow: hidden; }
 /* (the circle is the icon's own colour, blue on laptops; the letters stay black) */
 .initials-circle { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border: 1.5px solid var(--ink); border-radius: 50%; font-size: 9px; font-weight: 500; line-height: 1; letter-spacing: -0.02em; color: var(--ink); }
 .header-initials:hover .initials-circle { border-color: var(--blue); }
+/* a photo picked on the profile fills the circle in place of the initials */
+.initials-circle.has-photo, .nh-initials.has-photo { overflow: hidden; border: 2px solid var(--blue); }
+:is(.initials-circle, .nh-initials).has-photo img { width: 100%; height: 100%; object-fit: cover; background: #000; }
 @media (min-width: 901px) and (max-width: 1599px) {
   .initials-circle { width: 23px; height: 23px; border: 1.7px solid var(--blue); font-size: 9.5px; font-weight: 500; }
 }
@@ -5300,16 +5383,26 @@ html.is-modal-open { overflow: hidden; }
 /* ---------- Perfil (perfil.html): the signed-in account's page ---------- */
 .pf-page { padding: 0 18px 42px; font-family: "Roboto Condensed", var(--font-body); }
 /* banner: the shirt photo darkened, with the photo circle, the name lines, a thin line and the Logout */
+/* (no member number yet: the grey stripe above the banner) */
+.pf-alert { display: flex; align-items: center; height: 65px; padding: 0 60px 0 61px; overflow: hidden; background: #F4F4F4; transition: opacity 0.3s ease, height 0.3s ease 0.15s; }
+.pf-alert.is-closing { height: 0; opacity: 0; pointer-events: none; }
+.pf-alert[hidden] { display: none; }
+.pf-alert-icon { flex-shrink: 0; width: 27px; height: 27px; color: var(--blue); }
+.pf-alert a { margin-left: 66px; font-size: 14px; line-height: 20px; color: #242424; text-decoration: underline; }
+.pf-alert a:hover { color: var(--blue); }
+.pf-alert-close { display: flex; flex-shrink: 0; margin-left: auto; padding: 0; border: 0; background: none; color: #8A8A8A; cursor: pointer; }
+.pf-alert-close svg { width: 19.5px; height: 19.5px; }
+.pf-alert-close:hover { color: var(--blue); }
 .pf-hero { position: relative; height: 376px; background: url("../Logos/WebsiteBanner-1.jpg") center / cover no-repeat; }
 .pf-hero::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.72); }
 .pf-hero-inner { position: relative; display: flex; align-items: center; max-width: 830px; height: 100%; margin: 0 auto; color: var(--yellow); }
 .pf-avatar { position: relative; flex-shrink: 0; width: 130px; height: 130px; }
-.pf-avatar-circle { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 50%; background: var(--yellow); cursor: pointer; }
+.pf-avatar-circle { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 3.5px var(--yellow); cursor: pointer; }
 /* no photo yet: a grey outline of a person (a slightly uneven top of the head, ears, neck, shoulders) in a jersey with the crest on the chest; each shape is filled with the circle's yellow so the ones behind don't show through */
 .pf-avatar-person { position: absolute; inset: 0; width: 100%; height: 100%; }
 .pf-avatar-person :is(.pf-skin, .pf-shirt) { fill: var(--yellow); stroke: #7A7A7A; stroke-width: 1.2; stroke-linejoin: round; }
 .pf-avatar-person .pf-shirt-crest { filter: grayscale(1) brightness(0.45); }
-.pf-avatar-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.pf-avatar-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
 .pf-avatar-camera { position: absolute; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); color: var(--ink); cursor: pointer; }
 .pf-avatar-camera svg { width: 24px; height: 24px; }
 .pf-hero-text { margin-left: 29px; }
@@ -5358,7 +5451,7 @@ html.is-modal-open { overflow: hidden; }
 .pf-card { position: relative; width: 321px; aspect-ratio: 1012 / 637; overflow: hidden; border-radius: 8px; background: #004AAD; color: var(--white); container-type: inline-size; }
 .pf-card-bg { display: block; width: 100%; height: 100%; }
 .pf-card-photo { position: absolute; left: 29.6%; top: 9.4%; width: 19.6%; height: 34.5%; overflow: hidden; background: #DCDCDC; }
-.pf-card-photo img { width: 100%; height: 100%; object-fit: cover; }
+.pf-card-photo img { width: 100%; height: 100%; object-fit: cover; background: #000; }
 .pf-card-text { position: absolute; left: 4.7%; top: 78.74%; font-family: "Urbanist", var(--font-body); font-size: 3.277cqw; font-weight: 400; line-height: 3.656cqw; white-space: nowrap; text-transform: uppercase; word-spacing: 1.2cqw; }
 .pf-card-text p { margin: 0; }
 .pf-card-text b, .pf-card-name { font-weight: 600; }
@@ -5392,7 +5485,7 @@ html.is-modal-open { overflow: hidden; }
 .pf-dp-head { grid-column: 1; grid-row: 1; margin-top: -2px; }
 .pf-box-title--caps { text-transform: uppercase; }
 .pf-dp-count { margin: 6px 0 0; font-size: 16px; font-weight: 300; line-height: 20px; text-transform: uppercase; color: #242424; }
-.pf-dp-count b { font-weight: 400; }
+.pf-dp-count b { font-weight: 700; }
 .pf-dp-icon { grid-column: 2; grid-row: 1; width: 200px; margin-top: 23px; overflow: visible; }
 .pf-dp-icon--house { margin-top: 11px; }
 .pf-dp-side { grid-column: 3; grid-row: 1; display: flex; flex-direction: column; align-items: flex-end; margin-top: 43px; }
@@ -5407,6 +5500,14 @@ html.is-modal-open { overflow: hidden; }
 .pf-dp-cards svg { width: 14px; height: 14px; }
 .pf-dp-note { grid-column: 1 / -1; grid-row: 2; margin: 26px 0 0; font-family: "Roboto", var(--font-body); font-size: 14px; line-height: 18px; color: #242424; }
 /* Informação Pessoal: the name, e-mail and phone in a grey block */
+/* (nothing saved yet: a question, a line under it and a button, centred where the list would be) */
+.pf-dp-empty { grid-column: 3; grid-row: 1; display: flex; flex-direction: column; align-items: center; margin: 15px -40px 0 0; padding: 0 20px 44px; text-align: center; }
+.pf-dp-empty[hidden], .pf-dp-side[hidden], .pf-dp-count[hidden], .pf-dp-note[hidden] { display: none; }
+.pf-dp-empty-title { margin: 0; padding-bottom: 5px; font-family: "Roboto Condensed", var(--font-body); font-size: 24px; font-weight: 400; line-height: 52px; letter-spacing: normal; text-transform: uppercase; color: #242424; }
+.pf-dp-empty p { margin: 0; padding-bottom: 20px; font-family: "Roboto", var(--font-body); font-size: 18px; line-height: 28px; color: #242424; }
+.pf-dp-empty .pf-btn { width: 205px; min-height: 50px; font-size: 16px; line-height: 18px; }
+/* (Informação Pessoal: the profile picture, where the other boxes have their drawing) */
+.pf-dp-photo { grid-column: 2; grid-row: 1; position: relative; width: 200px; height: 200px; margin: -6px 0 25px; overflow: hidden; border-radius: 50%; background: var(--yellow); }
 .pf-dp-info { align-self: stretch; margin: 0; padding: 11px 21px; background: #EFEFEF; font-size: 15px; line-height: 22.5px; text-transform: uppercase; color: #242424; }
 .pf-dp-info div { display: flex; gap: 15px; }
 .pf-dp-info dt { font-weight: 700; }
@@ -5422,9 +5523,10 @@ html.is-modal-open { overflow: hidden; }
 .pf-en-empty p { margin: 0; }
 .pf-en-empty-title { font-size: 24px; line-height: 28px; text-transform: uppercase; }
 .pf-en-empty .pf-en-empty-text { margin-top: 15px; font-family: "Roboto", var(--font-body); font-size: 18px; line-height: 28px; }
-.pf-en-empty-btn { width: 205px; min-height: 50px; margin-top: 21px; }
+.pf-en-empty-btn { width: 205px; min-height: 50px; margin-top: 21px; font-size: 16px; line-height: 18px; }
 .pf-en-orders { padding-bottom: 55px; }
 .pf-dp-box.pf-en-orders .pf-dp-side { margin-top: 10px; }
+.pf-dp-box.pf-en-orders .pf-en-empty { margin-top: 26px; }
 .pf-en-all { min-height: 50px; margin-top: 10px; }
 .pf-pr-box { padding-bottom: 41px; }
 .pf-dp-icon--bell { width: 184px; margin: -7px 0 0 18px; overflow: visible; }
@@ -5435,7 +5537,7 @@ html.is-modal-open { overflow: hidden; }
 .pf-box.pf-cs-box { padding: 61px 46px 40px; text-align: center; color: #242424; }
 .pf-cs-note { margin: 0; }
 .pf-cs-note sup { margin-right: 1px; font-size: 10px; line-height: 0; color: var(--blue); }
-.pf-cs-title { font-size: 30px; line-height: 36px; }
+.pf-cs-title { font-size: 25px; line-height: 31px; }
 .pf-cs-lock { display: block; width: 42px; margin: 10px auto 0; overflow: visible; }
 .pf-cs-heading { margin: 52px 0 0; font-size: 24px; line-height: 28px; text-transform: uppercase; }
 .pf-cs-intro { max-width: 625px; margin: 31px auto 0; font-family: "Roboto", var(--font-body); font-size: 16px; line-height: 23px; }
@@ -5579,7 +5681,7 @@ html.is-modal-open { overflow: hidden; }
 .nh-account p { margin: 0; }
 .nh-account-head { display: flex; align-items: center; gap: 22px; padding: 0 0 24px 35px; border-bottom: 1px solid #DDD; }
 .nh-account-avatar { position: relative; display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 74px; height: 74px; overflow: hidden; border: 1px solid #CCC; border-radius: 50%; font-size: 42px; font-weight: 300; color: var(--blue); }
-.nh-account-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.nh-account-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
 .nh-account-name, .nh-account-member { font-size: 18px; line-height: 26px; color: #242424; text-transform: uppercase; }
 .nh-account .nh-account-since { margin-top: 2px; font-size: 15px; line-height: 20px; color: #242424; text-transform: uppercase; }
 .nh-account-list { margin: 0; padding: 0 0 30px; border-bottom: 1px solid #DDD; list-style: none; }
@@ -5651,7 +5753,7 @@ html.is-modal-open { overflow: hidden; }
 .nm-grid { position: relative; display: grid; grid-template-columns: repeat(4, 234px); width: 990px; margin: 56px 0 56px 135px; border-right: 0.8px solid #DDD; }
 .nm-item { display: flex; flex-direction: column; align-items: flex-start; padding: 0 23px 32px 0; }
 .nm-item p { margin: 0; }
-.nm-item a { font-size: 16px; line-height: 27.2px; color: #242424; text-decoration: none; transition: color 0.1s ease-in-out; }
+.nm-item a { font-size: 16px; line-height: 27.2px; white-space: nowrap; color: #242424; text-decoration: none; transition: color 0.1s ease-in-out; }
 .nm-item a + a { margin-top: 10px; }
 .nm-item .nm-title { margin-bottom: 15px; font-size: 16px; font-weight: 500; line-height: 19px; color: #707070; }
 .nm-item a.nm-title { line-height: 19px; color: #707070; }
@@ -6023,7 +6125,8 @@ body.nm-open { overflow: hidden; }
 .nf-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 23.6px; margin-left: 53px; font-weight: 300; text-transform: uppercase; }
 .nf-links a:hover { text-decoration: underline; }
 .nf-links .nf-cookies { margin-left: 12px; padding: 10px 0; font-weight: 500; }
-.nf-rights { margin: 0 0 0 auto; padding-right: 10px; font-weight: 300; }
+.nf-rights { margin: 0 0 0 auto; padding-right: 10px; font-weight: 300; white-space: nowrap; }
+.nf-links a { white-space: nowrap; }
 @media (max-width: 1100px) {
   .nf-bar { flex-direction: column; align-items: flex-start; gap: 14px; padding: 20px; }
   .nf-links { margin-left: 0; gap: 8px 20px; }
@@ -7189,12 +7292,13 @@ html:not(.native-scrollbar)::-webkit-scrollbar-button { display: none; }
 
 /* ===== The language popup (js/i18n.js): like the account popup, a plain white block against the right edge that slides
    in a little from the right: "Escolhe o idioma" (as the account popup's "Olá"), a light line, the four languages; a word turns blue on hover (the current one is blue) */
-.lang-pop { position: fixed; right: 0; z-index: 700; width: 206px; max-width: 100vw; padding: 22px 20px 16px 26px; background: var(--white); opacity: 0; transform: translateX(24px); transition: transform 0.2s ease, opacity 0.2s ease; }
-.lang-pop.is-open { opacity: 1; transform: none; transition: transform 0.25s ease, opacity 0.25s ease; }
+.lang-pop { position: fixed; right: 0; z-index: 700; width: 210px; max-width: 100vw; padding: 17px 20px 16px 30px; background: var(--white); transform: translateX(100%); transition: transform 0.3s ease; }
+.lang-pop.is-open { transform: none; transition: transform 0.4s ease; }
 .lang-pop[hidden] { display: none; }
-.lang-pop-title { margin: 0; font-size: 17.75px; line-height: 24px; color: var(--ink); }
-.lang-pop-list { margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid #F3F3F3; list-style: none; }
-.lang-pop-opt { display: block; width: 100%; padding: 7.5px 0; border: 0; background: none; font-family: var(--font-body); font-size: 14px; text-align: left; color: var(--ink); cursor: pointer; }
+.lang-pop-title { margin: 0; white-space: nowrap; font-size: 17.5px; line-height: 24px; color: var(--ink); }
+.lang-pop-list { margin: 12px 0 0; padding: 12px 0 0; border-top: 1px solid #F3F3F3; list-style: none; }
+.lang-pop-list li + li { margin-top: 3px; }
+.lang-pop-opt { display: block; width: 100%; padding: 7.5px 0; border: 0; background: none; font-family: var(--font-body); font-size: 13.5px; text-align: left; color: var(--ink); cursor: pointer; }
 .lang-pop-opt:hover, .lang-pop-opt.is-current { color: var(--blue); }
 .lang-pop-opt.is-current { font-weight: 700; }
 .lang-pop-opt:focus-visible { outline: 1px solid var(--blue); outline-offset: 2px; }

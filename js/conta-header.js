@@ -22,13 +22,20 @@ const nhMember = document.querySelector("[data-nh-member]");
 if (account.socio) nhMember.querySelector("span").textContent = account.socio;
 else nhMember.hidden = true;
 document.querySelector("[data-nh-since]").textContent = `${NH_MONTHS[nhSince.getMonth()]} ${nhSince.getFullYear()}`;
+// (the photo also takes the place of the initials in the header's small circle; called again when a new one is picked)
+function showNhPhoto(photo) {
+  const img = document.querySelector("[data-nh-photo]");
+  img.src = photo;
+  img.hidden = false;
+  document.querySelectorAll(".nh-initials").forEach((el) => {
+    el.classList.add("has-photo");
+    el.innerHTML = '<img alt="">';
+    el.firstElementChild.src = photo;
+  });
+}
 try {
   const photo = localStorage.getItem("lfcAvatar");
-  if (photo) {
-    const img = document.querySelector("[data-nh-photo]");
-    img.src = photo;
-    img.hidden = false;
-  }
+  if (photo) showNhPhoto(photo);
 } catch {}
 
 // "Olá, VICENTE" with the initials (one button) opens and closes it; a click anywhere else or Esc closes it

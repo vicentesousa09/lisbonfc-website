@@ -541,6 +541,18 @@ if (signedIn && headerAccount && initials) {
   headerAccount.classList.add("header-initials");
   headerAccount.innerHTML = `<span class="initials-circle">${initials}</span>`;
 }
+// (with a photo picked on the profile, the photo fills the circle in place of the initials)
+function showHeaderPhoto(photo) {
+  document.querySelectorAll(".header-initials .initials-circle").forEach((circle) => {
+    circle.classList.add("has-photo");
+    circle.innerHTML = '<img alt="">';
+    circle.firstElementChild.src = photo;
+  });
+}
+try {
+  const photo = localStorage.getItem("lfcAvatar");
+  if (photo) showHeaderPhoto(photo);
+} catch {}
 if (signedIn && headerAccount) {
   const balance = "0,00€";
   const wallet = document.createElement("span");
@@ -651,18 +663,47 @@ if (siteHeader && headerTopInner) {
 function initCarousel(containerSelector, prevSelector, nextSelector, intervalMs) {
   const container = document.querySelector(containerSelector);
   const slides = container.querySelectorAll(".hero-slide");
+  // the home page's two banners slide sideways (.hero in style.css); the other carousels fade
+  const sliding = !!container.closest(".hero");
   let index = 0;
+  let moving = false;
 
-  function show(i) {
-    slides[index].classList.remove("active");
-    index = (i + slides.length) % slides.length;
-    slides[index].classList.add("active");
+  function show(i, dir = 1) {
+    const next = (i + slides.length) % slides.length;
+    if (next === index || moving) return;
+    const from = slides[index];
+    const to = slides[next];
+    index = next;
+    if (!sliding) {
+      from.classList.remove("active");
+      to.classList.add("active");
+      return;
+    }
+    // the new image comes in from the side of the arrow pressed, pushing the current one out the other way
+    moving = true;
+    to.style.transition = "none";
+    to.style.transform = `translateX(${dir * 100}%)`;
+    void to.offsetWidth;
+    [from, to].forEach((s) => { s.style.transition = "transform 0.6s ease"; });
+    from.style.transform = `translateX(${-dir * 100}%)`;
+    to.style.transform = "translateX(0)";
+    from.classList.remove("active");
+    to.classList.add("active");
+    setTimeout(() => {
+      [from, to].forEach((s) => { s.style.transition = ""; s.style.transform = ""; });
+      moving = false;
+    }, 620);
   }
 
-  container.querySelector(nextSelector).addEventListener("click", () => show(index + 1));
-  container.querySelector(prevSelector).addEventListener("click", () => show(index - 1));
-
-  setInterval(() => show(index + 1), intervalMs);
+  // (a click restarts the wait before the next automatic change)
+  let timer = setInterval(() => show(index + 1, 1), intervalMs);
+  const go = (step) => {
+    show(index + step, step);
+    clearInterval(timer);
+    timer = setInterval(() => show(index + 1, 1), intervalMs);
+  };
+  container.querySelector(nextSelector).addEventListener("click", () => go(1));
+  container.querySelector(prevSelector).addEventListener("click", () => go(-1));
 }
 
 // The grey strip under the header: its messages take turns, rolling up one after the next
@@ -692,23 +733,66 @@ if (fixturesRow) {
   const fixtureCards = fixturesRow.querySelectorAll(".fixture-card");
   const fixturesPrevBtn = document.querySelector(".fixtures-prev");
   const fixturesNextBtn = document.querySelector(".fixtures-next");
-  let fixtureIndex = 0;
+  // the cards are in date order and the row opens on the latest ones (the earlier games are back to the left, by the
+  // arrow or by dragging); the arrows know how many cards fit at once
+  const cardWidth = () => fixtureCards[0].getBoundingClientRect().width || 1;
+  const perView = () => Math.max(1, Math.round(fixturesRow.clientWidth / cardWidth()));
+  const lastIndex = () => Math.max(0, fixtureCards.length - perView());
+  let fixtureIndex = lastIndex();
 
   function updateFixtureArrows() {
-    fixturesPrevBtn.classList.toggle("is-disabled", fixtureIndex === 0);
-    fixturesNextBtn.classList.toggle("is-disabled", fixtureIndex === fixtureCards.length - 1);
+    fixturesPrevBtn.classList.toggle("is-disabled", fixtureIndex <= 0);
+    fixturesNextBtn.classList.toggle("is-disabled", fixtureIndex >= lastIndex());
   }
 
-  function showFixture(i) {
-    fixtureIndex = Math.max(0, Math.min(i, fixtureCards.length - 1));
-    fixtureCards[fixtureIndex].scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+  // (the row snaps here rather than with CSS scroll-snap, which fought the arrows' smooth scrolling)
+  let settling = false;
+  function showFixture(i, smooth = true) {
+    fixtureIndex = Math.max(0, Math.min(i, lastIndex()));
+    settling = smooth;
+    fixturesRow.scrollTo({ left: fixtureIndex * cardWidth(), behavior: smooth ? "smooth" : "auto" });
     updateFixtureArrows();
   }
 
   fixturesNextBtn.addEventListener("click", () => showFixture(fixtureIndex + 1));
   fixturesPrevBtn.addEventListener("click", () => showFixture(fixtureIndex - 1));
+  // a swipe or trackpad scroll settles on the nearest card when it stops
+  let scrollStop = null;
+  fixturesRow.addEventListener("scroll", () => {
+    clearTimeout(scrollStop);
+    scrollStop = setTimeout(() => {
+      if (settling) { settling = false; return; }
+      if (!drag) showFixture(Math.round(fixturesRow.scrollLeft / cardWidth()));
+    }, 140);
+  }, { passive: true });
 
-  updateFixtureArrows();
+  // dragging with the mouse: the row follows the pointer, then settles on the nearest card; a drag doesn't open a link
+  let drag = null;
+  fixturesRow.addEventListener("pointerdown", (e) => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    drag = { x: e.clientX, left: fixturesRow.scrollLeft, moved: false };
+  });
+  window.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) < 5) return;
+    if (!drag.moved) { drag.moved = true; fixturesRow.classList.add("is-dragging"); }
+    fixturesRow.scrollLeft = drag.left - dx;
+  });
+  window.addEventListener("pointerup", () => {
+    if (!drag) return;
+    const moved = drag.moved;
+    drag = null;
+    fixturesRow.classList.remove("is-dragging");
+    if (moved) {
+      showFixture(Math.round(fixturesRow.scrollLeft / cardWidth()));
+      fixturesRow.addEventListener("click", (ev) => { ev.preventDefault(); ev.stopPropagation(); }, { capture: true, once: true });
+    }
+  });
+  fixturesRow.addEventListener("dragstart", (e) => e.preventDefault());
+
+  showFixture(fixtureIndex, false);
+  window.addEventListener("resize", () => showFixture(Math.min(fixtureIndex, lastIndex()), false));
 }
 
 // Cart count, kept in localStorage so the header bag shows it on every page

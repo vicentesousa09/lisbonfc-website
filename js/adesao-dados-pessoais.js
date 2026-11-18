@@ -236,6 +236,7 @@ adPhotoInput.addEventListener("change", (e) => {
       // circle's own background shows behind them, not black)
       const src = file.type === "image/jpeg" ? canvas.toDataURL("image/jpeg", 0.85) : canvas.toDataURL("image/png");
       adShowPhoto(src);
+      showNhPhoto(src);
       try { localStorage.setItem("lfcAvatar", src); } catch {}
     };
     img.src = reader.result;

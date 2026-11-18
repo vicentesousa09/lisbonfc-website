@@ -88,13 +88,15 @@ function setUpForm(form) {
   });
 }
 
-// the boxes: the profile's, the saved ones, a new form while none is saved (and any others
+// the boxes: the profile's (if it has an address), the saved ones, a new form while none is saved (and any others
 // opened with "Adicionar mais"), then "Adicionar mais"
 const gmList = document.querySelector("[data-gm-list]");
 let gmNewForms = account.addresses.length ? 0 : 1;
 function render() {
   const saved = account.addresses.map(viewHtml);
-  gmList.innerHTML = [viewHtml(profileAddress()), ...saved, ...Array(gmNewForms).fill(formHtml()), GM_ADD].join("");
+  // (the profile's only once it has an address, filled in in Informação Pessoal: none yet, just the form and "Adicionar mais")
+  const own = profileAddress().address ? [viewHtml(profileAddress())] : [];
+  gmList.innerHTML = [...own, ...saved,...Array(gmNewForms).fill(formHtml()), GM_ADD].join("");
   gmList.querySelectorAll("form").forEach((form) => {
     const a = account.addresses.find((x) => x.id === form.dataset.id);
     form.dataset.country = a ? a.country : "PT";

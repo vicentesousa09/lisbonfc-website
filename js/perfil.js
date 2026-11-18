@@ -25,18 +25,34 @@ document.querySelector("[data-pf-cards-count]").textContent = cards.length;
 // Moradas: how many (the profile's and the saved ones), and which is the billing and the delivery one (by its title)
 const addresses = profile.addresses || [];
 const addressTitle = (id) => addresses.find((a) => a.id === id)?.title || "Morada Perfil";
-document.querySelector("[data-pf-addresses-count]").textContent = addresses.length + 1;
+// (the profile's counts once it's been filled in, in Informação Pessoal)
+const addressCount = addresses.length + ((profile.personal || {}).address ? 1 : 0);
+document.querySelector("[data-pf-addresses-count]").textContent = addressCount;
+// no card / no address yet: "Como queres pagar?" / "Onde vives?" with a button, in place of the list
+document.querySelectorAll("[data-pf-cards-has]").forEach((el) => { el.hidden = cards.length === 0; });
+document.querySelector("[data-pf-cards-empty]").hidden = cards.length > 0;
+document.querySelector("[data-pf-addresses-has]").hidden = addressCount === 0;
+document.querySelector("[data-pf-addresses-empty]").hidden = addressCount > 0;
 document.querySelector("[data-pf-billing]").textContent = addressTitle(profile.billing);
 document.querySelector("[data-pf-delivery]").textContent = addressTitle(profile.delivery);
 document.querySelector("[data-pf-cards]").innerHTML =cards.map((last4) => `<li>**** **** **** ${last4}<svg viewBox="0 0 16 16" fill="none" stroke="var(--blue)" stroke-width="2"><path d="m2.5 8.5 3.6 3.6 7.4-8"/></svg></li>`).join("");
 
-// Encomendas: a row per order (code, date, state) with Ver, which opens it in the order history; none yet: a line
-// saying so, and no Ver Todas
+// Encomendas: a row per order (code, date, state) with Ver, which opens it in the order history, then Ver Todas; none
+// yet: "Ainda não tem encomendas." with Comprar in their place
 const orders = profile.orders || [];
-document.querySelector("[data-pf-orders]").innerHTML = orders.length
-  ? orders.map((o, i) => `<div class="pf-row"><p class="pf-row-info"><strong>${o.id}</strong><span>${o.date}</span><span>${o.status}</span></p><a href="historico-de-encomendas.html#${i}" class="pf-btn pf-btn--outline">Ver</a></div>`).join("")
-  : `<p class="pf-en-none">Ainda não tem encomendas.</p>`;
-document.querySelector(".pf-en-all").hidden = !orders.length;
+document.querySelector("[data-pf-orders]").innerHTML = orders.map((o, i) => `<div class="pf-row"><p class="pf-row-info"><strong>${o.id}</strong><span>${o.date}</span><span>${o.status}</span></p><a href="historico-de-encomendas.html#${i}" class="pf-btn pf-btn--outline">Ver</a></div>`).join("");
+document.querySelector("[data-pf-orders-has]").hidden = !orders.length;
+document.querySelector("[data-pf-orders-empty]").hidden = orders.length > 0;
+
+// Preferências: how many notifications are on, out of all the subjects on notificacoes.html (11: keep in step with its
+// NT_GROUPS), as "9 / 11"; just "0" with them all off, turned off as a whole or blocked by the browser
+const NT_TOTAL = 11;
+let ntPrefs = {};
+try { ntPrefs = JSON.parse(localStorage.getItem("lfcNotifications")) || {}; } catch {}
+const ntBlocked = !("Notification" in window) || Notification.permission === "denied";
+const ntOff = Object.entries(ntPrefs).filter(([label, on]) => label !== "all" && on === false).length;
+const ntActive = ntBlocked || ntPrefs.all === false ? 0 : NT_TOTAL - ntOff;
+document.querySelector("[data-pf-notifications]").textContent = ntActive ? `${ntActive} / ${NT_TOTAL}` : "0";
 
 // Consentimentos: a Não/Sim per subject (all Sim to start), kept in this browser until there's a server. The Sim/Não
 // above them sets them all; any one on Sim puts it back on Sim, all on Não puts it on Não
@@ -138,6 +154,14 @@ if (!profile.socio) {
   document.querySelector("[data-pf-rows]").hidden = true;
   document.querySelector("[data-pf-join]").hidden = false;
   document.querySelector(".pf-card-box").classList.add("is-join");
+  // (and the grey stripe above the banner, until its cross is pressed)
+  const pfAlert = document.querySelector("[data-pf-alert]");
+  pfAlert.hidden = false;
+  // (it fades out, the banner sliding up into its place, and is then gone)
+  pfAlert.querySelector(".pf-alert-close").addEventListener("click", () => {
+    pfAlert.classList.add("is-closing");
+    setTimeout(() => { pfAlert.hidden = true; }, 450);
+  });
 }
 // "Já sou sócio": both boxes needed (an empty one turns red); Guardar links the number to the account (until there's a
 // server to check it against the ID document) and the page shows the member's layout
@@ -173,11 +197,14 @@ else {
 }
 
 // the photo: the camera picks one; it's kept in this browser and shown in the banner and on the card
-const avatarImg = document.querySelector(".pf-avatar-img");
-const cardImg = document.querySelector(".pf-card-photo img");
+// (and in Dados Pessoais' Informação Pessoal, which has the banner's figure while there's no photo)
+document.querySelector("[data-pf-dp-photo]").prepend(document.querySelector(".pf-avatar-person").cloneNode(true));
+const photoImgs = document.querySelectorAll(".pf-avatar-img, .pf-card-photo img");
 function showPhoto(src) {
-  [avatarImg, cardImg].forEach((img) => { img.src = src; img.hidden = false; });
-  document.querySelector(".pf-avatar-person").style.display = "none";
+  photoImgs.forEach((img) => { img.src = src; img.hidden = false; });
+  document.querySelectorAll(".pf-avatar-person").forEach((p) => { p.style.display = "none"; });
+  // (and in the header's small circle, in place of the initials)
+  showHeaderPhoto(src);
 }
 try {
   const saved = localStorage.getItem("lfcAvatar");
@@ -198,9 +225,11 @@ photoInput.addEventListener("change", (e) => {
       const canvas = document.createElement("canvas");
       canvas.width = canvas.height = size;
       const side = Math.min(img.width, img.height);
-      canvas.getContext("2d").drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
-      // (a .jpg stays a .jpg; any other picture is kept as a .png, so its see-through parts stay see-through and the
-      // circle's own background shows behind them, not black)
+      // (black goes under the picture first, so a .png's see-through parts are black in the banner and on the card)
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, size, size);
+      ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
       const src = file.type === "image/jpeg" ? canvas.toDataURL("image/jpeg", 0.85) : canvas.toDataURL("image/png");
       showPhoto(src);
       try { localStorage.setItem("lfcAvatar", src); } catch {}

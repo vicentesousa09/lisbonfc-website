@@ -28,7 +28,7 @@
         </button>
       </div>
 
-      <a href="#top" class="brand">
+      <a href="/" class="brand">
         <img src="Logos/Logo.png" alt="Lisbon FC" class="brand-crest">
       </a>
 
@@ -342,6 +342,13 @@
 
 <main id="top" class="pf-page">
 
+  <!-- An account without a member number: a grey stripe above the banner asking to link it (the cross closes it) -->
+  <div class="pf-alert" data-pf-alert hidden>
+    <svg class="pf-alert-icon" viewBox="0 0 27 27" aria-hidden="true"><circle cx="13.5" cy="13.5" r="13.5" fill="currentColor"/><path d="M13.5 6.2v9.2" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/><circle cx="13.5" cy="20.4" r="0.9" fill="#fff"/></svg>
+    <a href="#socio">És Sócio Lisbon FC? Associa os teus dados para beneficiares de campanhas exclusivas.</a>
+    <button type="button" class="pf-alert-close" aria-label="Fechar"><svg viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="0.5"><path d="m0.5 0.5 16 16M16.5 0.5l-16 16"/></svg></button>
+  </div>
+
   <!-- Profile banner: photo (the camera changes it), name, member number, and the sign-out -->
   <section class="pf-hero">
     <div class="pf-hero-inner">
@@ -433,20 +440,28 @@
     <section class="pf-box pf-dp-box">
       <div class="pf-dp-head">
         <h2 class="pf-box-title pf-box-title--caps">Meios de Pagamento</h2>
-        <p class="pf-dp-count"><b data-pf-cards-count>0</b> Cartões Associados</p>
+        <p class="pf-dp-count" data-pf-cards-has><b data-pf-cards-count>0</b> Cartões Associados</p>
       </div>
       <svg class="pf-dp-icon" viewBox="0 0 251 178" fill="#F7F7F7" stroke="#242424" stroke-width="4.9"><rect x="50" y="1.5" width="199" height="127" rx="3"/><path d="M50 28h199"/><rect x="1.5" y="49.5" width="199" height="127" rx="3"/><path d="M1.5 76h199"/><path stroke-linecap="round" d="M21 103h49M21 126h141"/></svg>
-      <div class="pf-dp-side">
+      <div class="pf-dp-side" data-pf-cards-has>
         <ul class="pf-dp-cards" data-pf-cards></ul>
         <a href="meios-de-pagamento.html" class="pf-btn pf-dp-btn">Gerir</a>
       </div>
-      <p class="pf-dp-note">Os cartões de Débito/Crédito só podem ser adicionados ao teu perfil no processo de checkout.</p>
+      <!-- no card saved yet: this instead of the count, the list and the note -->
+      <div class="pf-dp-empty" data-pf-cards-empty hidden>
+        <h3 class="pf-dp-empty-title">Como queres pagar?</h3>
+        <p>Os cartões de Débito/Crédito serão adicionados ao teu perfil após a 1ª encomenda Lisbon FC.</p>
+        <a href="meios-de-pagamento.html" class="pf-btn">Adicionar</a>
+      </div>
+      <p class="pf-dp-note" data-pf-cards-has>Os cartões de Débito/Crédito só podem ser adicionados ao teu perfil no processo de checkout.</p>
     </section>
 
     <section class="pf-box pf-dp-box">
       <div class="pf-dp-head">
         <h2 class="pf-box-title">Informação Pessoal</h2>
       </div>
+      <!-- the profile picture (the banner's), or the banner's figure while there's none -->
+      <div class="pf-dp-photo" data-pf-dp-photo><img class="pf-avatar-img" alt="" hidden></div>
       <div class="pf-dp-side pf-dp-side--info">
         <dl class="pf-dp-info">
           <div><dt>Nome Completo</dt><dd data-pf-name></dd></div>
@@ -463,7 +478,13 @@
         <p class="pf-dp-count"><b data-pf-addresses-count>1</b> Moradas Associadas</p>
       </div>
       <svg class="pf-dp-icon pf-dp-icon--house" viewBox="0 0 251 211" fill="none" stroke="#000" stroke-width="4.9" stroke-linejoin="round" stroke-linecap="round"><path d="M2 103 87 25l9 9M19 101v90h35M42 98 145 1l104 99M63 82v126h58v-73h48v73h58V94"/></svg>
-      <div class="pf-dp-side">
+      <!-- no address yet (none in Informação Pessoal, none saved): this instead of the rows -->
+      <div class="pf-dp-empty" data-pf-addresses-empty hidden>
+        <h3 class="pf-dp-empty-title">Onde vives?</h3>
+        <p>Indica a tua morada para receberes as encomendas Lisbon FC.</p>
+        <a href="gestao-de-moradas.html" class="pf-btn">Inserir Morada</a>
+      </div>
+      <div class="pf-dp-side" data-pf-addresses-has>
         <div class="pf-rows-list">
           <div class="pf-row">
             <p class="pf-row-info pf-row-info--mixed"><strong>Morada de Faturação</strong><span data-pf-billing>Morada Perfil</span></p>
@@ -497,7 +518,13 @@
         <h2 class="pf-box-title">Histórico de Encomendas</h2>
       </div>
       <svg class="pf-dp-icon pf-dp-icon--bag" viewBox="0 0 148 204"><path fill="#013A88" d="M117 52l23 6 6 138-27 4Z"/><path fill="var(--blue)" d="M2 52h115l2 148H0Z"/><path fill="none" stroke="#0B5CC9" stroke-width="2.6" d="M36 56C34 30 38 4 55 3s21 27 17 53M52 56C51 28 58 3 76 4s20 26 19 52"/><path fill="none" stroke="#0B5CC9" stroke-width="1.4" d="M2 62h115"/><image href="Logos/Logo_tranparent(yellow).png" x="7" y="75" width="105" height="105"/></svg>
-      <div class="pf-dp-side">
+      <!-- no orders yet: this (as Descontos' message) instead of the rows -->
+      <div class="pf-dp-side pf-en-empty" data-pf-orders-empty hidden>
+        <p class="pf-en-empty-title">Ainda não tem encomendas.</p>
+        <p class="pf-en-empty-text">Experimente comprar na nossa loja online e<br>usufrua de vantagens exclusivas!</p>
+        <a href="loja.html" class="pf-btn pf-en-empty-btn">Comprar</a>
+      </div>
+      <div class="pf-dp-side" data-pf-orders-has>
         <div class="pf-rows-list" data-pf-orders></div>
         <a href="historico-de-encomendas.html" class="pf-btn pf-en-all">Ver Todas</a>
       </div>
@@ -508,7 +535,7 @@
     <section class="pf-box pf-dp-box pf-pr-box">
       <div class="pf-dp-head">
         <h2 class="pf-box-title">Notificações</h2>
-        <p class="pf-dp-count"><b>0</b> Notificações Ativas</p>
+        <p class="pf-dp-count"><b data-pf-notifications>0</b> Notificações Ativas</p>
       </div>
       <svg class="pf-dp-icon pf-dp-icon--bell" viewBox="0 0 234 254" fill="none" stroke="#242424" stroke-width="5" stroke-linejoin="round"><path d="M2 222C32 196 55 170 56 128L58 95C59 62 75 45 96 37A23 23 0 1 1 138 37C159 45 175 62 176 95L178 128C179 170 202 196 232 222ZM85 222a32 30 0 0 0 64 0"/></svg>
       <div class="pf-dp-side pf-en-empty">
