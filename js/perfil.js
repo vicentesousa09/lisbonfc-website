@@ -87,63 +87,7 @@ document.querySelector("[data-pf-consents]").addEventListener("change", (e) => {
 // when the terms were accepted: the day the account started (as "1 de janeiro de 2025")
 document.querySelector("[data-pf-accepted]").textContent = sinceDate.toLocaleDateString("pt-PT", { day: "numeric", month: "long", year: "numeric" });
 
-// Gerir Cookies: the privacy popup. Each category opens with its +; the switches start on (or as last saved) and are
-// kept in this browser by "Confirmar as minhas escolhas"; "Aceitar apenas cookies necessários" turns them all off
-const ckOverlay = document.querySelector(".ck-overlay");
-const ckSwitches = ckOverlay.querySelectorAll(".ck-switch");
-function openCookies() {
-  let saved = {};
-  try { saved = JSON.parse(localStorage.getItem("lfcCookies")) || {}; } catch {}
-  ckSwitches.forEach((s) => { s.checked = saved[s.dataset.ck] !== false; });
-  syncAllowAll();
-  clearTimeout(ckFade);
-  ckOverlay.classList.remove("is-closing");
-  // the page behind goes back to its top, so it's there when the popup closes
-  window.scrollTo({ top: 0, behavior: "instant" });
-  ckOverlay.hidden = false;
-  document.body.style.overflow = "hidden";
-  ckOverlay.querySelector(".ck-body").scrollTop = 0;
-}
-// it fades out first, then hides
-let ckFade;
-function closeCookies() {
-  if (ckOverlay.hidden || ckOverlay.classList.contains("is-closing")) return;
-  ckOverlay.classList.add("is-closing");
-  ckFade = setTimeout(() => {
-    ckOverlay.hidden = true;
-    ckOverlay.classList.remove("is-closing");
-    document.body.style.overflow = "";
-  }, 500);
-}
-function saveCookies() {
-  const choice = {};
-  ckSwitches.forEach((s) => { choice[s.dataset.ck] = s.checked; });
-  try { localStorage.setItem("lfcCookies", JSON.stringify(choice)); } catch {}
-  closeCookies();
-}
-document.querySelector(".pf-cs-cookies-btn").addEventListener("click", openCookies);
-ckOverlay.querySelector(".ck-close").addEventListener("click", closeCookies);
-// a click on the dark page around it closes it too, as does Esc
-ckOverlay.addEventListener("click", (e) => { if (e.target === ckOverlay) closeCookies(); });
-document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !ckOverlay.hidden) closeCookies(); });
-ckOverlay.querySelectorAll(".ck-toggle-info").forEach((b) => b.addEventListener("click", () => {
-  const open = b.getAttribute("aria-expanded") !== "true";
-  b.setAttribute("aria-expanded", String(open));
-  b.closest(".ck-item").querySelector(".ck-item-text").hidden = !open;
-}));
-ckOverlay.querySelector("[data-ck-only-needed]").addEventListener("click", () => {
-  ckSwitches.forEach((s) => { s.checked = false; });
-  saveCookies();
-});
-ckOverlay.querySelector("[data-ck-confirm]").addEventListener("click", saveCookies);
-// "Permitir todos" only shows while a switch is off; it turns them all on, saves and closes
-const ckAllowAll = ckOverlay.querySelector("[data-ck-allow]");
-function syncAllowAll() { ckAllowAll.hidden = [...ckSwitches].every((s) => s.checked); }
-ckSwitches.forEach((s) => s.addEventListener("change", syncAllowAll));
-ckAllowAll.addEventListener("click", () => {
-  ckSwitches.forEach((s) => { s.checked = true; });
-  saveCookies();
-});
+// Gerir Cookies (the privacy popup) lives in js/cookie-settings.js, shared with the footer link
 
 // an account without a member number: no "Sócio Nº" line under the name; the card with dashes for the number and the
 // year (as Benfica's), and instead of the rows "Já sou sócio" and "Ainda não és sócio?"

@@ -217,7 +217,9 @@ ad.doc.value = adStart.doc ?? (adData.docnumber || "");
 // account's photo too, as on the profile
 const adPhotoImg = document.querySelector("[data-ad-photo]");
 const adShowPhoto = (src) => { adPhotoImg.src = src; adPhotoImg.hidden = false; };
-try { const saved = localStorage.getItem("lfcAvatar"); if (saved) adShowPhoto(saved); } catch {}
+// (signed out: no account, so no saved photo to start with, and a picked one isn't kept as an account's photo)
+const adSignedIn = (() => { try { return !!localStorage.getItem("lfcSession"); } catch { return false; } })();
+if (adSignedIn) { try { const saved = localStorage.getItem("lfcAvatar"); if (saved) adShowPhoto(saved); } catch {} }
 const adPhotoInput = document.querySelector(".ad-photo-camera input");
 document.querySelector(".ad-photo-inner").addEventListener("click", () => adPhotoInput.click());
 adPhotoInput.addEventListener("change", (e) => {
@@ -237,7 +239,7 @@ adPhotoInput.addEventListener("change", (e) => {
       const src = file.type === "image/jpeg" ? canvas.toDataURL("image/jpeg", 0.85) : canvas.toDataURL("image/png");
       adShowPhoto(src);
       showNhPhoto(src);
-      try { localStorage.setItem("lfcAvatar", src); } catch {}
+      if (adSignedIn) { try { localStorage.setItem("lfcAvatar", src); } catch {} }
     };
     img.src = reader.result;
   };

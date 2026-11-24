@@ -4,8 +4,8 @@
 
 // what each order holds, until there's a server with the real ones (by order number)
 const HE_DETAILS = {
-  "6XIT9C1V9T": { kind: "produtos", total: "25,00€", items: [{ qty: 1, name: "Camisola Principal do Lisbon FC 2026-2027", color: "Azul", size: "M", img: "Logos/Loja/camisola-principal-1.png" }] },
-  "APP-MF-D5094980826": { kind: "produtos", total: "25,00€", items: [{ qty: 1, name: "Camisola Guarda-Redes do Lisbon FC 2026-2027", color: "Verde", size: "M", img: "Logos/Loja/camisola-guarda-redes-1.png" }] },
+  "6XIT9C1V9T": { kind: "produtos", total: "25,00€", items: [{ qty: 1, name: "Camisola Principal do Lisbon FC 2026-2027", color: "Azul", size: "M", img: "Logos/Loja/camisola-principal-frente.jpg" }] },
+  "APP-MF-D5094980826": { kind: "produtos", total: "25,00€", items: [{ qty: 1, name: "Camisola Guarda-Redes do Lisbon FC 2026-2027", color: "Verde", size: "M", img: "Logos/Loja/camisola-guarda-redes-frente.jpg" }] },
 };
 // the steps' icons: thin outlines, as Benfica's (scale: the bag drawn a little smaller)
 const HE_STEPS = [

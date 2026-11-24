@@ -5,6 +5,6 @@
   let signedIn = false;
   try { signedIn = localStorage.getItem("lfcSession") !== null; } catch {}
   if (signedIn) return;
-  try { sessionStorage.setItem("lfcAfterLogin", location.pathname.replace(/^\//, "") + location.search); } catch {}
+  try { sessionStorage.setItem("lfcAfterLogin", (window.lfcPath || location.pathname).replace(/^\//, "") + location.search); } catch {}
   location.replace("conta.html");
 })();

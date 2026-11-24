@@ -16,6 +16,23 @@
   let lang = "pt";
   try { lang = localStorage.getItem("lfcLang") || "pt"; } catch {}
   if (!LANGS[lang]) lang = "pt";
+
+  // The language also lives in the address, right after the site: /pt-pt/, /en-us/, /es-es/, /ru-ru/ (e.g. /en-us/loja.html).
+  // An address with it picks that language; one without it gets the current language's added (without reloading).
+  // (The server serves the same page with or without it: /en-us/loja.html is loja.html.)
+  const PREFIX = { pt: "pt-pt", en: "en-us", es: "es-es", ru: "ru-ru" };
+  const prefixRe = /^\/(pt-pt|en-us|es-es|ru-ru)(?=\/|$)/i;
+  const pathMatch = location.pathname.match(prefixRe);
+  const barePath = location.pathname.replace(prefixRe, "") || "/";
+  window.lfcPath = barePath; // the page's path without the language part
+  if (/^https?:$/.test(location.protocol)) {
+    if (pathMatch) {
+      lang = Object.keys(PREFIX).find((k) => PREFIX[k] === pathMatch[1].toLowerCase()) || lang;
+      try { localStorage.setItem("lfcLang", lang); } catch {}
+    } else {
+      history.replaceState(history.state, "", "/" + PREFIX[lang] + barePath + location.search + location.hash);
+    }
+  }
   window.lfcLang = lang;
   document.documentElement.lang = LANGS[lang].html;
 
@@ -139,7 +156,8 @@
   function setLang(l) {
     if (!LANGS[l] || l === lang) return;
     try { localStorage.setItem("lfcLang", l); } catch {}
-    location.reload();
+    if (/^https?:$/.test(location.protocol)) location.href = "/" + PREFIX[l] + barePath + location.search + location.hash;
+    else location.reload();
   }
   window.lfcSetLang = setLang;
 
@@ -228,7 +246,7 @@
       if (el.matches(".nh-lang, .footer-lang")) { el.textContent = LANGS[lang].code; el.setAttribute("translate", "no"); }
     });
     document.querySelectorAll(".nf-langs").forEach((box) => {
-      if (!box.querySelector('[data-lang="ru"]')) {
+      if (![...box.querySelectorAll("a")].some((a) => (a.dataset.lang || a.textContent.trim().toLowerCase()) === "ru")) {
         const ru = document.createElement("a");
         ru.href = "#";
         ru.textContent = "RU";

@@ -6,15 +6,15 @@ const pwData = {
   principal: {
     title: "Camisola Principal do Lisbon FC 2026-2027",
     price: "30,00 €",
-    img: "Logos/Loja/camisola-principal-1.png",
-    imgBack: "Logos/Loja/camisola-principal-2.png",
+    img: "Logos/Loja/camisola-principal-frente.jpg",
+    imgBack: "Logos/Loja/camisola-principal-costas.jpg",
     genero: "Homem",
   },
   "guarda-redes": {
     title: "Camisola de Guarda-Redes do Lisbon FC 2026-2027",
     price: "30,00 €",
-    img: "Logos/Loja/camisola-guarda-redes-1.png",
-    imgBack: "Logos/Loja/camisola-guarda-redes-2.png",
+    img: "Logos/Loja/camisola-guarda-redes-frente.jpg",
+    imgBack: "Logos/Loja/camisola-guarda-redes-frente.jpg",
     genero: "Homem",
   },
 };

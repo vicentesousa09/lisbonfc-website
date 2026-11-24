@@ -106,7 +106,7 @@ h1, h2, h3 {
 .cart-bag-wide, .cart-count, .profile-bust, .header-compact, .search-overlay, .search-toggle .search-cross, .mini-cart, .mini-cart-backdrop { display: none; }
 /* Laptop only: menu/search and right icons span the full width; desktop keeps the 1200px container */
 @media (min-width: 901px) and (max-width: 1599px) {
-  .header-top-inner { max-width: none; padding: 0 40px; height: 116px; }
+  .header-top-inner { max-width: none; padding: 0 40px; height: 108px; }
   .header-top-side { width: 170px; gap: 8px; }
   /* (the icons keep their full size and the row grows out to the left, so the crest stays in the middle) */
   .header-top-right { gap: 10px; }
@@ -999,10 +999,10 @@ h1, h2, h3 {
 .kit-banner-overlay-inner p { color: var(--yellow); margin: 0 0 22px; white-space: nowrap; }
 
 /* Services */
-.services-section { padding: 16px 0 64px; }
+.services-section { padding: 32px 0 64px; }
 .services-grid { display: flex; align-items: flex-start; justify-content: flex-start; gap: 30px; flex-wrap: nowrap; }
 /* (same wide container as the matches section, so the title lines up on the left) */
-.services-section .container { max-width: var(--container-wide); padding: 0 40px; justify-content: space-between; }
+.services-section .container { max-width: var(--container-wide); padding: 0 40px; justify-content: flex-start; gap: 25px; }
 .services-head { flex-shrink: 0; }
 .services-head h2 {
   font-family: var(--font-body);
@@ -1013,13 +1013,16 @@ h1, h2, h3 {
   margin: 0 0 10px;
 }
 .services-head p { color: var(--ink); margin: 0; max-width: 420px; font-size: 1.22rem; font-weight: 500; }
-.services-items { display: flex; gap: 100px; flex-wrap: nowrap; }
-.service-item { display: flex; align-items: center; gap: 50px; flex-shrink: 0; }
-.service-item svg { width: 64px; height: 64px; color: var(--blue); flex-shrink: 0; }
+.services-items { display: flex; gap: 224px; flex-wrap: nowrap; }
+.service-item { display: flex; align-items: center; gap: 38px; flex-shrink: 0; }
+.service-item svg { width: 76px; height: 76px; color: var(--blue); flex-shrink: 0; }
 .service-item-text { display: flex; flex-direction: column; }
 .service-item-text strong { font-family: var(--font-body); font-weight: 700; font-size: 1.4rem; color: var(--ink); margin-bottom: 6px; }
 .service-item-text em { font-style: normal; font-weight: 700; font-size: 1.05rem; color: var(--ink); }
-.service-item:hover .service-item-text em { color: var(--blue); }
+.service-item-text strong { transition: color 0.25s ease; }
+.service-arrow { display: inline-block; transition: transform 0.25s ease; }
+.service-item:hover .service-item-text strong { color: var(--blue); }
+.service-item:hover .service-arrow { transform: translateX(5px); }
 .service-item:hover svg { color: var(--blue-900); }
 
 /* Section basics */
@@ -1063,7 +1066,22 @@ h1, h2, h3 {
 .news-grid--secondary .news-card h3 { font-size: 1.35rem; margin-bottom: 8px; font-weight: 700; }
 .news-grid--secondary .news-card p { font-size: 0.95rem; }
 
+/* Home news: same fonts and sizes as the cards on noticias.html (layout unchanged) */
+.news-section .news-image { margin-bottom: 14px; }
+.news-section .news-tag { font-family: var(--font-display); font-size: 0.95rem; font-weight: 400; letter-spacing: 0.06em; margin-bottom: 8px; }
+.news-section .news-card h3 { font-family: var(--font-body); font-size: 1.3rem; margin-bottom: 10px; font-weight: 600; line-height: 1.3; }
+.news-section .news-card p { font-size: 1.05rem; line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.news-section .news-grid--secondary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.news-section .news-grid--secondary .news-card { width: auto; }
+/* both home news blocks: same 24px between the big news as on the sides */
+#noticias .container, .news-section--second .container { padding: 0 24px; }
+#noticias .news-grid:not(.news-grid--secondary), .news-section--second .news-grid:not(.news-grid--secondary) { gap: 24px; }
+.news-section .news-grid:not(.news-grid--secondary) .news-card h3 { font-size: 2.2rem; line-height: 1.15; margin-bottom: 14px; }
+.news-section .news-grid:not(.news-grid--secondary) .news-card p { font-size: 1.25rem; }
+
 .news-viewall { margin-top: 32px; text-align: center; }
+.news-section--second { padding-bottom: 52px; } /* footer a bit closer to "Ver todos" */
+.news-section--second .news-viewall-btn { padding-left: 1.8em; padding-right: 1.8em; font-weight: 400; }
 .news-viewall-btn {
   position: relative;
   overflow: hidden;
@@ -1089,8 +1107,8 @@ h1, h2, h3 {
 
 /* Shop */
 .shop-section { padding: 64px 0; }
-.shop-section .container { max-width: var(--container-wide); padding: 0 40px; }
-.shop-grid { display: grid; grid-template-columns: 1fr 1fr 1.6fr; gap: 32px; align-items: stretch; }
+.shop-section .container { max-width: var(--container-wide); padding: 0 24px; } /* same 24px as the gap between the products */
+.shop-grid { display: grid; grid-template-columns: 1fr 1fr 2.1fr; gap: 32px 24px; align-items: stretch; }
 .product-image {
   position: relative;
   aspect-ratio: 1/1;
@@ -1135,6 +1153,12 @@ h1, h2, h3 {
 .price-row strong { font-weight: 400; }
 .price-row--member { color: var(--blue); font-weight: 400; }
 .price-row--pvp { color: #9CA3AF; font-size: 0.85rem; }
+.shop-grid .price-row--pvp { color: var(--ink); } /* home page: PVP in black */
+.shop-grid .price-row { font-size: 1rem; }
+.shop-grid .product-buy { font-size: 1.05rem; }
+.shop-grid .product-buy:hover { color: var(--ink); } /* home: no colour change, only the arrow moves */
+.product-buy-arrow { display: inline-block; transition: transform 0.25s ease; }
+.shop-grid .product-buy:hover .product-buy-arrow { transform: translateX(5px); }
 .price-note { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--grey-700); margin: 0 0 4px; }
 .price-note strong { color: var(--ink); font-weight: 400; }
 .product-buy { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; font-size: 0.95rem; color: var(--ink); }
@@ -1148,18 +1172,20 @@ h1, h2, h3 {
   gap: 24px;
   padding: 40px;
   align-self: start;
-  height: 496px;
+  height: 460px;
   box-sizing: border-box;
+  overflow: hidden; /* the enlarged shirt images must not stick out past the page edge (sideways scroll) */
 }
 .shop-promo-text h3 {
   font-family: var(--font-body);
   text-transform: none;
   letter-spacing: normal;
-  font-size: 1.8rem;
+  font-size: 2.1rem;
   color: var(--ink);
   margin: 0 0 8px;
+  max-width: 8.8em; /* breaks the title after "Loja" */
 }
-.shop-promo-text p { color: var(--grey-700); margin: 0 0 22px; }
+.shop-promo-text p { color: var(--ink); font-weight: 700; font-size: 1.15rem; margin: 0 0 22px; }
 .shop-promo-btn {
   position: relative;
   overflow: hidden;
@@ -1167,7 +1193,9 @@ h1, h2, h3 {
   border: none;
   background: var(--ink);
   color: var(--yellow);
-  padding: 0.8em 1.7em;
+  font-size: 1.05rem;
+  font-weight: 500;
+  padding: 0.9em 2.05em;
   z-index: 0;
 }
 .shop-promo-btn::before {
@@ -1181,10 +1209,15 @@ h1, h2, h3 {
 }
 .shop-promo-btn:hover::before { transform: translateY(0); }
 .shop-promo-img { width: 180px; height: 180px; object-fit: contain; flex-shrink: 0; }
+/* Two cut-out shirts side by side, the main one slightly in front of the goalkeeper one */
+.shop-promo-pics { display: flex; align-items: center; flex-shrink: 0; margin-right: -12px; }
+.shop-promo-pic { width: clamp(110px, 12vw, 200px); aspect-ratio: 1 / 1; object-fit: contain; filter: drop-shadow(0 16px 18px rgba(0, 0, 0, 0.25)); }
+.shop-promo-pic--main { transform: rotate(-6deg) scale(1.6); position: relative; z-index: 1; }
+.shop-promo-pic--gk { margin-left: calc(clamp(110px, 12vw, 200px) * -0.38); transform: rotate(6deg) translateY(10px) scale(1.6); }
 
 /* Dark news */
 .news-dark { background: #242424; padding: 64px 0 56px; max-width: var(--container-wide); margin: 0 auto; }
-.news-dark .container { max-width: var(--container-wide); padding: 0 40px; }
+.news-dark .container { max-width: var(--container-wide); padding: 0 50px; column-gap: 20px; }
 .news-dark .news-image { position: relative; }
 .news-gallery-icon {
   position: absolute;
@@ -1208,11 +1241,18 @@ h1, h2, h3 {
   overflow: hidden;
 }
 .news-card--dark:hover h3, .news-card--dark:hover p { color: var(--blue); }
+/* Same type and sizes as the two big news at the top (noticias.html style); yellow accents on the dark background */
+.news-dark .news-image { margin-bottom: 14px; }
+.news-dark .news-card h3 { font-family: var(--font-body); font-size: 2.2rem; font-weight: 600; line-height: 1.15; margin-bottom: 14px; color: var(--yellow); }
+.news-dark .news-card p { font-size: 1.32rem; line-height: 1.45; color: var(--yellow); }
+.news-dark .mc-related-gallery-icon { left: 12px; bottom: 8px; }
+.news-dark .mc-related-gallery-icon svg { width: 34px; height: 34px; stroke-width: 1.5; }
+.news-dark .news-card:hover h3, .news-dark .news-card:hover p { color: var(--blue); }
 .news-viewall-btn--light {
   position: relative;
   overflow: hidden;
-  border-color: var(--white);
-  color: var(--white);
+  border-color: var(--yellow);
+  color: var(--yellow);
   background: transparent;
   z-index: 0;
 }
@@ -1229,7 +1269,9 @@ h1, h2, h3 {
 .news-viewall-btn--light:hover::before { transform: translateY(0); }
 
 /* Club info */
-.club-info .container { max-width: var(--container-wide); padding: 0 40px; }
+.club-info { padding-top: 20px; }
+.club-info .section-head-simple p { font-size: 1.22rem; }
+.club-info .container { max-width: var(--container-wide); padding: 0 36px; }
 .section-head-simple h2 {
   font-family: var(--font-body);
   text-transform: none;
@@ -1239,13 +1281,13 @@ h1, h2, h3 {
   margin: 0 0 6px;
 }
 .section-head-simple p { color: var(--ink); margin: 0 0 32px; }
-.club-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.club-info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
 .club-info-card {
   position: relative;
   overflow: hidden;
-  background: var(--grey-100);
-  padding: 32px;
-  min-height: 240px;
+  background: #F2F2F2;
+  padding: 28px 32px 28px 22px;
+  min-height: 207px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1273,7 +1315,7 @@ h1, h2, h3 {
 }
 .club-info-card p { position: relative; color: var(--ink); margin: 0 0 22px; }
 .club-info-card p strong { font-weight: 700; }
-.club-info-btn { position: relative; overflow: hidden; padding: 0.7em 1.3em; font-size: 0.92rem; z-index: 0; }
+.club-info-btn { position: relative; overflow: hidden; padding: 0.85em 1em; min-width: 137px; /* both buttons as wide as "Agenda" */ font-size: 1.05rem; font-weight: 400; z-index: 0; }
 .club-info-btn::before {
   content: "";
   position: absolute;
@@ -1372,9 +1414,11 @@ h1, h2, h3 {
 .trust-row { padding: 28px 0; border-bottom: 1px solid var(--grey-200); }
 .trust-row-inner { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
 .trust-item { display: flex; align-items: center; gap: 12px; }
-.trust-item svg { width: 22px; height: 22px; color: var(--ink); flex-shrink: 0; }
+.trust-item svg { width: 28px; height: 28px; color: var(--ink); flex-shrink: 0; }
 .trust-item div { display: flex; flex-direction: column; }
 .trust-item strong { font-size: 0.92rem; font-weight: 400; color: var(--ink); }
+.trust-tel { color: inherit; transition: color 0.2s ease; }
+.trust-tel:hover { color: var(--blue); }
 .trust-item:last-child strong { color: var(--blue); }
 .trust-item span { font-size: 0.68rem; color: var(--grey-700); }
 
@@ -1401,7 +1445,7 @@ h1, h2, h3 {
 
 .footer-mid { border-top: 1px solid var(--grey-200); }
 .footer-mid-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding: 32px 0; }
-.footer-mid-col h5 { font-size: 0.92rem; font-weight: 700; margin: 0 0 16px; color: var(--ink); }
+.footer-mid-col h5 { font-size: 1.08rem; font-weight: 700; margin: 0 0 16px; color: var(--ink); }
 
 .footer-app-badges { display: flex; gap: 12px; }
 .footer-app-badge {
@@ -1425,6 +1469,11 @@ h1, h2, h3 {
 .footer-media-links a { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--ink); }
 .footer-media-links svg { width: 24px; height: 24px; color: var(--blue); }
 .footer-media-links a:hover { color: var(--blue); }
+/* Lisbon FC TV: the crest with "TV" (the logo's own lettering, as a mask) under it; TV black, blue on hover */
+.footer-tv-logo { display: inline-flex; flex-direction: column; align-items: center; gap: 3px; }
+.footer-tv-logo img { display: block; width: 25px; height: 25px; }
+.footer-tv-word { display: block; width: 19px; height: 10px; background: var(--ink); -webkit-mask: url("../Logos/LisbonFC TV/LisbonFCTV_Word.png") center / contain no-repeat; mask: url("../Logos/LisbonFC TV/LisbonFCTV_Word.png") center / contain no-repeat; transition: background-color 0.2s ease; }
+.footer-tv-logo:hover .footer-tv-word { background: var(--blue); }
 
 .footer-social { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .footer-social-btn {
@@ -1437,13 +1486,18 @@ h1, h2, h3 {
 .footer-social-btn svg { width: 30px; height: 30px; }
 .footer-social-btn:hover { color: var(--blue); }
 
-.footer-bottom-bar { border-top: 1px solid var(--grey-200); padding: 24px 0; }
+.footer-bottom-bar { border-top: 1px solid var(--grey-200); padding: 50px 0; }
 .footer-bottom-inner { display: flex; flex-direction: column; gap: 12px; }
 .footer-legal { display: flex; flex-wrap: wrap; gap: 18px; }
-.footer-legal a { font-size: 0.8rem; color: var(--ink); }
+.footer-legal a { font-size: 0.86rem; color: var(--ink); }
 .footer-legal a:hover { color: var(--blue); }
 .footer-lang { font-weight: 700; color: var(--ink) !important; }
-.footer-copyright { font-size: 0.8rem; color: var(--ink); margin: 0; }
+/* PT EN ES RU at the start of the bottom bar: the language in use in blue */
+.footer-legal .footer-langs { display: inline-flex; align-self: auto; gap: 12px; margin: 0 14px 0 0; } /* extra room before "Contactos" */
+.footer-legal .footer-langs a { display: inline; width: auto; height: auto; border: none; font-weight: 400; color: var(--ink); background: none; }
+.footer-legal .footer-langs a:hover { background: none; color: var(--blue); text-shadow: 0.35px 0 0 currentColor, -0.35px 0 0 currentColor; } /* looks bold without changing the width (no jumping) */
+.footer-legal .footer-langs a.is-active { color: var(--blue); font-weight: 700; }
+.footer-copyright { font-size: 0.86rem; color: var(--ink); margin: 0; }
 
 /* Page header (Equipa, etc.) */
 .page-header { background: var(--blue-900); padding: 56px 0 40px; max-width: var(--container-wide); margin: 0 auto; }
@@ -2305,7 +2359,7 @@ h1, h2, h3 {
   .hero-slide { padding: 28px; }
   .fixtures-section .container { padding: 0 20px; }
   .services-section .container { padding: 0 20px; }
-  .news-section .container { padding: 0 20px; }
+  .news-section .container, #noticias .container { padding: 0 20px; }
   .player-related .news-grid--secondary { padding-left: 20px; padding-right: 20px; }
   .shop-section .container { padding: 0 20px; }
   .news-dark .container { padding: 0 20px; }
@@ -2314,6 +2368,7 @@ h1, h2, h3 {
   .trust-row .container,
   .site-footer .container { padding-left: 20px; padding-right: 20px; }
   .news-grid { grid-template-columns: 1fr; }
+  .news-section .news-grid--secondary { grid-template-columns: 1fr; }
   .promo-inner { font-size: 0.78rem; padding: 0 10px; text-align: center; }
   .footer-grid { grid-template-columns: 1fr; text-align: center; }
   .foundation-list li { text-align: center; padding-left: 0; }
@@ -2855,7 +2910,7 @@ h1, h2, h3 {
 .pdp-gallery-col { display: flex; flex-direction: column; gap: 20px; }
 .pdp-gallery-tile { background: var(--grey-100); overflow: hidden; }
 .pdp-gallery-tile img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; }
-.pdp-gallery-tile--tall img { aspect-ratio: 3 / 4; object-fit: cover; }
+.pdp-gallery-tile--tall img { aspect-ratio: 3 / 4; object-fit: contain; }
 
 .pdp-info h1 { font-family: var(--font-body); text-transform: none; letter-spacing: normal; font-weight: 700; font-size: 2.1rem; line-height: 1.2; color: var(--ink); margin-bottom: 0.5em; }
 .pdp-price { margin-bottom: 24px; }
@@ -4922,7 +4977,14 @@ html.is-modal-open { overflow: hidden; }
 .terms-container { max-width: 800px; }
 .terms-page h1 { margin: 0 0 12px; font-family: var(--font-body); font-size: 2.25rem; font-weight: 500; text-transform: none; letter-spacing: normal; color: var(--ink); }
 .terms-sub { margin: 0 0 40px; font-size: 1.125rem; color: var(--ink); }
-/* the list: "Termos e Condições de <name in bold>" on the left, "Ver Mais ›" on the right (only that is the link); the
+.terms-page--cookies h1 { font-size: 2.1rem; }
+/* the cookie page: the intro and the text inside the sections in pure black (links keep their blue) */
+.terms-page--cookies .terms-sub--intro, .terms-page--cookies .terms-acc-body { color: #000; }
+.terms-sub--intro { margin-right: -228px; font-size: 1.0625rem; white-space: nowrap; }
+.terms-sub--intro p { margin: 0 0 16px; line-height: 1.55; }
+.terms-sub--intro p:last-child { margin-bottom: 0; }
+.terms-sub--intro a { color: var(--blue); text-decoration: none; }
+.terms-sub--intro a:hover { text-decoration: underline; }/* the list: "Termos e Condições de <name in bold>" on the left, "Ver Mais ›" on the right (only that is the link); the
    rows reach further right than the title */
 .terms-list { margin: 0 -228px 0 0; padding: 0; list-style: none; border-top: 1px solid #EEF0F3; }
 .terms-list li { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 16px; border-bottom: 1px solid #EEF0F3; font-size: 1.125rem; color: var(--ink); }
@@ -4934,6 +4996,7 @@ html.is-modal-open { overflow: hidden; }
 /* each set of terms opens with a wide banner photo of the shirt, filling it edge to edge */
 .terms-hero { position: relative; height: 350px; margin-bottom: 64px; overflow: hidden; background: var(--blue); }
 .terms-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 901px) { .terms-page--cookies .terms-hero { height: 342px; } }
 /* its sections: the number and name, big, with a chevron at the right; clicked, the name turns blue, the chevron
    flips and the clauses open under it */
 .terms-sections { margin: 16px -228px 0 0; border-top: 1px solid var(--grey-200); }
@@ -4947,7 +5010,7 @@ html.is-modal-open { overflow: hidden; }
 .terms-acc-head:hover, .terms-acc.is-open .terms-acc-head { color: var(--blue); }
 /* long titles go onto a second line well before the arrow (about where "...comunicação de dados a" ends) */
 .terms-acc-head span { max-width: 28.5em; }
-.terms-acc-head svg { flex-shrink: 0; width: 40px; height: 40px; stroke-width: 1.4; color: var(--ink); transition: transform 0.25s ease, color 0.2s ease; }
+.terms-acc-head svg { flex-shrink: 0; width: 40px; height: 40px; stroke-width: 1.4; color: var(--ink); transition: transform 0.7s ease, color 0.2s ease; }
 .terms-acc.is-open .terms-acc-head svg { transform: rotate(180deg); }
 /* (the arrow turns blue with the name on hover, and stays blue while open) */
 .terms-acc-head:hover svg, .terms-acc.is-open .terms-acc-head svg { color: var(--blue); }
@@ -4965,9 +5028,17 @@ html.is-modal-open { overflow: hidden; }
 .terms-small { font-size: 0.75em; }
 .terms-small > p:first-child > strong:first-child::before { content: "_"; }
 .terms-small ul + p { margin-top: 14px; }
+/* the cookie page's types of cookies: "_Heading:" and under it each type as a smaller "_<b>Name</b> - text" */
+.terms-acc-body p.cookie-types-head { margin-bottom: 14px; }
+.cookie-types-head strong { font-weight: 400; }
+.cookie-types-head strong::before { content: "_"; }
+.cookie-type { margin-bottom: 14px; padding-left: 24px; font-size: 0.8em; }
+.terms-acc-body .cookie-type p { margin: 0; }
+.cookie-type:has(+ .cookie-types-head) { margin-bottom: 32px; }
 /* a list of outside links (the browsers' help pages): smaller, set in a little, in the text's colour until hovered */
 .terms-acc-body .terms-links { margin-top: 26px; padding-left: 24px; font-size: 0.75em; }
 .terms-acc-body .terms-links li:last-child { margin-bottom: 0; }
+.terms-acc-inner > .terms-links { margin: -6px 0 32px; font-size: 1em; }
 .terms-clause:has(> .terms-links) { margin-bottom: 13px; }
 .terms-acc-body .terms-links a { color: inherit; }
 .terms-acc-body .terms-links a:hover { color: var(--blue); text-decoration: none; }
@@ -5003,8 +5074,10 @@ html.is-modal-open { overflow: hidden; }
 @media (max-width: 900px) {
   .terms-page { padding: 40px 0 64px; }
   .terms-page h1 { font-size: 1.75rem; }
+  .terms-page--cookies h1 { font-size: 1.65rem; }
   .terms-sub { margin-bottom: 28px; }
-  .terms-list { margin-right: 0; }
+  .terms-sub--intro { margin-right: 0; white-space: normal; }
+  .terms-sub--intro br, .cookie-type br { display: none; }  .terms-list { margin-right: 0; }
   .terms-list li { align-items: flex-start; padding: 18px 4px; font-size: 1rem; }
   .terms-hero { height: 180px; margin-bottom: 36px; }
   /* (narrow, the photo is cut at the sides, so it keeps the crest at the right in view) */
@@ -5575,11 +5648,13 @@ html.is-modal-open { overflow: hidden; }
 .ck-close { position: absolute; top: 12px; right: 2px; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; border: 1px solid transparent; border-radius: 3px; background: none; color: #555555; cursor: pointer; }
 .ck-close svg { width: 11.5px; height: 11.5px; }
 .ck-close:hover { border-color: var(--blue); color: #888888; }
-.ck-body { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 15px 30px 0; color: #696969; }
+.ck-body { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 10px 30px 0; color: #696969; }
 .ck-title { margin: 0; font-family: "Roboto Condensed", var(--font-body); font-size: 24px; font-weight: 700; line-height: 30px; letter-spacing: normal; text-transform: none; color: #696969; }
-.ck-text { margin: 14px 0 0; font-size: 13px; line-height: 19.5px; }
+.ck-text { margin: 8px 0 0; font-size: 13px; line-height: 19.5px; }
 .ck-more { display: block; width: fit-content; margin-top: 3px; padding: 4px 0; font-family: "Roboto", var(--font-body); font-size: 13px; font-weight: 500; line-height: 17px; color: #000; text-decoration: underline; }
-.ck-title--sub { margin-top: 24px; }
+.ck-title--sub { margin-top: 20px; }
+/* both titles as small as Benfica's (16px) */
+.ck-title { font-size: 16px; line-height: 24px; }
 .ck-list { margin-top: 22px; }
 /* the categories joined in one list, each with slightly rounded corners; the one under the mouse is outlined in blue */
 .ck-item { position: relative; border: 1px solid #D7D7D7; border-radius: 3px; transition: border-color 0.2s ease; }
@@ -5591,16 +5666,19 @@ html.is-modal-open { overflow: hidden; }
 .ck-toggle-info::before, .ck-toggle-info::after { content: ""; position: absolute; top: 50%; left: 25px; width: 11px; height: 2px; margin-top: -1px; background: #3B3B3B; }
 .ck-toggle-info::after { transform: rotate(90deg); }
 .ck-toggle-info[aria-expanded="true"]::after { transform: rotate(0deg); }
-.ck-always { font-size: 14px; font-weight: 700; color: var(--blue); }
+.ck-always { font-size: 13px; font-weight: 700; color: var(--blue); }
 .ck-switch { position: relative; flex-shrink: 0; width: 46px; height: 27px; margin: 0; border: 1px solid #E6E6E6; border-radius: 14px; background: #EFEFEF; appearance: none; cursor: pointer; transition: border-color 0.4s ease, background-color 0.4s ease; }
 .ck-switch::before { content: ""; position: absolute; top: 2px; left: 2px; width: 21px; height: 21px; border-radius: 50%; background: #7A7A7A; transition: transform 0.4s ease, background-color 0.4s ease; }
 .ck-switch:checked { border-color: var(--blue); background: var(--white); }
 .ck-switch:checked::before { background: var(--blue); transform: translateX(19px); }
-.ck-item-text { margin: 0; padding: 0 21px 18px 25px; font-size: 13px; line-height: 19.5px; }
+.ck-item-text { margin: 12px 0 0; padding: 0 19px 18px 25px; font-size: 13px; line-height: 19.5px; }
 .ck-item-text p { margin: 0; }
-.ck-item-text .ck-item-sub { margin-top: 10px; color: #000; text-decoration: underline; }
+/* the set line breaks in the first category: only in Portuguese and only when the popup is full width */
+html:not([lang^="pt"]) .ck-br { display: none; }
+@media (max-width: 600px) { .ck-br { display: none; } }
+.ck-item-text .ck-item-sub { margin-top: 6px; color: #000; text-decoration: underline; }
 .ck-foot { display: flex; flex-shrink: 0; gap: 14px; padding: 17px 20px 16px; border-top: 1px solid #E8E8E8; }
-.ck-btn { width: 250px; min-height: 44px; padding: 6px 10px; border: none; background: var(--blue); font-family: "Roboto", var(--font-body); font-size: 12.5px; font-weight: 500; letter-spacing: 0.06em; color: var(--white); cursor: pointer; }
+.ck-btn { width: 250px; min-height: 44px; padding: 6px 10px; border: none; background: var(--blue); font-family: "Roboto", var(--font-body); font-size: 12.5px; font-weight: 400; letter-spacing: 0.06em; color: var(--white); cursor: pointer; }
 .ck-foot .ck-btn:hover { box-shadow: 0 0 0 0.5px var(--blue); }
 /* Permitir todos: shows under "Mais informação" once a switch is off */
 .ck-allow { display: block; min-height: 46px; margin: 22px 0 14px; font-size: 15px; letter-spacing: normal; }
@@ -7510,3 +7588,371 @@ html:not(.native-scrollbar)::-webkit-scrollbar-button { display: none; }
   .tvd-player-info p { font-size: 16px; line-height: 24px; }
   .tvd-bug { width: 70px; }
 }
+
+
+/* ---- Declaração de Acessibilidade (modelled on SL Benfica's): the banner, then one text column starting a quarter
+   of the way in, in Roboto ---- */
+.a11y-page { padding-bottom: 115px; font-family: "Roboto", var(--font-body); color: #242424; }
+.a11y-page .terms-hero { margin-bottom: 0; }
+@media (min-width: 901px) { .a11y-page .terms-hero { height: 342px; } }
+.a11y-body { width: 64%; margin-left: 25.2%; padding-top: 64px; }
+.a11y-header { padding-bottom: 30px; }
+.a11y-page h1 { margin: 0 0 15px; font-family: inherit; font-size: 36px; font-weight: 500; line-height: 1.2; letter-spacing: normal; text-transform: none; color: #242424; }
+.a11y-intro { margin: 0; font-size: 18px; line-height: 24px; color: #000; }
+.a11y-section h2 { margin: 0; padding: 30px 0; font-family: inherit; font-size: 24px; font-weight: 700; line-height: 30px; letter-spacing: normal; text-transform: none; color: #242424; }
+.a11y-text { padding-bottom: 30px; }
+.a11y-text p { margin: 0 0 28px; font-size: 18px; line-height: 28px; }
+.a11y-text p.a11y-lead { margin-bottom: 0; }
+.a11y-text p.a11y-lead--gap { margin-bottom: 36px; }
+.a11y-text p:last-child { margin-bottom: 0; }
+.a11y-text ul { margin: 0 0 16px; padding-left: 32px; list-style: "_ " inside; }
+.a11y-text ul + p { margin-top: 0; }
+.a11y-text li { margin-bottom: 15px; font-size: 18px; line-height: 28px; }
+.a11y-text a { color: var(--blue); text-decoration: underline; }
+.a11y-text a:hover { text-decoration: none; }
+.a11y-text strong { font-weight: 700; }
+@media (max-width: 900px) {
+  .a11y-body { width: auto; margin: 0 16px; padding-top: 40px; }
+  .a11y-page h1 { font-size: 28px; }
+  .a11y-section h2 { padding: 24px 0; font-size: 21px; }
+  .a11y-text p, .a11y-text li, .a11y-intro { font-size: 16px; line-height: 25px; }
+  .a11y-text ul { padding-left: 20px; }
+}
+
+/* ---- Contactos (contactos.html, modelled on SL Benfica's): the map across the top, then the "Pedido de Informação"
+   form on the left and the address, phone, e-mail and the "Contactos" blocks on the right ---- */
+.ct-page { padding-bottom: 62px; font-family: "Roboto", var(--font-body); color: #242424; }
+.ct-map { height: 300px; margin: 0 30px; background: #E5E3DF; }
+.ct-map iframe { display: block; width: 100%; height: 100%; border: 0; }
+.ct-grid { display: grid; grid-template-columns: 7fr 5fr; margin: 0 30px; }
+.ct-left { padding: 40px 0 0 24px; }
+.ct-right { padding: 40px 0 0 88px; }
+.ct-title { margin: 0 0 15px; font-family: "Roboto Condensed", var(--font-body); font-size: 32px; font-weight: 300; line-height: 37px; letter-spacing: normal; text-transform: uppercase; color: #242424; }
+.ct-intro { margin: 0 0 50px; font-size: 24px; line-height: 34.3px; color: #242424; }
+/* the form: the boxes 708px wide, indented 50px, each with its * just to the right */
+.ct-form { margin-left: 50px; max-width: 760px; font-family: "Roboto Condensed", var(--font-body); }
+.ct-row { display: flex; align-items: flex-start; margin-bottom: 30px; }
+.ct-row--phone { margin-bottom: 36px; }
+.ct-row--socio { justify-content: flex-end; align-items: center; width: 708px; max-width: calc(100% - 52px); }
+.ct-row--socio label { margin-right: 11px; font-size: 24px; color: #242424; white-space: nowrap; }
+.ct-form .ct-row--socio input { width: 555px; flex: 0 1 555px; }
+.ct-row--socio .ct-star { display: none; }
+.ct-form input[type="text"], .ct-form input[type="email"], .ct-form input[type="tel"], .ct-form textarea { box-sizing: border-box; width: 708px; max-width: 100%; height: 55px; padding: 0 24px; border: 1px solid #808080; border-radius: 0; background: #fff; font: inherit; font-size: 24px; color: #000; outline: none; transition: border-color 0.2s ease; }
+.ct-form input:focus, .ct-form textarea:focus { border-color: var(--blue); }
+.ct-form input::placeholder, .ct-form textarea::placeholder { color: #8A8A8A; }
+.ct-form input:disabled { border-color: #E2E2E2; background: #E2E2E2; color: #fff; }
+.ct-form textarea { height: 200px; padding: 14px 24px; line-height: 1.3; resize: vertical; }
+.ct-form .is-invalid { border-color: #D93025 !important; }
+.ct-star { flex: none; width: 52px; padding: 6px 0 0 19px; box-sizing: border-box; font-size: 24px; line-height: 1; color: #242424; }
+.ct-phone { display: flex; width: 708px; max-width: 100%; height: 55px; box-sizing: border-box; border: 1px solid #808080; background: #fff; }
+.ct-phone:focus-within { border-color: var(--blue); }
+.ct-phone:has(.is-invalid) { border-color: #D93025; }
+.ct-form .ct-phone input[type="tel"] { flex: 1; width: auto; height: 100%; border: 0 !important; padding-left: 6px; }
+.ct-prefix { display: flex; align-items: center; gap: 8px; flex: none; padding: 0 8px; background: #EFEFEF; font-size: 24px; color: #242424; }
+.ct-flag { width: 34px; height: 22px; border-radius: 2px; }
+.ct-caret { width: 8px; height: 5px; fill: #8A8A8A; }
+.ct-legal { width: 708px; max-width: 100%; margin: 0 0 23px; font-family: "Roboto", var(--font-body); font-size: 20px; line-height: 28.57px; color: #242424; }
+.ct-legal a { color: var(--blue); }
+.ct-legal a:hover { text-decoration: underline; }
+.ct-check { display: flex; align-items: flex-start; gap: 10px; width: 708px; max-width: 100%; font-size: 13px; font-weight: 500; line-height: 18.57px; color: #242424; cursor: pointer; }
+.ct-check input { flex: none; width: 20px; height: 20px; margin: 0; border: 1px solid #BDBDBD; appearance: none; background: #fff; cursor: pointer; }
+.ct-check input:checked { border-color: var(--blue); background: var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m5 10 3.5 3.5L15 7' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E") center / 100% no-repeat; }
+.ct-check.is-invalid input { border-color: #D93025; }
+.ct-req { width: 708px; max-width: 100%; margin: 0; padding-bottom: 2px; border-bottom: 1px solid #DDD; font-family: "Roboto", var(--font-body); font-size: 16px; line-height: 22.86px; color: #242424; }
+.ct-send { display: flex; justify-content: flex-end; width: 708px; max-width: 100%; margin-top: 40px; }
+/* Enviar: the site's black button (yellow text, the blue rising on hover) in Benfica's size */
+.ct-btn { position: relative; overflow: hidden; z-index: 0; width: 140px; height: 50px; padding: 0; border: 1px solid var(--ink); border-radius: 0; background: var(--ink); color: var(--yellow); font-family: "Roboto", var(--font-body); font-size: 18px; cursor: pointer; transition: border-color 0.2s ease; }
+.ct-btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--blue); transform: translateY(100%); transition: transform 0.28s ease; }
+.ct-btn:hover { border-color: var(--blue); }
+.ct-btn:hover::before { transform: translateY(0); }
+.ct-sent { width: 708px; max-width: 100%; margin: 16px 0 0; font-family: "Roboto", var(--font-body); font-size: 16px; color: var(--blue); text-align: right; }
+/* the right: an outlined icon over each item, the text big */
+.ct-icon { display: block; width: 41px; height: 48px; color: #242424; }
+.ct-block { margin-bottom: 25px; }
+.ct-addr, .ct-tel { margin: 6px 0 0; font-size: 24px; line-height: 34.3px; color: #242424; }
+.ct-tel { font-weight: 700; }
+.ct-tel a { color: inherit; }
+.ct-acc { border-bottom: 1px solid #DDD; }
+.ct-acc-head { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 54px; padding: 0 52px 0 0; border: 0; background: none; font-family: "Roboto Condensed", var(--font-body); font-size: 24px; line-height: 34.3px; text-align: left; text-transform: uppercase; color: #242424; cursor: pointer; }
+.ct-acc--mail .ct-acc-head { padding-top: 15px; padding-bottom: 14px; }
+.ct-more { display: inline-flex; align-items: center; gap: 4px; flex: none; font-size: 12px; line-height: 17px; text-transform: uppercase; }
+.ct-more svg { width: 7px; height: 5px; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform 0.25s ease; }
+.ct-acc.is-open .ct-more svg { transform: rotate(180deg); }
+.ct-acc-head:hover { color: var(--blue); }
+.ct-acc-body { padding: 4px 0 20px; font-family: "Roboto Condensed", var(--font-body); }
+.ct-acc-body p { margin: 0 0 20px; font-size: 22px; line-height: 30px; color: #242424; }
+.ct-acc-body p:last-child { margin-bottom: 0; }
+.ct-acc-tel { display: block; font-size: 24px; color: #888; }
+.ct-acc-body a { color: inherit; }
+.ct-acc-body a:hover { color: var(--blue); }
+.ct-acc-body .ct-mail { font-size: 24px; }
+.ct-title--contacts { margin-top: 81px; }
+.ct-list { margin: 0; padding: 0; list-style: none; }
+@media (max-width: 900px) {
+  .ct-map { height: 240px; margin: 0; }
+  .ct-grid { grid-template-columns: 1fr; margin: 0 16px; }
+  .ct-left, .ct-right { padding: 32px 0 0; }
+  .ct-title { font-size: 26px; line-height: 31px; }
+  .ct-intro { margin-bottom: 32px; font-size: 18px; line-height: 26px; }
+  .ct-form { margin-left: 0; }
+  .ct-row { margin-bottom: 18px; }
+  .ct-row--socio { width: 100%; max-width: none; justify-content: flex-start; }
+  .ct-row--socio label { font-size: 18px; }
+  .ct-form .ct-row--socio input { flex: 1; width: auto; }
+  .ct-star { width: 24px; padding-left: 8px; font-size: 20px; }
+  .ct-form input[type="text"], .ct-form input[type="email"], .ct-form input[type="tel"], .ct-form textarea, .ct-prefix { font-size: 18px; }
+  .ct-form input[type="text"], .ct-form input[type="email"], .ct-phone { height: 48px; }
+  .ct-form input[type="text"], .ct-form input[type="email"], .ct-form textarea { padding-left: 16px; }
+  .ct-legal { font-size: 16px; line-height: 24px; }
+  .ct-addr, .ct-tel, .ct-acc-head, .ct-acc-body .ct-mail { font-size: 19px; line-height: 27px; }
+  .ct-acc-head { padding-right: 0; }
+  .ct-acc-body p { font-size: 18px; line-height: 25px; }
+  .ct-acc-tel { font-size: 19px; }
+  .ct-title--contacts { margin-top: 48px; }
+}
+/* the contacts map: Google's interactive map filling the box (js/contactos.js) */
+.ct-map { position: relative; z-index: 0; overflow: hidden; }
+.ct-map-canvas { position: absolute; inset: 0; }
+.ct-map-canvas iframe { display: block; width: 100%; height: 100%; border: 0; }
+/* the phone box: the site's flag picker (as on the Débito Direto pages, js/paises.js): the flag, the code and a small
+   triangle on a grey strip at the left; clicked, a short list of countries under it */
+.ct-phonebox { width: 708px; max-width: 100%; }
+.ct-form .ct-phonebox input[type="tel"] { width: 100%; padding-left: 131px; }
+.ct-phonebox .ac-flag-btn { padding: 0 10px; }
+.ct-phonebox .qd-dial { font-family: "Roboto Condensed", var(--font-body); font-size: 24px; }
+.ct-phonebox .ac-countries { font-family: "Roboto Condensed", var(--font-body); }
+@media (max-width: 900px) {
+  .ct-form .ct-phonebox input[type="tel"] { padding-left: 112px; }
+  .ct-phonebox .qd-dial { font-size: 18px; }
+  .ct-phonebox .ac-flag-btn .ac-flag { width: 28px; height: 19px; }
+}
+/* (the country list still scrolls, but with no scroll bar showing) */
+.ct-phonebox .ac-countries { scrollbar-width: none; }
+.ct-phonebox .ac-countries::-webkit-scrollbar { display: none; }
+/* (the list narrower: tighter spacing so the flag, code and number still fit) */
+.qd-tel.ct-phonebox .ac-countries { width: 162px; }
+.qd-tel.ct-phonebox .ac-countries li { gap: 10px; padding: 12px; }
+/* (a box being typed in: the black outline around it, 2px out, as on the Quotas boxes; its own border stays as it was) */
+.ct-form input:focus, .ct-form textarea:focus { border-color: #808080; outline: 2px solid #000; outline-offset: 2px; }
+.ct-form .ct-phonebox input[type="tel"]:focus { border-color: #808080 !important; }
+.ct-form .is-invalid:focus { border-color: #D93025 !important; }
+/* (the message box keeps its size: no resize handle) */
+.ct-form textarea { resize: none; }
+.ct-form textarea { line-height: 2.3; }
+/* (a long message still scrolls inside the box, with no scroll bar showing) */
+.ct-form textarea { scrollbar-width: none; }
+.ct-form textarea::-webkit-scrollbar { display: none; }
+/* (the consent line: regular weight, in grey) */
+.ct-check { font-weight: 400; color: #4A4A4A; }
+/* (the consent box: ticked, black with a white tick, fading in and out; the white tick is always there, unseen on white) */
+.ct-check input { background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='m5 10 3.5 3.5L15 7' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E") center / 100% no-repeat; transition: background-color 0.25s ease, border-color 0.25s ease; }
+.ct-check input:checked { border-color: #000; background-color: #000; }
+/* (no outline on the consent box when clicked; only when reached with the keyboard, so it can still be found) */
+.ct-form .ct-check input:focus { outline: none; border-color: #BDBDBD; }
+.ct-form .ct-check input:checked:focus { border-color: #000; }
+.ct-form .ct-check input:focus-visible { outline: 2px solid #000; outline-offset: 2px; }
+/* Enviar: an outlined box (black border, no fill, black text); on hover the blue slides up and the text turns yellow */
+.ct-btn { background: transparent; color: #000; border: 1px solid #000; transition: border-color 0.2s ease, color 0.2s ease; }
+.ct-btn:hover { border-color: var(--blue); color: var(--yellow); }
+/* (the right side icons, location, phone and e-mail, a little bigger) */
+.ct-right .ct-icon { width: 58px; height: 68px; }
+.ct-right .ct-acc--mail .ct-icon { width: 50px; height: 58px; }
+/* ("Ver mais": each block slides open and shut) */
+.ct-acc-body { overflow: hidden; transition: height 0.35s ease; }
+.ct-acc-body { padding: 0; }
+.ct-acc-body > :first-child { padding-top: 4px; }
+.ct-acc-body > :last-child { padding-bottom: 20px; }
+/* (the little arrow after "Ver mais" flips at once, no turning animation) */
+.ct-more svg { transition: none; }
+/* (the note under an empty message box, in red, at its bottom left) */
+.ct-err { width: 708px; max-width: 100%; margin: -24px 0 24px; font-family: "Roboto", var(--font-body); font-size: 14px; line-height: 18px; color: #D93025; }
+.ct-err[hidden] { display: none; }
+.ct-err { font-size: 17px; line-height: 22px; }
+/* (the note sits in the gap under the box, taking no room, so nothing below it moves) */
+.ct-err { margin: -26px 0 4px; }
+/* not signed in: instead of the form, the two lines with their links (as Benfica's) */
+.ct-noform[hidden], .ct-form[hidden] { display: none; }
+.ct-noform p { margin: 0 0 12px; font-size: 24px; line-height: 34.3px; color: #242424; }
+.ct-noform a { color: var(--blue); }
+.ct-noform a:hover { text-decoration: underline; }
+@media (max-width: 900px) { .ct-noform p { font-size: 18px; line-height: 26px; } }
+/* (the two lines closer together; their links always black and underlined) */
+.ct-noform p { margin-bottom: 2px; }
+.ct-noform a, .ct-noform a:hover, .ct-noform a:visited { color: #000; text-decoration: underline; }
+/* (the Adesão pages signed out: a person icon to sign in, in place of the name and wallet) */
+.nh-user[hidden], .nh-wallet[hidden] { display: none !important; }
+.nh-signin { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: inherit; }
+.nh-signin svg { width: 24px; height: 24px; }
+.nh-signin:hover { color: var(--blue); }
+.ct-row[hidden] { display: none; }
+/* (the member number: a normal box like the others, which can be edited) */
+.ct-form .ct-row--socio input { border: 1px solid #808080; background: #E2E2E2; color: #fff; }
+/* the success page after a contact message (as Benfica's): a big tick, the title, the thank-you over a thin line, Voltar */
+.ct-success { padding: 40px 50px 62px; }
+.ct-success-tick { display: block; width: 50px; height: 36px; color: #242424; }
+.ct-success .ct-title { margin: 28px 0 15px; }
+.ct-success-text { margin: 0; padding-bottom: 55px; border-bottom: 1px solid #DDD; font-size: 24px; line-height: 34.3px; color: #242424; }
+.ct-success-back { display: inline-flex; align-items: center; justify-content: center; margin-top: 40px; text-decoration: none; }
+@media (max-width: 900px) { .ct-success { padding: 32px 16px 48px; } .ct-success-text { font-size: 18px; line-height: 26px; padding-bottom: 32px; } }
+.ct-page.ct-success-page { padding-bottom: 0; }
+/* (the success page: plenty of room before the banner and footer) */
+.ct-success { padding-bottom: 260px; }
+@media (max-width: 900px) { .ct-success { padding-bottom: 140px; } }
+/* (the Apoio links' (i) icons, on the contacts pages: really thick lines at every screen size) */
+.ct-subnav .secondary-inner svg { stroke-width: 2; }
+.ct-subnav .secondary-inner svg circle[fill="currentColor"] { r: 1.3; }
+
+/* ---- Linha Lisbon FC (linha-lisbon-fc.html, modelled on SL Benfica's Linha Benfica): the accessibility page's column
+   (a11y-*), under a banner in the club's blue with the crest and "LINHA / LISBON FC"; "Contactos" with its icons,
+   "Produtos e Serviços" as a list with thin lines between, "Meios de pagamento" ---- */
+.lb-hero { display: flex; align-items: center; justify-content: center; gap: 22px; height: 350px; background: linear-gradient(180deg, #0157C9 0%, var(--blue) 70%, #013580 100%); }
+.lb-hero img { display: block; width: 136px; height: auto; }
+.lb-hero-word { display: flex; flex-direction: column; margin: 0; font-family: "Roboto", var(--font-body); color: #fff; text-transform: uppercase; line-height: 0.95; }
+.lb-hero-word span { font-size: 76px; font-weight: 300; letter-spacing: 0.01em; }
+.lb-hero-word strong { font-size: 76px; font-weight: 700; letter-spacing: 0.01em; }
+.lb-page .a11y-body { padding-top: 101px; }
+.lb-page .a11y-intro { color: #000; }
+/* Contactos: a 24px icon and the text 22px after it, 20px between */
+.lb-icons { padding-bottom: 30px; }
+.lb-icon-item { display: flex; align-items: flex-start; gap: 22px; }
+.lb-icon-item + .lb-icon-item { margin-top: 20px; }
+.lb-icon-item svg, .lb-list-item svg { flex: none; width: 24px; height: 24px; color: #242424; }
+.lb-icon-item p, .lb-list-item p { margin: 0; font-size: 18px; line-height: 24px; color: #242424; }
+.lb-icon-item a { color: inherit; }
+.lb-icon-item a:hover { color: var(--blue); }
+/* Produtos e Serviços: each row 20px in, a light line above and below */
+.lb-list { padding: 30px 0; }
+.lb-list-item { display: flex; align-items: center; gap: 13px; padding: 20px; border-bottom: 1px solid #F2F2F2; }
+.lb-list-item:first-child { border-top: 1px solid #F2F2F2; }
+.lb-list-item strong, .lb-pay strong { font-weight: 700; }
+/* Meios de pagamento: the "_" list, a little smaller */
+.lb-pay li { font-size: 16px; line-height: 23px; }
+@media (max-width: 900px) {
+  .lb-hero { height: 180px; gap: 12px; }
+  .lb-hero img { width: 70px; }
+  .lb-hero-word span, .lb-hero-word strong { font-size: 38px; }
+  .lb-page .a11y-body { padding-top: 40px; }
+  .lb-list-item { padding: 16px 8px; }
+  .lb-icon-item p, .lb-list-item p { font-size: 16px; }
+}
+.lb-list { padding-top: 0; }
+.lb-list-item { gap: 22px; }
+/* (the banner a tiny bit lower; "LINHA / LISBON FC" in yellow; the crest as tall as those two lines) */
+.lb-hero { height: 342px; align-items: center; }
+.lb-hero-word { color: var(--yellow); }
+.lb-hero img { width: auto; height: 144px; }
+@media (max-width: 900px) { .lb-hero { height: 176px; } .lb-hero img { width: auto; height: 72px; } }
+/* (the crest image has empty space around it (72% of it is the crest), so it is drawn larger, its visible crest as tall as
+   the two lines of text, and pulled in by that empty space so the gap to the text stays 22px) */
+.lb-hero img { height: 190px; margin: 0 -26px; }
+@media (max-width: 900px) { .lb-hero img { height: 96px; margin: 0 -13px; } }
+.lb-page .a11y-body { padding-top: 64px; }
+/* (the phone icon a tiny bit bigger, without moving its text) */
+.lb-icon-item:first-child svg { transform: scale(1.15); }
+.lb-icon-item svg, .lb-icon-item:first-child svg { transform: scale(1.3); }
+.lb-icon-item svg { transform: scale(1.15); }
+.lb-icon-item:first-child svg { transform: scale(1.45); }
+.lb-icon-item svg { transform: scale(1.07); }
+.lb-icon-item:first-child svg { transform: scale(1.35); }
+.lb-icon-item:first-child svg { transform: scale(1.4); }
+/* (the last row: the club crest in black, cut from the transparent crest, in place of an icon) */
+.lb-crest { flex: none; width: 24px; height: 24px; background: #242424; -webkit-mask: url("../Logos/Logo_crest_icon.png") center / contain no-repeat; mask: url("../Logos/Logo_crest_icon.png") center / contain no-repeat; }
+.lb-list-item svg { overflow: visible; }
+/* (the crest a little bigger, to look as big as the line icons above it, without moving its text) */
+.lb-crest { transform: scale(1.2); }
+.a11y-page.lb-page { padding-bottom: 75px; }
+.lb-icon-item:first-child svg { stroke-width: 1.1; }
+
+/* ---- Perguntas Frequentes (perguntas-frequentes.html, modelled on SL Benfica's FAQs): the title, the category boxes
+   (thin grey border, the chosen one and the one pointed at in blue), then the chosen category's questions, its name
+   turned on its side at the left ---- */
+.fq-page { padding-bottom: 100px; font-family: "Roboto", var(--font-body); color: #242424; }
+.fq-head { padding: 15px 48px 0; }
+.fq-head h1 { margin: 0 0 5px; font-family: inherit; font-size: 36px; font-weight: 700; line-height: 48px; letter-spacing: normal; text-transform: none; color: #242424; }
+.fq-sub { margin: 0 0 5px; font-size: 20px; line-height: 26px; color: #242424; }
+.fq-boxes { display: flex; flex-wrap: wrap; gap: 25px; margin: 38px 0 0 2px; }
+.fq-box { display: flex; align-items: center; gap: 20px; height: 70px; padding: 10px 25px; border: 1px solid #E8E8E8; border-radius: 0; background: #fff; font: inherit; font-size: 18px; font-weight: 500; color: #242424; cursor: pointer; transition: border-color 0.3s ease-in-out; }
+.fq-box:hover, .fq-box.is-active { border-color: var(--blue); }
+.fq-box svg { flex: none; width: 30px; height: 30px; color: #242424; }
+.fq-crest { flex: none; width: 30px; height: 30px; background: #242424; -webkit-mask: url("../Logos/Logo_crest_icon.png") center / contain no-repeat; mask: url("../Logos/Logo_crest_icon.png") center / contain no-repeat; }
+/* the questions: the category's name on its side (bottom to top), then the list */
+.fq-section { display: flex; margin: 66px 95px 0 35px; }
+.fq-section[hidden] { display: none; }
+.fq-side { flex: none; margin: 0 40px 5px 0; font-family: inherit; font-size: 36px; font-weight: 700; line-height: 48px; letter-spacing: normal; text-transform: none; color: #242424; writing-mode: vertical-rl; transform: rotate(180deg); align-self: flex-start; }
+.fq-list { flex: 1; min-width: 0; }
+.fq-q { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; width: 100%; margin: 0 0 30px; padding: 0 5px 0 0; border: 0; background: none; font: inherit; font-size: 32px; font-weight: 500; line-height: 38px; text-align: left; color: #242424; cursor: pointer; transition: color 0.2s ease; }
+.fq-q:hover, .fq-item.is-open .fq-q { color: var(--blue); }
+.fq-chev { flex: none; width: 24px; height: 15px; margin: 13px 15px 0 0; color: #242424; transition: transform 0.75s; }
+.fq-item.is-open .fq-chev { transform: rotate(180deg); }
+.fq-a { max-height: 0; overflow: hidden; padding-right: 75px; transition: max-height 0.5s ease-in-out; }
+.fq-a p { margin: 0 0 20px; font-size: 20px; line-height: 28px; color: #242424; }
+.fq-item.is-open .fq-a { margin-bottom: 20px; }
+.fq-list hr { margin: 0 0 30px; border: 0; border-top: 1px solid #E8E8E8; }
+@media (max-width: 900px) {
+  .fq-head { padding: 24px 16px 0; }
+  .fq-head h1 { font-size: 28px; line-height: 36px; }
+  .fq-sub { font-size: 17px; line-height: 24px; }
+  .fq-boxes { gap: 12px; margin: 28px 0 0; }
+  .fq-box { height: 56px; gap: 12px; padding: 8px 14px; font-size: 16px; }
+  .fq-box svg, .fq-crest { width: 24px; height: 24px; }
+  .fq-section { margin: 40px 16px 0; }
+  .fq-side { margin-right: 16px; font-size: 26px; line-height: 34px; }
+  .fq-q { margin-bottom: 20px; font-size: 20px; line-height: 27px; }
+  .fq-chev { margin: 6px 0 0; width: 18px; height: 12px; }
+  .fq-a { padding-right: 0; }
+  .fq-a p { font-size: 16px; line-height: 24px; }
+  .fq-list hr { margin-bottom: 20px; }
+}
+/* (fine-tuned to Benfica's positions) */
+.fq-boxes { margin-top: 43px; }
+.fq-section { margin-top: 70px; }
+.fq-q { padding-right: 1px; }
+/* (the Apoio links' row: its line underneath the same light hairline as the one above it, between it and the logo) */
+@media (min-width: 901px) and (max-width: 1599px) {
+  .ct-subnav.header-secondary { border-bottom: none; }
+  .ct-subnav.header-secondary::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: #DFE2E7; transform: scaleY(0.5); transform-origin: bottom; }
+}
+/* (the box icons at Benfica's sizes: the bags 28 x 30, the card 30 x 24, the crest 30 x 29) */
+.fq-box svg.fq-ico--bag { width: 28px; height: 30px; }
+.fq-box svg.fq-ico--card { width: 30px; height: 24px; }
+.fq-box .fq-crest { width: 30px; height: 29px; }
+/* (the Apoio links on the support pages a bit smaller, the text and its (i)) */
+.ct-subnav .secondary-inner a { font-size: 0.8rem; }
+@media (min-width: 901px) and (max-width: 1599px) { .ct-subnav .secondary-inner a { font-size: 0.82rem; } .ct-subnav .secondary-inner svg { width: 23px; height: 23px; } }
+.ct-subnav .secondary-inner a { font-size: 0.83rem; }
+@media (min-width: 901px) and (max-width: 1599px) { .ct-subnav .secondary-inner a { font-size: 0.855rem; } .ct-subnav .secondary-inner svg { width: 24.5px; height: 24.5px; } }
+/* (the main header: the menu lines and the search a tiny bit further left) */
+.header-top-left { margin-left: -6px; }
+/* (and its right side, the cart, account and language, a tiny bit further right) */
+.header-top-right { margin-right: -6px; }
+/* (the menu lines a pinch further left; the language globe a tiny bit further right) */
+.header-top-left .menu-toggle { transform: translateX(-3px); }
+.header-top-right .icon-btn:is([aria-label="Idioma"], [data-pt-label="Idioma"]) { transform: translateX(2px); }
+/* (the first category box a tiny bit wider) */
+.fq-box:first-child { padding-right: 31px; }
+/* (the arrow blue with its question, on hover and when open; it turns more slowly) */
+.fq-q:hover .fq-chev, .fq-item.is-open .fq-chev { color: var(--blue); }
+.fq-chev { transition: transform 1.1s ease, color 0.2s ease; }
+.fq-chev { stroke-width: 2.3; }
+/* (the category boxes' names a tiny bit bigger) */
+.fq-box { font-size: 19px; }
+.fq-box { font-size: 20.5px; }
+/* (the boxes back to 18px; the answers inside the dropdowns bigger instead) */
+.fq-box { font-size: 18px; }
+.fq-a p { font-size: 22px; line-height: 30px; }
+.fq-a p { font-size: 21px; line-height: 29px; }
+.fq-a p { font-size: 20.5px; line-height: 28.5px; }
+/* (the set line breaks in the FAQ answers: only in Portuguese and on wide screens) */
+html:not([lang^="pt"]) .fq-br { display: none; }
+@media (max-width: 1300px) { .fq-br { display: none; } }
+.fq-a { padding-right: 55px; }
+@media (max-width: 1529px) { .fq-br { display: none; } }
+/* (a list inside an FAQ answer: the site's "_" items, the same size as the answer; a link in blue) */
+.fq-a ul { margin: 0 0 20px; padding-left: 32px; list-style: "_ " inside; }
+.fq-a li { margin-bottom: 8px; font-size: 20.5px; line-height: 28.5px; color: #242424; }
+.fq-a a { color: var(--blue); text-decoration: underline; }
+.fq-a a:hover { text-decoration: none; }
+@media (max-width: 900px) { .fq-a ul { padding-left: 16px; } .fq-a li { font-size: 16px; line-height: 24px; } }
+/* (links in the FAQ answers: blue, underlined only on hover) */
+.fq-a a { text-decoration: none; }
+.fq-a a:hover { text-decoration: underline; }

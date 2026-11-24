@@ -174,3 +174,6 @@ panels.forEach((form) => {
 window.addEventListener("pageshow", (e) => {
   if (e.persisted) location.reload();
 });
+
+// (from "Inscreve-te agora." on the contacts page: the Criar Conta tab open)
+if (location.hash === "#registo") document.querySelector('.ac-tab[data-tab="register"]')?.click();

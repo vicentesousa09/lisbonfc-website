@@ -1,10 +1,22 @@
 // The account pages' header, menu and footer (notificacoes.html, historico-de-encomendas.html): signed out, the
 // sign-in page instead; the name and initials, the account popup, the menu, and the TOP button
 
-// not signed in: the sign-in page instead
+// not signed in: the sign-in page instead, except on the Adesão pages (becoming a member), which can be done without an
+// account: there the form starts empty, and the header shows a sign-in icon in place of "Olá, NAME" and the wallet
 let account = null;
 try { account = JSON.parse(localStorage.getItem("lfcSession")); } catch {}
-if (!account) location.replace("conta.html");
+const nhOpenPage = /(^|\/)adesao-[a-z-]+\.html$/.test(location.pathname);
+if (!account && !nhOpenPage) location.replace("conta.html");
+if (!account && nhOpenPage) {
+  document.querySelectorAll(".nh-user, .nh-wallet").forEach((el) => { el.hidden = true; });
+  const signIn = document.createElement("a");
+  signIn.href = "conta.html";
+  signIn.className = "nh-signin";
+  signIn.setAttribute("aria-label", "Iniciar sessão");
+  signIn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7.5 8-7.5s8 3.1 8 7.5"/></svg>';
+  const cart = document.querySelector(".nh-cart");
+  if (cart) cart.parentNode.insertBefore(signIn, cart);
+}
 account = account || {};
 
 // the header: "Olá," with the first name, and the initials (first and last name) in the circles

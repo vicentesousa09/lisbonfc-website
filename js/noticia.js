@@ -122,7 +122,7 @@ const noticiasData = {
       gallery: [
         "Logos/Lisbon FC 2 Anos/Lisbon2Anos-Logo2.jpg",
         "Logos/Lisbon FC 2 Anos/Lisbon2Anos-Logo.jpg",
-        "Logos/Loja/camisola-principal-1.png",
+        "Logos/Loja/camisola-principal-frente.jpg",
       ],
     },
     relacionados: ["lisbon-fc-2-anos", "camisola-principal-26-27", "nova-campanha-socios"],
@@ -209,9 +209,9 @@ const noticiasData = {
     media: {
       type: "gallery",
       gallery: [
-        "Logos/Loja/camisola-principal-1.png",
-        "Logos/Loja/camisola-principal-2.png",
-        "Logos/Loja/camisola-guarda-redes-1.png",
+        "Logos/Loja/camisola-principal-frente.jpg",
+        "Logos/Loja/camisola-principal-costas.jpg",
+        "Logos/Loja/camisola-guarda-redes-frente.jpg",
       ],
     },
     relacionados: ["nova-colecao-2-anos", "nova-campanha-socios", "estadio-renovacao-relvado"],
