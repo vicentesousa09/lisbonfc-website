@@ -8,6 +8,6 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header("Expires", "0")
         super().end_headers()
 
-with socketserver.TCPServer(("", 8000), NoCacheHandler) as httpd:
+with socketserver.TCPServer(("", 5000), NoCacheHandler) as httpd:
     httpd.allow_reuse_address = True
     httpd.serve_forever()

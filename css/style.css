@@ -7914,7 +7914,6 @@ html:not(.native-scrollbar)::-webkit-scrollbar-button { display: none; }
 }
 /* (the box icons at Benfica's sizes: the bags 28 x 30, the card 30 x 24, the crest 30 x 29) */
 .fq-box svg.fq-ico--bag { width: 28px; height: 30px; }
-.fq-box svg.fq-ico--card { width: 30px; height: 24px; }
 .fq-box .fq-crest { width: 30px; height: 29px; }
 /* (the Apoio links on the support pages a bit smaller, the text and its (i)) */
 .ct-subnav .secondary-inner a { font-size: 0.8rem; }
